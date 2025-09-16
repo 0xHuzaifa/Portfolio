@@ -2,78 +2,20 @@
 
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
-import { Github, Eye } from "lucide-react";
+import {
+  Github,
+  Eye,
+  ExternalLink,
+  Calendar,
+  Users,
+  Code2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-
-export const PROJECTS = [
-  {
-    id: 1,
-    title: "E-Commerce Platform",
-    description:
-      "Full-stack MERN application with payment integration, user authentication, and admin dashboard.",
-    image: "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg",
-    tech: ["React", "Node.js", "MongoDB", "Stripe"],
-    category: "Full-Stack",
-    github: "https://github.com",
-    live: "https://example.com",
-  },
-  {
-    id: 2,
-    title: "Task Management App",
-    description:
-      "Modern task management application with real-time updates and team collaboration features.",
-    image: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg",
-    tech: ["Next.js", "TypeScript", "Prisma", "PostgreSQL"],
-    category: "Full-Stack",
-    github: "https://github.com",
-    live: "https://example.com",
-  },
-  {
-    id: 3,
-    title: "Portfolio Website",
-    description:
-      "Responsive portfolio website with smooth animations and modern design principles.",
-    image: "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg",
-    tech: ["React", "Tailwind CSS", "Framer Motion"],
-    category: "Frontend",
-    github: "https://github.com",
-    live: "https://example.com",
-  },
-  {
-    id: 4,
-    title: "REST API Service",
-    description:
-      "Scalable RESTful API with authentication, rate limiting, and comprehensive documentation.",
-    image: "https://images.pexels.com/photos/1181298/pexels-photo-1181298.jpeg",
-    tech: ["Node.js", "Express", "MongoDB", "JWT"],
-    category: "Backend",
-    github: "https://github.com",
-    live: "https://example.com",
-  },
-  {
-    id: 5,
-    title: "Weather Dashboard",
-    description:
-      "Interactive weather dashboard with location-based forecasts and beautiful data visualization.",
-    image: "https://images.pexels.com/photos/1118873/pexels-photo-1118873.jpeg",
-    tech: ["Vue.js", "Chart.js", "Weather API"],
-    category: "Frontend",
-    github: "https://github.com",
-    live: "https://example.com",
-  },
-  {
-    id: 6,
-    title: "Microservices Architecture",
-    description:
-      "Distributed system with microservices, Docker containers, and load balancing.",
-    image: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg",
-    tech: ["Docker", "Kubernetes", "Node.js", "Redis"],
-    category: "Backend",
-    github: "https://github.com",
-    live: "https://example.com",
-  },
-];
+import { Badge } from "@/components/ui/badge";
+import { ProjectDetailsDrawer } from "@/components/ProjectDrawer";
+import Image from "next/image";
+import { PROJECTS } from "@/mock/Project";
 
 export function filterProjects(projects: typeof PROJECTS, category: string) {
   if (category === "All") return [...projects];
@@ -85,6 +27,10 @@ export function filterProjects(projects: typeof PROJECTS, category: string) {
 
 const Projects = () => {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [selectedProject, setSelectedProject] = useState<
+    (typeof PROJECTS)[0] | null
+  >(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const categories = ["All", "Full-Stack", "Frontend", "Backend"];
 
@@ -92,6 +38,11 @@ const Projects = () => {
     () => filterProjects(PROJECTS, activeCategory),
     [activeCategory]
   );
+
+  const handleViewDetails = (project: (typeof PROJECTS)[0]) => {
+    setSelectedProject(project);
+    setIsDrawerOpen(true);
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -116,7 +67,10 @@ const Projects = () => {
   };
 
   return (
-    <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+    <section
+      id="projects"
+      className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50/20"
+    >
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -126,7 +80,10 @@ const Projects = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Featured <span className="text-blue-600">Projects</span>
+            Featured{" "}
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Projects
+            </span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             A collection of projects showcasing my expertise in full-stack
@@ -147,10 +104,10 @@ const Projects = () => {
               key={category}
               onClick={() => setActiveCategory(category)}
               variant={activeCategory === category ? "default" : "outline"}
-              className={`rounded-full px-6 py-2 transition-all duration-300 ${
+              className={`rounded-full px-6 py-2 transition-all duration-300 font-medium ${
                 activeCategory === category
-                  ? "bg-blue-600 hover:bg-blue-700 text-white"
-                  : "border-gray-300 text-gray-700 hover:border-blue-600 hover:text-blue-600"
+                  ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
+                  : "border-gray-300 text-gray-700 hover:border-blue-600 hover:text-blue-600 hover:shadow-md"
               }`}
             >
               {category}
@@ -165,28 +122,49 @@ const Projects = () => {
           whileInView="visible"
           viewport={{ once: true }}
           key={activeCategory}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch"
         >
           {filteredProjects.map((project) => (
             <motion.div
               key={project.id}
               variants={itemVariants}
               layout
-              className="group"
+              className="group h-full"
             >
-              <Card className="overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform group-hover:-translate-y-2 bg-white border-0">
+              <Card className="overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform group-hover:-translate-y-2 bg-white/80 backdrop-blur-sm border border-gray-200/50 hover:border-blue-200 h-full flex flex-col">
                 <div className="relative overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="relative w-full h-52">
+                    <Image
+                      src={project.images[0]}
+                      alt={project.title}
+                      fill
+                      className=" object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+
+                  {/* Project Status Badge */}
+                  <div className="absolute top-4 right-4">
+                    <Badge
+                      variant={
+                        project.status === "Completed" ? "default" : "secondary"
+                      }
+                      className={`${
+                        project.status === "Completed"
+                          ? "bg-green-500 hover:bg-green-600"
+                          : "bg-orange-500 hover:bg-orange-600"
+                      } text-white border-none shadow-lg`}
+                    >
+                      {project.status}
+                    </Badge>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
                     <div className="flex space-x-2">
                       <Button
                         size="sm"
-                        className="bg-white/20 hover:bg-white/30 text-white backdrop-blur-sm rounded-full"
+                        className="flex-1 bg-white/20 hover:bg-white/30 text-white backdrop-blur-md rounded-lg border border-white/30 shadow-lg"
                         asChild
                       >
                         <a
@@ -194,14 +172,13 @@ const Projects = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <Eye className="h-4 w-4 mr-1" />
-                          Live
+                          <Eye className="h-4 w-4 mr-2" />
+                          Live Demo
                         </a>
                       </Button>
                       <Button
                         size="sm"
-                        variant="outline"
-                        className="border-white/30 hover:bg-white/20 text-white backdrop-blur-sm rounded-full"
+                        className="flex-1 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md rounded-lg border border-white/30 shadow-lg"
                         asChild
                       >
                         <a
@@ -209,29 +186,68 @@ const Projects = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <Github className="h-4 w-4 mr-1" />
+                          <Github className="h-4 w-4 mr-2" />
                           Code
                         </a>
                       </Button>
                     </div>
                   </div>
                 </div>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
-                    {project.title}
-                  </h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    {project.description}
+
+                <CardContent className="p-6 flex-1 flex flex-col">
+                  <div className="flex items-start justify-between mb-3">
+                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+                      {project.title}
+                    </h3>
+                    <Badge
+                      variant="outline"
+                      className="ml-2 text-xs font-medium border-blue-200 text-blue-700 bg-blue-50"
+                    >
+                      {project.category}
+                    </Badge>
+                  </div>
+
+                  <p className="text-gray-600 mb-4 leading-relaxed text-sm flex-1">
+                    {project.shortDescription}
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((tech) => (
+
+                  <div className="flex flex-wrap gap-1.5 mb-6">
+                    {project.tech.slice(0, 4).map((tech) => (
                       <span
                         key={tech}
-                        className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-medium"
+                        className="px-2.5 py-1 bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 rounded-md text-xs font-medium border border-blue-100"
                       >
                         {tech}
                       </span>
                     ))}
+                    {project.tech.length > 4 && (
+                      <span className="px-2.5 py-1 bg-gray-100 text-gray-600 rounded-md text-xs font-medium">
+                        +{project.tech.length - 4}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
+                    <div className="flex items-center space-x-4 text-xs text-gray-500">
+                      <div className="flex items-center">
+                        <Calendar className="h-3 w-3 mr-1" />
+                        {project.duration}
+                      </div>
+                      <div className="flex items-center">
+                        <Users className="h-3 w-3 mr-1" />
+                        {project.team}
+                      </div>
+                    </div>
+
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleViewDetails(project)}
+                      className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg font-medium"
+                    >
+                      <Code2 className="h-4 w-4 mr-1" />
+                      View Details
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -239,6 +255,13 @@ const Projects = () => {
           ))}
         </motion.div>
       </div>
+
+      {/* Project Details Drawer */}
+      <ProjectDetailsDrawer
+        project={selectedProject}
+        isOpen={isDrawerOpen}
+        onOpenChange={setIsDrawerOpen}
+      />
     </section>
   );
 };
