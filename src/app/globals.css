@@ -1,26 +1,153 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  :root {
+    --vscode-bg: 222 22% 8%;
+    --vscode-panel: 221 20% 10%;
+    --vscode-sidebar: 221 19% 11%;
+    --vscode-sidebar-elevated: 221 17% 14%;
+    --vscode-border: 220 15% 21%;
+    --vscode-text: 212 24% 92%;
+    --vscode-text-muted: 216 13% 67%;
+    --vscode-accent: 194 100% 56%;
+    --vscode-hover: 220 16% 18%;
+    --vscode-active: 219 18% 23%;
+    --vscode-success: 157 66% 45%;
+    --vscode-warm: 32 94% 63%;
+
+    --background: var(--vscode-bg);
+    --foreground: var(--vscode-text);
+    --card: var(--vscode-sidebar-elevated);
+    --card-foreground: var(--vscode-text);
+    --popover: var(--vscode-sidebar-elevated);
+    --popover-foreground: var(--vscode-text);
+    --primary: var(--vscode-accent);
+    --primary-foreground: 222 22% 8%;
+    --secondary: var(--vscode-hover);
+    --secondary-foreground: var(--vscode-text);
+    --muted: var(--vscode-hover);
+    --muted-foreground: var(--vscode-text-muted);
+    --accent: var(--vscode-accent);
+    --accent-foreground: 222 22% 8%;
+    --destructive: 0 72% 53%;
+    --destructive-foreground: 0 0% 100%;
+    --border: var(--vscode-border);
+    --input: var(--vscode-border);
+    --ring: var(--vscode-accent);
+    --radius: 1.25rem;
+  }
+
+  [data-theme="ocean"] {
+    --vscode-bg: 210 55% 8%;
+    --vscode-panel: 210 48% 10%;
+    --vscode-sidebar: 210 45% 11%;
+    --vscode-sidebar-elevated: 210 40% 15%;
+    --vscode-border: 210 35% 24%;
+    --vscode-text: 200 26% 92%;
+    --vscode-text-muted: 201 16% 67%;
+    --vscode-accent: 193 92% 55%;
+    --vscode-hover: 210 30% 18%;
+    --vscode-active: 210 28% 23%;
+  }
+
+  [data-theme="sunset"] {
+    --vscode-bg: 18 28% 9%;
+    --vscode-panel: 18 25% 11%;
+    --vscode-sidebar: 18 24% 12%;
+    --vscode-sidebar-elevated: 18 22% 16%;
+    --vscode-border: 20 18% 24%;
+    --vscode-text: 28 25% 92%;
+    --vscode-text-muted: 26 15% 68%;
+    --vscode-accent: 22 92% 60%;
+    --vscode-hover: 18 18% 19%;
+    --vscode-active: 18 18% 24%;
+  }
+
+  [data-theme="forest"] {
+    --vscode-bg: 152 24% 8%;
+    --vscode-panel: 152 22% 10%;
+    --vscode-sidebar: 152 21% 11%;
+    --vscode-sidebar-elevated: 152 18% 15%;
+    --vscode-border: 150 16% 23%;
+    --vscode-text: 150 24% 92%;
+    --vscode-text-muted: 150 12% 67%;
+    --vscode-accent: 148 57% 50%;
+    --vscode-hover: 150 16% 18%;
+    --vscode-active: 150 16% 23%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+    outline-color: hsl(var(--ring));
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(
+        circle at top left,
+        hsla(194, 100%, 56%, 0.12),
+        transparent 28%
+      ),
+      radial-gradient(
+        circle at bottom right,
+        hsla(32, 94%, 63%, 0.08),
+        transparent 26%
+      );
+    color: hsl(var(--foreground));
+    font-family: var(--font-geist-sans), "Segoe UI", sans-serif;
+  }
+
+  ::selection {
+    background: hsla(194, 100%, 56%, 0.28);
+    color: hsl(var(--vscode-text));
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--vscode-panel));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border: 2px solid hsl(var(--vscode-panel));
+    border-radius: 999px;
+    background: hsl(var(--vscode-border));
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--vscode-hover));
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fade-up 0.45s ease both;
+  }
 }

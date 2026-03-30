@@ -1,9 +1,9 @@
 "use client";
 
+import { Github, Linkedin, Mail, Send } from "lucide-react";
 import { useState } from "react";
-import { Mail, Linkedin, Github, Send } from "lucide-react";
 
-export default function Contact() {
+export default function ContactPage() {
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -11,153 +11,172 @@ export default function Contact() {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In production, wire this to an API route or service like Resend / EmailJS
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
     setSubmitted(true);
   };
 
   return (
-    <article className="p-6 md:p-10 max-w-4xl space-y-10">
-      {/* Header */}
-      <header>
-        <p className="text-xs font-mono text-[hsl(var(--vscode-text-muted))] uppercase tracking-widest mb-2">
-          // Contact.tsx
+    <div className="space-y-8">
+      <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
+        <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
+          Contact
         </p>
-        <h1 className="text-3xl font-bold text-[hsl(var(--vscode-accent))] mb-3">
-          Let's build your next application.
+        <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
+          Let&apos;s talk about the system you want to build.
         </h1>
-        <p className="text-base text-[hsl(var(--vscode-text-muted))] max-w-xl leading-relaxed">
-          Have a project in mind? Need a SaaS platform, dashboard, or scalable
-          API? I typically respond within 24 hours.
+        <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
+          If you need a product-minded developer for a SaaS platform, internal
+          tool, dashboard, or custom business system, send over the context and
+          I&apos;ll take it from there.
         </p>
-      </header>
+      </section>
 
-      <div className="grid md:grid-cols-[1fr_300px] gap-6">
-        {/* Contact form */}
-        <section className="bg-[hsl(var(--vscode-sidebar))] border border-[hsl(var(--vscode-border))] p-6">
-          <h2 className="text-sm font-mono text-[hsl(var(--vscode-text-muted))] uppercase tracking-wider mb-5">
-            // Send a Message
-          </h2>
+      <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+        <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
+          <div className="mb-6">
+            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
+              Project brief
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
+              Share the basics
+            </h2>
+          </div>
 
           {submitted ? (
-            <div className="flex flex-col items-center justify-center py-10 text-center space-y-3">
-              <span className="text-4xl">✅</span>
-              <h3 className="text-lg font-semibold text-[hsl(var(--vscode-text))]">
-                Message Sent!
+            <div className="rounded-[26px] border border-[hsl(var(--vscode-success))]/30 bg-[hsl(var(--vscode-success))]/10 p-6">
+              <p className="text-xs uppercase tracking-[0.24em] text-[hsl(var(--vscode-success))]">
+                Message received
+              </p>
+              <h3 className="mt-3 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
+                Thanks, I&apos;ll follow up soon.
               </h3>
-              <p className="text-sm text-[hsl(var(--vscode-text-muted))]">
-                I'll get back to you within 24 hours.
+              <p className="mt-3 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+                This is a placeholder interaction for now, but the layout is
+                ready for a real contact flow whenever you want to wire it to an
+                API or email service.
               </p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-mono text-[hsl(var(--vscode-text-muted))] mb-1.5">
-                  name
+              <div className="grid gap-4 md:grid-cols-2">
+                <label className="block">
+                  <span className="mb-2 block text-xs uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
+                    Name
+                  </span>
+                  <input
+                    type="text"
+                    required
+                    value={formState.name}
+                    onChange={(event) =>
+                      setFormState((state) => ({
+                        ...state,
+                        name: event.target.value,
+                      }))
+                    }
+                    placeholder="Your name"
+                    className="w-full rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] outline-none transition-colors placeholder:text-[hsl(var(--vscode-text-muted))]/60 focus:border-[hsl(var(--vscode-accent))]"
+                  />
                 </label>
-                <input
-                  type="text"
-                  required
-                  value={formState.name}
-                  onChange={(e) =>
-                    setFormState((s) => ({ ...s, name: e.target.value }))
-                  }
-                  placeholder="Your name"
-                  className="w-full bg-[hsl(var(--vscode-bg))] border border-[hsl(var(--vscode-border))] text-[hsl(var(--vscode-text))] text-sm px-3 py-2.5 font-mono focus:outline-none focus:border-[hsl(var(--vscode-accent))] transition-colors placeholder:text-[hsl(var(--vscode-text-muted))]/40"
-                />
+
+                <label className="block">
+                  <span className="mb-2 block text-xs uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
+                    Email
+                  </span>
+                  <input
+                    type="email"
+                    required
+                    value={formState.email}
+                    onChange={(event) =>
+                      setFormState((state) => ({
+                        ...state,
+                        email: event.target.value,
+                      }))
+                    }
+                    placeholder="you@example.com"
+                    className="w-full rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] outline-none transition-colors placeholder:text-[hsl(var(--vscode-text-muted))]/60 focus:border-[hsl(var(--vscode-accent))]"
+                  />
+                </label>
               </div>
-              <div>
-                <label className="block text-xs font-mono text-[hsl(var(--vscode-text-muted))] mb-1.5">
-                  email
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={formState.email}
-                  onChange={(e) =>
-                    setFormState((s) => ({ ...s, email: e.target.value }))
-                  }
-                  placeholder="your@email.com"
-                  className="w-full bg-[hsl(var(--vscode-bg))] border border-[hsl(var(--vscode-border))] text-[hsl(var(--vscode-text))] text-sm px-3 py-2.5 font-mono focus:outline-none focus:border-[hsl(var(--vscode-accent))] transition-colors placeholder:text-[hsl(var(--vscode-text-muted))]/40"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-mono text-[hsl(var(--vscode-text-muted))] mb-1.5">
-                  message
-                </label>
+
+              <label className="block">
+                <span className="mb-2 block text-xs uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
+                  What are you building?
+                </span>
                 <textarea
                   required
-                  rows={5}
+                  rows={7}
                   value={formState.message}
-                  onChange={(e) =>
-                    setFormState((s) => ({ ...s, message: e.target.value }))
+                  onChange={(event) =>
+                    setFormState((state) => ({
+                      ...state,
+                      message: event.target.value,
+                    }))
                   }
-                  placeholder="Tell me about your project..."
-                  className="w-full bg-[hsl(var(--vscode-bg))] border border-[hsl(var(--vscode-border))] text-[hsl(var(--vscode-text))] text-sm px-3 py-2.5 font-mono focus:outline-none focus:border-[hsl(var(--vscode-accent))] transition-colors resize-none placeholder:text-[hsl(var(--vscode-text-muted))]/40"
+                  placeholder="Tell me about the product, workflows, users, or technical constraints."
+                  className="w-full resize-none rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm leading-7 text-[hsl(var(--vscode-text))] outline-none transition-colors placeholder:text-[hsl(var(--vscode-text-muted))]/60 focus:border-[hsl(var(--vscode-accent))]"
                 />
-              </div>
+              </label>
+
               <button
                 type="submit"
-                className="flex items-center gap-2 px-5 py-2.5 bg-[hsl(var(--vscode-accent))] text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+                className="inline-flex items-center gap-2 rounded-2xl bg-[hsl(var(--vscode-accent))] px-5 py-3 text-sm font-semibold text-[hsl(var(--vscode-bg))] transition-transform duration-200 hover:-translate-y-0.5"
               >
-                <Send className="w-4 h-4" />
-                Send Message
+                <Send className="h-4 w-4" />
+                Send message
               </button>
             </form>
           )}
         </section>
 
-        {/* Contact info sidebar */}
-        <div className="space-y-3">
-          <section className="bg-[hsl(var(--vscode-sidebar))] border border-[hsl(var(--vscode-border))] p-5">
-            <h2 className="text-xs font-mono text-[hsl(var(--vscode-text-muted))] uppercase tracking-wider mb-4">
-              // Connect
-            </h2>
-            <div className="space-y-3">
+        <div className="space-y-4">
+          <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6">
+            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
+              Direct contact
+            </p>
+            <div className="mt-5 space-y-3">
               <a
                 href="mailto:huzaifaahmed@example.com"
-                className="flex items-center gap-3 text-sm text-[hsl(var(--vscode-text-muted))] hover:text-[hsl(var(--vscode-accent))] transition-colors group"
+                className="flex items-center gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
               >
-                <Mail className="w-4 h-4 shrink-0 group-hover:text-[hsl(var(--vscode-accent))]" />
-                <span className="font-mono text-xs truncate">
-                  huzaifaahmed@example.com
-                </span>
+                <Mail className="h-4 w-4 text-[hsl(var(--vscode-accent))]" />
+                huzaifaahmed@example.com
               </a>
               <a
                 href="https://linkedin.com/in/huzaifaahmed"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 text-sm text-[hsl(var(--vscode-text-muted))] hover:text-[hsl(var(--vscode-accent))] transition-colors group"
+                className="flex items-center gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
               >
-                <Linkedin className="w-4 h-4 shrink-0 group-hover:text-[hsl(var(--vscode-accent))]" />
-                <span className="font-mono text-xs">LinkedIn</span>
+                <Linkedin className="h-4 w-4 text-[hsl(var(--vscode-accent))]" />
+                LinkedIn profile
               </a>
               <a
                 href="https://github.com/huzaifaahmed"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 text-sm text-[hsl(var(--vscode-text-muted))] hover:text-[hsl(var(--vscode-accent))] transition-colors group"
+                className="flex items-center gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
               >
-                <Github className="w-4 h-4 shrink-0 group-hover:text-[hsl(var(--vscode-accent))]" />
-                <span className="font-mono text-xs">GitHub</span>
+                <Github className="h-4 w-4 text-[hsl(var(--vscode-accent))]" />
+                GitHub profile
               </a>
             </div>
           </section>
 
-          <section className="bg-[hsl(var(--vscode-sidebar))] border border-[hsl(var(--vscode-border))] p-5">
-            <h2 className="text-xs font-mono text-[hsl(var(--vscode-text-muted))] uppercase tracking-wider mb-3">
-              // Availability
+          <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[linear-gradient(135deg,hsla(194,100%,56%,0.14),transparent_42%),hsl(var(--vscode-sidebar-elevated))] p-6">
+            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
+              Availability
+            </p>
+            <h2 className="mt-3 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
+              Open to new builds and product collaborations
             </h2>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-xs text-[hsl(var(--vscode-text-muted))]">
-                Open to new projects
-              </span>
-            </div>
+            <p className="mt-3 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+              Best fit: systems that need both solid engineering and a more
+              thoughtful user experience.
+            </p>
           </section>
         </div>
       </div>
-    </article>
+    </div>
   );
 }
