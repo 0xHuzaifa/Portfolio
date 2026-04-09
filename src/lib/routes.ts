@@ -54,10 +54,17 @@ export const systemExplorerItems: readonly ExplorerItem[] = [
   },
 ] as const;
 
-const allExplorerItems = [...rootExplorerItems, ...systemExplorerItems];
+export const allExplorerItems: readonly ExplorerItem[] = [
+  ...rootExplorerItems,
+  ...systemExplorerItems,
+] as const;
 
 export function getExplorerItem(pathname: string) {
   return allExplorerItems.find((item) => item.href === pathname);
+}
+
+export function getRouteTitle(pathname: string) {
+  return getExplorerItem(pathname)?.fileLabel;
 }
 
 export function getEditorLabel(pathname: string) {
