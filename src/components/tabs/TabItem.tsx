@@ -3,6 +3,7 @@
 import { X } from "lucide-react";
 import { useTabs } from "@/contexts/TabContext";
 import { cn } from "@/lib/utils";
+import { useNavigation } from "@/contexts/NavigationContext";
 
 interface TabItemProps {
   tab: {
@@ -14,10 +15,12 @@ interface TabItemProps {
 }
 
 export const TabItem = ({ tab }: TabItemProps) => {
-  const { activeTab, activateTab, closeTab, tabs } = useTabs();
-  const isActive = activeTab === tab.id;
+  const { closeTab, tabs } = useTabs();
+  const { pathname, navigate } = useNavigation();
 
-  const handleActivate = () => activateTab(tab.href);
+  const isActive = pathname === tab.href;
+
+  const handleActivate = () => navigate(tab.href);
 
   const handleClose = (e: React.MouseEvent) => {
     e.preventDefault();

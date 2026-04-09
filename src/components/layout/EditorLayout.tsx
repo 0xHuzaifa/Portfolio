@@ -1,10 +1,10 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { VscFileCode } from "react-icons/vsc";
 
+import { useNavigation } from "@/contexts/NavigationContext";
 import { getEditorLabel, getEditorTrail } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { TabBar } from "../tabs/TabBar";
@@ -12,6 +12,7 @@ import { ActivityBar } from "./ActivityBar";
 import { AssistantPanel } from "./AssistantPanel";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
+import { WorkspaceContent } from "./WorkspaceContent";
 
 export interface EditorLayoutProps {
   children: ReactNode;
@@ -24,7 +25,7 @@ export function EditorLayout({
   className,
   defaultSidebarOpen = true,
 }: EditorLayoutProps) {
-  const pathname = usePathname();
+  const { pathname } = useNavigation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(defaultSidebarOpen);
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
   const [isLayoutCollapsed, setIsLayoutCollapsed] = useState(false);
@@ -81,7 +82,7 @@ export function EditorLayout({
 
           <main className="min-h-0 flex-1 overflow-y-auto">
             <div className="mx-auto w-full max-w-7xl p-4 md:p-6 lg:p-8">
-              {children}
+              <WorkspaceContent serverContent={children} />
             </div>
           </main>
         </div>

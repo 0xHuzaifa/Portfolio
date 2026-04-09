@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import {
   VscChevronDown,
@@ -11,8 +9,9 @@ import {
   VscFolderOpened,
 } from "react-icons/vsc";
 
+import { AppLink } from "@/components/navigation/AppLink";
 import { SidebarAvatar } from "@/components/sidebar/SidebarAvatar";
-import { useTabs } from "@/contexts/TabContext";
+import { useNavigation } from "@/contexts/NavigationContext";
 import { rootExplorerItems, systemExplorerItems } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
@@ -27,8 +26,7 @@ export function Sidebar({
   isOpen = true,
   onRequestClose,
 }: SidebarProps) {
-  const pathname = usePathname();
-  const { openTab } = useTabs();
+  const { pathname } = useNavigation();
   const [isSystemsOpen, setIsSystemsOpen] = useState(true);
   const previousPathnameRef = useRef(pathname);
 
@@ -50,15 +48,7 @@ export function Sidebar({
     onRequestClose();
   }, [onRequestClose, pathname]);
 
-  const handlePageOpen = (
-    event: React.MouseEvent<HTMLAnchorElement>,
-    href: string,
-    label: string,
-    isActive: boolean,
-  ) => {
-    event.preventDefault();
-    openTab(href, label);
-
+  const handlePageOpen = (isActive: boolean) => {
     if (
       isActive &&
       onRequestClose &&
@@ -127,12 +117,11 @@ export function Sidebar({
                   const active = pathname === item.href;
 
                   return (
-                    <Link
+                    <AppLink
                       key={item.href}
                       href={item.href}
-                      onClick={(event) =>
-                        handlePageOpen(event, item.href, item.fileLabel, active)
-                      }
+                      tabTitle={item.fileLabel}
+                      onClick={() => handlePageOpen(active)}
                       className={cn(
                         "flex items-center gap-2 rounded-xl px-2.5 py-2 text-sm transition-colors",
                         active
@@ -142,7 +131,7 @@ export function Sidebar({
                     >
                       <VscFileCode className="shrink-0 text-[hsl(var(--vscode-accent))]" />
                       <span className="truncate">{item.fileLabel}</span>
-                    </Link>
+                    </AppLink>
                   );
                 })}
               </div>
@@ -152,12 +141,11 @@ export function Sidebar({
               const active = pathname === item.href;
 
               return (
-                <Link
+                <AppLink
                   key={item.href}
                   href={item.href}
-                  onClick={(event) =>
-                    handlePageOpen(event, item.href, item.fileLabel, active)
-                  }
+                  tabTitle={item.fileLabel}
+                  onClick={() => handlePageOpen(active)}
                   className={cn(
                     "flex items-center gap-2 rounded-xl px-2.5 py-2 text-sm transition-colors",
                     active
@@ -167,7 +155,7 @@ export function Sidebar({
                 >
                   <VscFileCode className="shrink-0 text-[hsl(var(--vscode-accent))]" />
                   <span className="truncate">{item.label}</span>
-                </Link>
+                </AppLink>
               );
             })}
           </nav>

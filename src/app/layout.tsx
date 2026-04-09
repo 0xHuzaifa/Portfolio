@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { EditorLayout } from "@/components/layout/EditorLayout";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { NavigationProvider } from "@/contexts/NavigationContext";
 import { TabProvider } from "@/contexts/TabContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 
@@ -40,11 +41,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
-          <TabProvider>
-            <TooltipProvider delayDuration={150}>
-              <EditorLayout>{children}</EditorLayout>
-            </TooltipProvider>
-          </TabProvider>
+          <NavigationProvider>
+            <TabProvider>
+              <TooltipProvider delayDuration={150}>
+                <EditorLayout>{children}</EditorLayout>
+              </TooltipProvider>
+            </TabProvider>
+          </NavigationProvider>
         </ThemeProvider>
       </body>
     </html>
