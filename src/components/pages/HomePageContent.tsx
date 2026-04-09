@@ -154,10 +154,10 @@ export function HomePageContent() {
             return (
               <div
                 key={card.title}
-                className="group rounded-[26px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[hsl(var(--vscode-accent))]/20"
+                className="group relative rounded-[26px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-[hsl(var(--vscode-accent))]/20"
               >
                 <div
-                  className={`absolute inset-0 rounded-[26px] bg-gradient-to-br opacity-0 transition-opacity duration-200 group-hover:opacity-100 ${card.gradient}`}
+                  className={`pointer-events-none absolute inset-0 rounded-[26px] bg-gradient-to-br opacity-0 transition-opacity duration-200 group-hover:opacity-100 ${card.gradient}`}
                 />
                 <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[hsl(var(--vscode-accent))]/14 text-[hsl(var(--vscode-accent))]">
                   <Icon className="h-5 w-5" />

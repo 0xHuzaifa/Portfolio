@@ -9,6 +9,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { usePathname } from "next/navigation";
 import { systems } from "@/data/systems";
 import { getRouteTitle } from "@/lib/routes";
 
@@ -22,18 +23,12 @@ const NavigationContext = createContext<NavigationContextType | undefined>(
 );
 
 export function NavigationProvider({ children }: { children: ReactNode }) {
-  const [pathname, setPathname] = useState(() =>
-    typeof window !== "undefined" ? window.location.pathname || "/" : "/",
-  );
+  const nextPathname = usePathname() || "/";
+  const [pathname, setPathname] = useState(nextPathname);
 
   useEffect(() => {
-    const handlePopState = () => {
-      setPathname(window.location.pathname || "/");
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+    setPathname(nextPathname);
+  }, [nextPathname]);
 
   useEffect(() => {
     const system = pathname.startsWith("/systems/")
