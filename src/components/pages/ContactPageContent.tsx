@@ -136,14 +136,14 @@ export function ContactPageContent() {
             </p>
             <div className="mt-5 space-y-3">
               <a
-                href="mailto:huzaifaahmed@example.com"
+                href="mailto:huzaifa.rb00@gmail.com.com"
                 className="flex items-center gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
               >
                 <Mail className="h-4 w-4 text-[hsl(var(--vscode-accent))]" />
-                huzaifaahmed@example.com
+                huzaifa.rb00@gmail.com.com
               </a>
               <a
-                href="https://linkedin.com/in/huzaifaahmed"
+                href="https://linkedin.com/in/0xhuzaifa"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
@@ -152,7 +152,7 @@ export function ContactPageContent() {
                 LinkedIn profile
               </a>
               <a
-                href="https://github.com/huzaifaahmed"
+                href="https://github.com/0xhuzaifa"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
