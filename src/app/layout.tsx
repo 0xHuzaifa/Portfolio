@@ -21,11 +21,17 @@ export const metadata: Metadata = {
   title: "Huzaifa Ahmed - Full-Stack Developer",
   description:
     "Full-Stack Developer helping startups and businesses build scalable SaaS platforms, admin dashboards, and production-ready web applications. React, Node.js, TypeScript, AWS.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/logo.png",
+  },
   openGraph: {
     title: "Huzaifa Ahmed - Full-Stack Developer",
     description:
       "Building scalable SaaS platforms and web applications for startups and businesses.",
     type: "website",
+    images: ["/logo.png"],
   },
 };
 
