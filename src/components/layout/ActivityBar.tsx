@@ -65,7 +65,7 @@ export function ActivityBar({
         })}
       </div>
 
-      <div className="mt-auto h-10 w-10 rounded-full border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]" />
+      {/* <div className="mt-auto h-10 w-10 rounded-full border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]" /> */}
     </aside>
   );
 }
