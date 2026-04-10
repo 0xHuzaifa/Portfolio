@@ -319,6 +319,13 @@ export const systems: System[] = [
           "This approach provided high flexibility, allowing new allocation rules and hierarchy levels to be introduced without major schema changes, while keeping the database structure simple and maintainable.",
       },
     ],
+
+    highlights: [
+      "Rule-driven inventory allocation with hierarchical constraints",
+      "Configurable multi-portal system for controlled product distribution",
+      "Complex allotment engine with inheritance and fallback logic",
+      "Flexible data modeling with runtime allocation computation",
+    ],
   },
 
   {
