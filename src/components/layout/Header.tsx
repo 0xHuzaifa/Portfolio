@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { VscCommentDiscussion, VscLayoutPanel } from "react-icons/vsc";
+import { VscCommentDiscussion, VscLayoutSidebarLeft } from "react-icons/vsc";
 import { cn } from "@/lib/utils";
 
 export interface HeaderProps {
@@ -62,7 +62,7 @@ export function Header({
                 : "Collapse workspace layout"
             }
           >
-            <VscLayoutPanel />
+            <VscLayoutSidebarLeft />
           </button>
 
           <button

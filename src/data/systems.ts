@@ -1,3 +1,20 @@
+import type { StaticImageData } from "next/image";
+
+// Import images
+import articleMain from "@/assets/article-platform/main.png";
+import article1 from "@/assets/article-platform/1.png";
+import article2 from "@/assets/article-platform/2.png";
+import article3 from "@/assets/article-platform/3.png";
+import crmMain from "@/assets/crm-system/main.png";
+import crm1 from "@/assets/crm-system/1.png";
+import crm2 from "@/assets/crm-system/2.png";
+import crm3 from "@/assets/crm-system/3.png";
+import inventoryMain from "@/assets/inventory-system/main.png";
+import chatMain from "@/assets/chat-system/main.png";
+import chat1 from "@/assets/chat-system/1.png";
+import chat2 from "@/assets/chat-system/2.png";
+import chat3 from "@/assets/chat-system/3.png";
+
 export type System = {
   slug: string;
   title: string;
@@ -30,7 +47,7 @@ export type System = {
 
   technologies: string[];
 
-  images: string[];
+  images: (string | StaticImageData)[];
 
   engineeringChallenges?: {
     title: string;
@@ -95,10 +112,7 @@ export const systems: System[] = [
       "REST API",
     ],
 
-    images: [
-      "/assets/article-platform/dashboard.png",
-      "/assets/article-platform/editor.png",
-    ],
+    images: [articleMain, article1, article2, article3],
 
     highlights: [
       "Rich text editing with structured content workflows",
@@ -177,7 +191,7 @@ export const systems: System[] = [
       "Developed UI components and converted Figma designs into production-ready interfaces",
     ],
 
-    images: [],
+    images: [crmMain, crm1, crm2, crm3],
 
     engineeringChallenges: [
       {
@@ -274,7 +288,7 @@ export const systems: System[] = [
       "Collaborated on API integrations for CSV and external data ingestion",
     ],
 
-    images: [],
+    images: [inventoryMain],
 
     engineeringChallenges: [
       {
@@ -381,7 +395,7 @@ export const systems: System[] = [
       },
     ],
 
-    images: ["/assets/chat-system/chat-ui.png"],
+    images: [chatMain, chat1, chat2, chat3],
 
     highlights: [
       "Real-time messaging with presence synchronization",

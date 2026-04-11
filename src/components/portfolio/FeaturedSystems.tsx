@@ -7,9 +7,16 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+import Image, { StaticImageData } from "next/image";
 import { AppLink } from "@/components/navigation/AppLink";
 import { TechChip } from "@/lib/techIcons";
 import { systems } from "@/data/systems";
+
+// Import images
+import articlePlatformMain from "@/assets/article-platform/main.png";
+import crmSystemMain from "@/assets/crm-system/main.png";
+import inventorySystemMain from "@/assets/inventory-system/main.png";
+import chatSystemMain from "@/assets/chat-system/main.png";
 
 const typeStyles = {
   "Personal Project":
@@ -17,6 +24,13 @@ const typeStyles = {
   "Professional Experience":
     "border-[hsl(var(--vscode-success))]/35 bg-[hsl(var(--vscode-success))]/10 text-[hsl(var(--vscode-success))]",
 } as const;
+
+const imageMap: Record<string, StaticImageData> = {
+  "article-platform": articlePlatformMain,
+  "crm-system": crmSystemMain,
+  "inventory-system": inventorySystemMain,
+  "realtime-communication": chatSystemMain,
+};
 
 const spotlightGradient = {
   "Personal Project":
@@ -83,6 +97,19 @@ export default function FeaturedSystems() {
             <p className="text-sm leading-[1.75] text-[hsl(var(--vscode-text-muted))]">
               {system.shortDescription}
             </p>
+
+            {/* Main image */}
+            {imageMap[system.slug] && (
+              <div className="relative overflow-hidden rounded-lg bg-[hsl(var(--vscode-panel))] aspect-video border border-[hsl(var(--vscode-border))]">
+                <Image
+                  src={imageMap[system.slug]}
+                  alt={system.title}
+                  fill
+                  sizes="(max-width: 1023px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+            )}
 
             {/* Highlights */}
             {system.highlights && system.highlights.length > 0 && (

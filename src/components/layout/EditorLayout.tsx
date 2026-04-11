@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { VscFileCode } from "react-icons/vsc";
 
 import { useNavigation } from "@/contexts/NavigationContext";
@@ -29,6 +29,13 @@ export function EditorLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(defaultSidebarOpen);
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
   const [isLayoutCollapsed, setIsLayoutCollapsed] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTop = 0;
+    }
+  }, [pathname]);
 
   const editorLabel = getEditorLabel(pathname);
   const editorTrail = getEditorTrail(pathname);
@@ -80,7 +87,7 @@ export function EditorLayout({
             </p>
           </div>
 
-          <main className="min-h-0 flex-1 overflow-y-auto">
+          <main ref={mainRef} className="min-h-0 flex-1 overflow-y-auto">
             <div className="mx-auto w-full max-w-7xl p-4 md:p-6 lg:p-8">
               <WorkspaceContent serverContent={children} />
             </div>

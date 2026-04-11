@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { AppLink } from "@/components/navigation/AppLink";
 import { TechChip } from "@/lib/techIcons";
+import { SystemImageGallery } from "@/components/systems/SystemImageGallery";
 import type { System } from "@/data/systems";
 
 // ── Feature grouping ──────────────────────────────────────────────────────────
@@ -31,37 +32,93 @@ const featureGroups: {
     key: "security",
     label: "Security & Auth",
     icon: <Lock className="h-4 w-4" />,
-    keywords: ["auth", "jwt", "session", "permission", "role", "access", "secure"],
+    keywords: [
+      "auth",
+      "jwt",
+      "session",
+      "permission",
+      "role",
+      "access",
+      "secure",
+    ],
   },
   {
     key: "realtime",
     label: "Real-time",
     icon: <Zap className="h-4 w-4" />,
-    keywords: ["real-time", "realtime", "websocket", "socket", "chat", "notification", "presence", "typing"],
+    keywords: [
+      "real-time",
+      "realtime",
+      "websocket",
+      "socket",
+      "chat",
+      "notification",
+      "presence",
+      "typing",
+    ],
   },
   {
     key: "data",
     label: "Data & Storage",
     icon: <Database className="h-4 w-4" />,
-    keywords: ["database", "storage", "upload", "import", "csv", "bulk", "pagination", "search", "filter", "image"],
+    keywords: [
+      "database",
+      "storage",
+      "upload",
+      "import",
+      "csv",
+      "bulk",
+      "pagination",
+      "search",
+      "filter",
+      "image",
+    ],
   },
   {
     key: "users",
     label: "Users & Tenancy",
     icon: <Users className="h-4 w-4" />,
-    keywords: ["multi-tenant", "workspace", "subdomain", "user", "group", "onboard", "invite", "team"],
+    keywords: [
+      "multi-tenant",
+      "workspace",
+      "subdomain",
+      "user",
+      "group",
+      "onboard",
+      "invite",
+      "team",
+    ],
   },
   {
     key: "automation",
     label: "Automation & Jobs",
     icon: <Package className="h-4 w-4" />,
-    keywords: ["campaign", "schedul", "queue", "worker", "automat", "email", "sms", "follow-up", "renewal", "job"],
+    keywords: [
+      "campaign",
+      "schedul",
+      "queue",
+      "worker",
+      "automat",
+      "email",
+      "sms",
+      "follow-up",
+      "renewal",
+      "job",
+    ],
   },
   {
     key: "api",
     label: "API & Integration",
     icon: <Globe className="h-4 w-4" />,
-    keywords: ["api", "integration", "docusign", "smtp", "rest", "webhook", "external"],
+    keywords: [
+      "api",
+      "integration",
+      "docusign",
+      "smtp",
+      "rest",
+      "webhook",
+      "external",
+    ],
   },
 ];
 
@@ -96,35 +153,56 @@ function groupFeatures(features: string[]) {
 }
 
 // ── Architecture layer icons ───────────────────────────────────────────────────
-const archLayerMeta: Record<
-  string,
-  { icon: React.ReactNode; accent: string }
-> = {
-  Frontend:     { icon: <Monitor className="h-4 w-4" />,   accent: "hsl(var(--vscode-accent))" },
-  Backend:      { icon: <Server className="h-4 w-4" />,    accent: "hsl(var(--vscode-warm))" },
-  Database:     { icon: <Database className="h-4 w-4" />,  accent: "#47A248" },
-  Auth:         { icon: <KeyRound className="h-4 w-4" />,  accent: "#BB6BD9" },
-  Realtime:     { icon: <Zap className="h-4 w-4" />,       accent: "#F9C74F" },
-  Jobs:         { icon: <Package className="h-4 w-4" />,   accent: "#EF4444" },
-  Infrastructure: { icon: <HardDrive className="h-4 w-4" />, accent: "#2496ED" },
-  Storage:      { icon: <HardDrive className="h-4 w-4" />, accent: "#FF9900" },
-  Tenancy:      { icon: <Users className="h-4 w-4" />,     accent: "#68D391" },
-  Media:        { icon: <Globe className="h-4 w-4" />,     accent: "#3448C5" },
-};
+const archLayerMeta: Record<string, { icon: React.ReactNode; accent: string }> =
+  {
+    Frontend: {
+      icon: <Monitor className="h-4 w-4" />,
+      accent: "hsl(var(--vscode-accent))",
+    },
+    Backend: {
+      icon: <Server className="h-4 w-4" />,
+      accent: "hsl(var(--vscode-warm))",
+    },
+    Database: { icon: <Database className="h-4 w-4" />, accent: "#47A248" },
+    Auth: { icon: <KeyRound className="h-4 w-4" />, accent: "#BB6BD9" },
+    Realtime: { icon: <Zap className="h-4 w-4" />, accent: "#F9C74F" },
+    Jobs: { icon: <Package className="h-4 w-4" />, accent: "#EF4444" },
+    Infrastructure: {
+      icon: <HardDrive className="h-4 w-4" />,
+      accent: "#2496ED",
+    },
+    Storage: { icon: <HardDrive className="h-4 w-4" />, accent: "#FF9900" },
+    Tenancy: { icon: <Users className="h-4 w-4" />, accent: "#68D391" },
+    Media: { icon: <Globe className="h-4 w-4" />, accent: "#3448C5" },
+  };
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export function SystemPageContent({ system }: { system: System }) {
   const archEntries: { label: string; value: string }[] = [
-    { label: "Frontend",  value: system.architecture.frontend },
-    { label: "Backend",   value: system.architecture.backend },
-    { label: "Database",  value: system.architecture.database },
-    ...(system.architecture.auth        ? [{ label: "Auth",           value: system.architecture.auth }]           : []),
-    ...(system.architecture.realtime    ? [{ label: "Realtime",       value: system.architecture.realtime }]       : []),
-    ...(system.architecture.jobs        ? [{ label: "Jobs",           value: system.architecture.jobs }]           : []),
-    ...(system.architecture.infrastructure ? [{ label: "Infrastructure", value: system.architecture.infrastructure }] : []),
-    ...(system.architecture.storage     ? [{ label: "Storage",        value: system.architecture.storage }]        : []),
-    ...(system.architecture.tenancy     ? [{ label: "Tenancy",        value: system.architecture.tenancy }]        : []),
-    ...(system.architecture.media       ? [{ label: "Media",          value: system.architecture.media }]          : []),
+    { label: "Frontend", value: system.architecture.frontend },
+    { label: "Backend", value: system.architecture.backend },
+    { label: "Database", value: system.architecture.database },
+    ...(system.architecture.auth
+      ? [{ label: "Auth", value: system.architecture.auth }]
+      : []),
+    ...(system.architecture.realtime
+      ? [{ label: "Realtime", value: system.architecture.realtime }]
+      : []),
+    ...(system.architecture.jobs
+      ? [{ label: "Jobs", value: system.architecture.jobs }]
+      : []),
+    ...(system.architecture.infrastructure
+      ? [{ label: "Infrastructure", value: system.architecture.infrastructure }]
+      : []),
+    ...(system.architecture.storage
+      ? [{ label: "Storage", value: system.architecture.storage }]
+      : []),
+    ...(system.architecture.tenancy
+      ? [{ label: "Tenancy", value: system.architecture.tenancy }]
+      : []),
+    ...(system.architecture.media
+      ? [{ label: "Media", value: system.architecture.media }]
+      : []),
   ];
 
   const groupedFeatures = groupFeatures(system.features);
@@ -231,6 +309,11 @@ export function SystemPageContent({ system }: { system: System }) {
         </div>
       </section>
 
+      {/* ── SYSTEM IMAGES ───────────────────────────────────────────────────── */}
+      {system.images && system.images.length > 0 && (
+        <SystemImageGallery images={system.images} />
+      )}
+
       {/* ── PROBLEM / SOLUTION ───────────────────────────────────────────────── */}
       <section className="grid gap-6 lg:grid-cols-2">
         <article className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
@@ -240,7 +323,7 @@ export function SystemPageContent({ system }: { system: System }) {
           <p className="mt-5 text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
             Problem
           </p>
-          <p className="mt-3 text-sm leading-[1.85] text-[hsl(var(--vscode-text-muted))] whitespace-pre-line">
+          <p className="mt-3 text-sm leading-[1.85] text-[hsl(var(--vscode-text-muted))] whitespace-pre-line max-w-3xl">
             {system.problem}
           </p>
         </article>
@@ -252,7 +335,7 @@ export function SystemPageContent({ system }: { system: System }) {
           <p className="mt-5 text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
             Solution
           </p>
-          <p className="mt-3 text-sm leading-[1.85] text-[hsl(var(--vscode-text-muted))] whitespace-pre-line">
+          <p className="mt-3 text-sm leading-[1.85] text-[hsl(var(--vscode-text-muted))] whitespace-pre-line max-w-3xl">
             {system.solution}
           </p>
         </article>
@@ -312,7 +395,7 @@ export function SystemPageContent({ system }: { system: System }) {
             {system.engineeringChallenges.map((c, i) => (
               <div
                 key={c.title}
-                className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-5"
+                className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-5 transition-all duration-150 hover:-translate-y-0.5"
               >
                 {/* Title row */}
                 <div className="flex items-start gap-3">
@@ -351,7 +434,9 @@ export function SystemPageContent({ system }: { system: System }) {
                   <div className="mt-3 flex items-start gap-2 rounded-xl border border-[hsl(var(--vscode-accent))]/15 bg-[hsl(var(--vscode-accent))]/5 px-4 py-3">
                     <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[hsl(var(--vscode-accent))]" />
                     <p className="text-sm leading-[1.75] text-[hsl(var(--vscode-text-muted))]">
-                      <span className="font-semibold text-[hsl(var(--vscode-accent))]">Impact: </span>
+                      <span className="font-semibold text-[hsl(var(--vscode-accent))]">
+                        Impact:{" "}
+                      </span>
                       {c.impact}
                     </p>
                   </div>
