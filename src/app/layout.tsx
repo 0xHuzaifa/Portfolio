@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { EditorLayout } from "@/components/layout/EditorLayout";
+import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { NavigationProvider } from "@/contexts/NavigationContext";
 import { TabProvider } from "@/contexts/TabContext";
@@ -51,6 +52,7 @@ export default function RootLayout({
             <TabProvider>
               <TooltipProvider delayDuration={150}>
                 <EditorLayout>{children}</EditorLayout>
+                <Toaster richColors position="top-right" />
               </TooltipProvider>
             </TabProvider>
           </NavigationProvider>
