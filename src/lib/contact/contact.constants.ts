@@ -13,4 +13,4 @@ export const CONTACT_FIELD_LIMITS = {
 } as const;
 
 export const DEFAULT_CONTACT_FROM_EMAIL =
-  "Huzaifa Ahmed Portfolio <onboarding@resend.dev>";
+  "0xHuzaifa Portfolio <noreply@0xhuzaifa.com>";
