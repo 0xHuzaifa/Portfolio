@@ -22,6 +22,7 @@ export const metadata: Metadata = {
   title: "Huzaifa Ahmed - Full-Stack Developer",
   description:
     "Full-Stack Developer helping startups and businesses build scalable SaaS platforms, admin dashboards, and production-ready web applications. React, Node.js, TypeScript, AWS.",
+  metadataBase: new URL("https://0xhuzaifa.com"),
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
