@@ -7,15 +7,14 @@ import {
   Layers3,
   MonitorSmartphone,
   Package,
-  Rocket,
   ServerCog,
   ShieldCheck,
-  Target,
 } from "lucide-react";
 import { AppLink } from "@/components/navigation/AppLink";
 import FeaturedSystems from "@/components/portfolio/FeaturedSystems";
 import { TechChip } from "@/lib/techIcons";
 import { categoryLabels, techStack } from "@/data/techStack";
+import { systemBuildPrinciples } from "@/data/portfolio/process";
 
 const capabilityCards = [
   {
@@ -41,24 +40,6 @@ const capabilityCards = [
   },
 ] as const;
 
-const heroStats = [
-  {
-    label: "Focus",
-    value: "SaaS, dashboards & ops software",
-    icon: Target,
-  },
-  {
-    label: "Stack",
-    value: "React, Next.js, Node.js, MongoDB",
-    icon: Layers3,
-  },
-  {
-    label: "Outcome",
-    value: "Strong UX + maintainable delivery",
-    icon: Rocket,
-  },
-] as const;
-
 const categoryIcons: Record<string, React.ReactNode> = {
   frontend: <MonitorSmartphone className="h-3.5 w-3.5" />,
   backend: <ServerCog className="h-3.5 w-3.5" />,
@@ -81,73 +62,69 @@ export function HomePageContent() {
     <div className="space-y-8 lg:space-y-10">
       {/* ── HERO ─────────────────────────────────────────── */}
       <section className="grid gap-6 xl:grid-cols-[1.35fr_0.9fr]">
+        {/* Left: main hero card */}
         <div className="relative overflow-hidden rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsla(194,100%,56%,0.18),transparent_40%),radial-gradient(circle_at_bottom_right,hsla(32,94%,63%,0.14),transparent_34%)]" />
           <div className="relative">
-            <p className="text-[10px] font-medium uppercase tracking-[0.36em] text-[hsl(var(--vscode-accent))]">
-              Simplified workspace
-            </p>
-            <h1 className="mt-4 max-w-3xl text-4xl font-bold leading-tight text-[hsl(var(--vscode-text))] md:text-5xl">
-              I design and build scalable systems for real-world business
-              workflows.
+            {/* Availability pill */}
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--vscode-success))]/30 bg-[hsl(var(--vscode-success))]/10 px-3 py-1 text-[11px] font-medium text-[hsl(var(--vscode-success))]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--vscode-success))]" />
+              Available for new builds
+            </span>
+
+            {/* H1 — outcome-driven, client-facing */}
+            <h1 className="mt-5 max-w-3xl text-4xl font-bold leading-tight text-[hsl(var(--vscode-text))] md:text-5xl">
+              I build business software that your team will actually use.
             </h1>
+
+            {/* Subline — who + what */}
             <p className="mt-4 max-w-2xl text-[0.9375rem] leading-[1.85] text-[hsl(var(--vscode-text-muted))]">
-              Full-stack development focused on SaaS platforms, internal tools,
-              and operations software. The goal is always the same: strong
-              architecture underneath, intuitive UX on top.
+              Full-stack developer specialising in SaaS platforms, CRMs, and
+              internal tools — systems designed around real workflows, not just
+              technical requirements.
             </p>
 
-            {/* CTA buttons */}
+            {/* Single dominant CTA + soft secondary */}
             <div className="mt-8 flex flex-wrap gap-3">
-              <AppLink
-                href="/systems/article-platform"
-                tabTitle="Article Platform.tsx"
-                className="inline-flex items-center gap-2 rounded-2xl bg-[hsl(var(--vscode-accent))] px-5 py-3 text-sm font-semibold text-[hsl(var(--vscode-bg))] shadow-md shadow-[hsl(var(--vscode-accent))]/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[hsl(var(--vscode-accent))]/35"
-              >
-                View systems
-                <ArrowRight className="h-4 w-4" />
-              </AppLink>
-              <AppLink
-                href="/how-i-build-systems"
-                tabTitle="How I Build Systems"
-                className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-5 py-3 text-sm font-medium text-[hsl(var(--vscode-text))] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[hsl(var(--vscode-hover))]"
-              >
-                How I build systems
-              </AppLink>
               <AppLink
                 href="/contact"
                 tabTitle="Contact"
-                className="rounded-2xl border border-[hsl(var(--vscode-border))] px-5 py-3 text-sm font-medium text-[hsl(var(--vscode-text-muted))] transition-all duration-200 hover:-translate-y-0.5 hover:border-[hsl(var(--vscode-accent))]/45 hover:text-[hsl(var(--vscode-text))]"
+                className="inline-flex items-center gap-2 rounded-2xl bg-[hsl(var(--vscode-accent))] px-5 py-3 text-sm font-semibold text-[hsl(var(--vscode-bg))] shadow-md shadow-[hsl(var(--vscode-accent))]/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[hsl(var(--vscode-accent))]/35"
               >
-                Start a conversation
+                Start a project
+                <ArrowRight className="h-4 w-4" />
+              </AppLink>
+              <AppLink
+                href="/systems/crm-system"
+                tabTitle="CRM System.tsx"
+                className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-5 py-3 text-sm font-medium text-[hsl(var(--vscode-text))] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[hsl(var(--vscode-hover))]"
+              >
+                See the work
               </AppLink>
             </div>
 
-            {/* Hero stat cards */}
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
-              {heroStats.map(({ label, value, icon: Icon }) => (
-                <div
-                  key={label}
-                  className="flex items-start gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))]/90 p-4"
-                >
-                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[hsl(var(--vscode-accent))]/12 text-[hsl(var(--vscode-accent))]">
-                    <Icon className="h-3.5 w-3.5" />
-                  </span>
-                  <div>
-                    <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
-                      {label}
-                    </p>
-                    <p className="mt-0.5 text-sm font-medium text-[hsl(var(--vscode-text))]">
-                      {value}
-                    </p>
-                  </div>
-                </div>
-              ))}
+            {/* Photo + bio — human presence */}
+            <div className="mt-8 flex items-center gap-4 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))]/90 p-4">
+              <img
+                src="/huzaifa.jpg"
+                alt="Huzaifa Ahmed"
+                className="h-14 w-14 shrink-0 rounded-2xl object-cover"
+              />
+              <div>
+                <p className="text-sm font-semibold text-[hsl(var(--vscode-text))]">
+                  Huzaifa Ahmed
+                </p>
+                <p className="mt-0.5 text-sm leading-[1.7] text-[hsl(var(--vscode-text-muted))]">
+                  Full-stack developer with hands-on experience building
+                  production CRMs, inventory systems, and SaaS platforms for
+                  real clients.
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Capability cards */}
+        {/* Right: capability cards — unchanged */}
         <div className="grid gap-4">
           {capabilityCards.map((card) => {
             const Icon = card.icon;
@@ -193,6 +170,46 @@ export function HomePageContent() {
         <FeaturedSystems />
       </section>
 
+      {/* ── PRINCIPLES ──────────────────────────────────── */}
+      <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
+        <div className="mb-6 flex flex-col gap-1">
+          <p className="text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
+            How I think
+          </p>
+          <h2 className="text-3xl font-bold text-[hsl(var(--vscode-text))]">
+            Principles behind every build
+          </h2>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          {systemBuildPrinciples.map((principle) => (
+            <div
+              key={principle}
+              className="flex gap-4 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-5"
+            >
+              <span
+                className="mt-1 h-2 w-2 shrink-0 rounded-full bg-[hsl(var(--vscode-accent))]"
+                aria-hidden="true"
+              />
+              <p className="text-sm leading-[1.8] text-[hsl(var(--vscode-text))]">
+                {principle}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-6 text-sm leading-[1.75] text-[hsl(var(--vscode-text-muted))]">
+          See how these principles translate into a structured build process →{" "}
+          <AppLink
+            href="/how-i-build-systems"
+            tabTitle="How I Build Systems"
+            className="text-[hsl(var(--vscode-accent))] underline-offset-4 hover:underline"
+          >
+            How I build systems
+          </AppLink>
+        </p>
+      </section>
+
       {/* ── APPROACH + TECH STACK ─────────────────────────── */}
       <section className="grid gap-6 xl:grid-cols-[1fr_1.08fr]">
         {/* Approach */}
@@ -234,7 +251,10 @@ export function HomePageContent() {
           </h2>
           <div className="mt-6 space-y-5">
             {(
-              Object.entries(grouped) as [keyof typeof categoryLabels, string[]][]
+              Object.entries(grouped) as [
+                keyof typeof categoryLabels,
+                string[],
+              ][]
             ).map(([category, items]) => (
               <div key={category}>
                 <div className="flex items-center gap-1.5">
@@ -266,11 +286,13 @@ export function HomePageContent() {
           <div className="mt-3 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <h2 className="text-4xl font-bold leading-tight text-[hsl(var(--vscode-text))]">
-                Need a system that feels professional from the first walkthrough?
+                Need a system that feels professional from the first
+                walkthrough?
               </h2>
               <p className="mt-3 text-[0.9375rem] leading-[1.85] text-[hsl(var(--vscode-text-muted))]">
                 I can help shape the architecture, user experience, and delivery
-                plan for platforms that need to be both reliable and easy to use.
+                plan for platforms that need to be both reliable and easy to
+                use.
               </p>
             </div>
             <AppLink
