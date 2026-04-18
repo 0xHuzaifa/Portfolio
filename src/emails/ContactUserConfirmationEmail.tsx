@@ -21,8 +21,8 @@ export function ContactUserConfirmationEmail({
       </Text>
       <Text style={paragraph}>
         I usually reply within 1 to 2 business days. If your request is
-        time-sensitive, feel free to reply directly to this email and mention
-        the timeline.
+        time-sensitive, please contact me directly at huzaifa.rb00@gmail.com and
+        mention the timeline.
       </Text>
 
       <Section style={messageCard}>

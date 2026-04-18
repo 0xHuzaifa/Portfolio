@@ -44,11 +44,15 @@ export async function sendContactEmails(submission: ContactFormData) {
 
   for (const result of results) {
     if (result.status === "rejected") {
+      console.error("Rejected:", result.reason);
       throw result.reason;
     }
 
     if (result.value.error) {
+      console.error("Resend error:", result.value.error);
       throw new Error(result.value.error.message);
     }
+
+    console.log("Email sent:", result.value);
   }
 }
