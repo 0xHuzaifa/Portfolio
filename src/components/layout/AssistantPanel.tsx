@@ -1,6 +1,7 @@
 "use client";
 
-import { Bot, Sparkles, X } from "lucide-react";
+import { Bot, X } from "lucide-react";
+import { PortfolioChat } from "@/components/assistant/PortfolioChat";
 import { cn } from "@/lib/utils";
 
 type AssistantPanelProps = {
@@ -42,10 +43,10 @@ export function AssistantPanel({
             </span>
             <div>
               <p className="text-sm font-semibold text-[hsl(var(--vscode-text))]">
-                Assistant
+                Portfolio assistant
               </p>
               <p className="text-xs text-[hsl(var(--vscode-text-muted))]">
-                Client-friendly support panel
+                Ask about systems, experience, and fit
               </p>
             </div>
           </div>
@@ -60,42 +61,8 @@ export function AssistantPanel({
           </button>
         </div>
 
-        <div className="flex flex-1 flex-col gap-4 p-4">
-          <div className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))] p-4">
-            <p className="text-xs uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
-              Chat Preview
-            </p>
-            <div className="mt-4 space-y-3">
-              <div className="max-w-[85%] rounded-2xl rounded-bl-md border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text-muted))]">
-                Can we turn this portfolio into a guided product walkthrough?
-              </div>
-              <div className="ml-auto max-w-[85%] rounded-2xl rounded-br-md bg-[hsl(var(--vscode-accent))]/18 px-4 py-3 text-sm text-[hsl(var(--vscode-text))]">
-                Coming Soon
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-dashed border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar))]/70 p-5 text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-[hsl(var(--vscode-accent))]/12 text-[hsl(var(--vscode-accent))]">
-              <Sparkles className="h-5 w-5" />
-            </div>
-            <h3 className="mt-4 text-lg font-semibold text-[hsl(var(--vscode-text))]">
-              Coming Soon
-            </h3>
-            <p className="mt-2 text-sm leading-6 text-[hsl(var(--vscode-text-muted))]">
-              This space is reserved for a lightweight chatbot experience that
-              will guide visitors through systems, experience, and contact
-              steps.
-            </p>
-          </div>
-
-          <div className="mt-auto rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))] p-3">
-            <div className="flex items-center gap-2 rounded-xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-3 py-2.5">
-              <span className="text-xs uppercase tracking-[0.22em] text-[hsl(var(--vscode-text-muted))]">
-                Input Disabled
-              </span>
-            </div>
-          </div>
+        <div className="flex min-h-0 flex-1 flex-col p-4">
+          <PortfolioChat />
         </div>
       </aside>
     </>

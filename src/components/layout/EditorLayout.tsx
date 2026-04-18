@@ -27,7 +27,7 @@ export function EditorLayout({
 }: EditorLayoutProps) {
   const { pathname } = useNavigation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(defaultSidebarOpen);
-  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
+  const [isAssistantOpen, setIsAssistantOpen] = useState(true);
   const [isLayoutCollapsed, setIsLayoutCollapsed] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
 

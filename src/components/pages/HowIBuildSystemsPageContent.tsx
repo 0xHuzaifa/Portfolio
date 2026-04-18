@@ -1,39 +1,11 @@
 import { ArrowRight, Blocks, Compass, Rocket, Workflow } from "lucide-react";
 import { AppLink } from "@/components/navigation/AppLink";
+import {
+  systemBuildPhases,
+  systemBuildPrinciples,
+} from "@/data/portfolio/process";
 
-const phases = [
-  {
-    title: "Discovery and framing",
-    description:
-      "Clarify business goals, users, workflows, and success signals before architecture starts taking shape.",
-    icon: Compass,
-  },
-  {
-    title: "System design",
-    description:
-      "Map roles, permissions, data flow, integrations, and operational constraints so the product can grow cleanly.",
-    icon: Blocks,
-  },
-  {
-    title: "Delivery rhythm",
-    description:
-      "Build in small, visible milestones that make collaboration easier for both technical and non-technical stakeholders.",
-    icon: Workflow,
-  },
-  {
-    title: "Launch and iteration",
-    description:
-      "Ship with a stable baseline, monitor usage, then refine the product around real feedback and edge cases.",
-    icon: Rocket,
-  },
-] as const;
-
-const principles = [
-  "The interface should be understandable without a handoff meeting.",
-  "Architecture decisions should reduce future friction, not just solve the next ticket.",
-  "Business systems deserve polished UX because clarity saves teams time every day.",
-  "Scalability includes maintainable code, durable data models, and sensible deployment strategy.",
-];
+const phaseIcons = [Compass, Blocks, Workflow, Rocket] as const;
 
 export function HowIBuildSystemsPageContent() {
   return (
@@ -54,8 +26,8 @@ export function HowIBuildSystemsPageContent() {
       </section>
 
       <section className="grid gap-4 lg:grid-cols-2">
-        {phases.map((phase, index) => {
-          const Icon = phase.icon;
+        {systemBuildPhases.map((phase, index) => {
+          const Icon = phaseIcons[index] ?? Compass;
 
           return (
             <div
@@ -86,7 +58,7 @@ export function HowIBuildSystemsPageContent() {
           Core principles
         </p>
         <div className="mt-6 grid gap-4 lg:grid-cols-2">
-          {principles.map((principle) => (
+          {systemBuildPrinciples.map((principle) => (
             <div
               key={principle}
               className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-5 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]"

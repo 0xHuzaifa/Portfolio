@@ -1,35 +1,55 @@
 # Project Structure
 
-This is a Next.js portfolio project built with TypeScript, Tailwind CSS, and various UI libraries like Radix UI. It features a VS Code-like interface with themes, tabs, and sidebar navigation.
+This is a Next.js portfolio project built with TypeScript and Tailwind CSS. It features a VS Code-inspired interface, custom layout and sidebar navigation, and an App Router structure with dynamic system pages.
 
 ## Folder Hierarchy
 
 ```
 portfolio/
+├── .env
+├── .env.example
+├── .gitignore
 ├── biome.json
 ├── components.json
-├── docs/
 ├── next-env.d.ts
 ├── next.config.ts
+├── package-lock.json
 ├── package.json
 ├── postcss.config.mjs
 ├── project-structure.md
 ├── README.md
 ├── tsconfig.json
 ├── public/
+│   ├── favicon.ico
+│   ├── file.svg
+│   ├── full-logo-with-bg.png
+│   ├── full-logo.png
+│   ├── globe.svg
+│   ├── huzaifa.jpg
+│   ├── logo.png
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
 ├── src/
 │   ├── global.d.ts
 │   ├── app/
-│   │   ├── favicon.ico
-│   │   ├── globals.css
-│   │   ├── layout.tsx
-│   │   ├── page.tsx
+│   │   ├── api/
+│   │   │   ├── chat/
+│   │   │   │   └── route.ts
+│   │   │   └── contact/
+│   │   │       └── route.ts
 │   │   ├── contact/
 │   │   │   └── page.tsx
 │   │   ├── experience/
 │   │   │   └── page.tsx
+│   │   ├── favicon.ico
+│   │   ├── globals.css
 │   │   ├── how-i-build-systems/
 │   │   │   └── page.tsx
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── robots.ts
+│   │   ├── sitemap.ts
 │   │   └── systems/
 │   │       └── [slug]/
 │   │           └── page.tsx
@@ -39,6 +59,8 @@ portfolio/
 │   │   ├── crm-system/
 │   │   └── inventory-system/
 │   ├── components/
+│   │   ├── assistant/
+│   │   │   └── PortfolioChat.tsx
 │   │   ├── layout/
 │   │   │   ├── ActivityBar.tsx
 │   │   │   ├── AssistantPanel.tsx
@@ -62,9 +84,11 @@ portfolio/
 │   │   │   ├── SidebarAvatar.tsx
 │   │   │   └── SidebarSettings.tsx
 │   │   ├── systems/
+│   │   │   ├── ImageLightbox.tsx
 │   │   │   ├── SystemArchitecture.tsx
 │   │   │   ├── SystemFeatures.tsx
-│   │   │   └── SystemHeader.tsx
+│   │   │   ├── SystemHeader.tsx
+│   │   │   └── SystemImageGallery.tsx
 │   │   ├── tabs/
 │   │   │   ├── TabBar.tsx
 │   │   │   └── TabItem.tsx
@@ -84,83 +108,116 @@ portfolio/
 │   │   ├── systemMap.ts
 │   │   ├── systems.ts
 │   │   └── techStack.ts
+│   ├── emails/
+│   │   ├── ContactEmailLayout.tsx
+│   │   ├── ContactOwnerNotificationEmail.tsx
+│   │   └── ContactUserConfirmationEmail.tsx
 │   └── lib/
+│       ├── ai/
+│       │   ├── chat.ts
+│       │   ├── chat.types.ts
+│       │   ├── models.ts
+│       │   ├── prompt.ts
+│       │   └── retrieval.ts
+│       ├── contact/
+│       │   ├── contact-email.service.tsx
+│       │   ├── contact.constants.ts
+│       │   ├── contact.types.ts
+│       │   └── contact.validation.ts
 │       ├── routes.ts
+│       ├── techIcons.tsx
 │       └── utils.ts
 ```
 
 ## Root Files
 
-- **biome.json**: Configuration file for Biome, a fast linter and code formatter for JavaScript/TypeScript.
+- **.env**: Local environment variables.
+- **.env.example**: Example environment variable file.
+- **.gitignore**: Files and folders excluded from version control.
+- **biome.json**: Configuration for Biome linting and formatting.
 - **components.json**: Configuration for shadcn/ui components.
-- **docs/**: Directory for project documentation.
-- **next-env.d.ts**: TypeScript declarations for Next.js.
-- **next.config.ts**: Configuration file for Next.js.
-- **package.json**: Defines project dependencies, scripts, and metadata. Includes scripts for development, building, and linting.
-- **postcss.config.mjs**: Configuration for PostCSS, used with Tailwind CSS.
-- **project-structure.md**: Documentation of the project structure.
-- **README.md**: Standard Next.js README with setup instructions.
-- **tsconfig.json**: TypeScript configuration.
-
-## docs/
-
-Directory for project documentation.
-
-- **navigation-refactor-notes.md**: Notes on navigation refactoring.
+- **next-env.d.ts**: Next.js TypeScript declarations.
+- **next.config.ts**: Next.js configuration.
+- **package-lock.json**: Lockfile for npm dependencies.
+- **package.json**: Project dependencies and scripts.
+- **postcss.config.mjs**: Tailwind/PostCSS configuration.
+- **project-structure.md**: This project structure documentation.
+- **README.md**: Project overview and setup instructions.
+- **tsconfig.json**: TypeScript compiler configuration.
 
 ## public/
 
-Directory for static assets served by Next.js (e.g., images, fonts).
+Static assets served by Next.js.
+
+- **favicon.ico**
+- **file.svg**
+- **full-logo-with-bg.png**
+- **full-logo.png**
+- **globe.svg**
+- **huzaifa.jpg**
+- **logo.png**
+- **next.svg**
+- **vercel.svg**
+- **window.svg**
 
 ## src/
 
 - **global.d.ts**: Global TypeScript declarations.
 
-- **app/**: Next.js App Router directory containing page components.
-  - **favicon.ico**: Favicon for the application.
-  - **globals.css**: Global CSS styles, including Tailwind CSS.
-  - **layout.tsx**: Root layout component that sets up fonts, metadata, and wraps the app with ClientLayout.
-  - **page.tsx**: Homepage component display.
-  - **contact/**: Contact page.
-    - **page.tsx**: Contact information page.
-  - **experience/**: Experience page.
-    - **page.tsx**: Experience information page.
-  - **how-i-build-systems/**: How I build systems page.
-    - **page.tsx**: Process and methodology page.
-  - **systems/**: System details pages.
-    - **[slug]/**: Dynamic system pages.
-      - **page.tsx**: System details page.
+- **app/**: Next.js App Router pages, API routes, and root layout.
+  - **api/chat/route.ts**: Chat API endpoint.
+  - **api/contact/route.ts**: Contact form API endpoint.
+  - **contact/page.tsx**: Contact page.
+  - **experience/page.tsx**: Experience page.
+  - **favicon.ico**: App icon reference.
+  - **globals.css**: Global CSS styles.
+  - **how-i-build-systems/page.tsx**: Process and methodology page.
+  - **layout.tsx**: Root layout and app wrapper.
+  - **page.tsx**: Homepage.
+  - **robots.ts**: Robots.txt route.
+  - **sitemap.ts**: Sitemap generation route.
+  - **systems/[slug]/page.tsx**: Dynamic system detail page.
 
-- **assets/**: Project-specific static assets.
+- **assets/**: Static design assets for system illustrations.
   - **article-platform/**
   - **chat-system/**
   - **crm-system/**
   - **inventory-system/**
 
-- **components/**: Reusable React components.
-  - **layout/**: Main layout components.
-  - **navigation/**: Navigation components.
-  - **pages/**: Page-specific components.
-  - **portfolio/**: Portfolio page components.
-  - **sidebar/**: Sidebar UI components.
-  - **systems/**: System feature components.
-  - **tabs/**: Tab UI components.
-  - **ui/**: Shared UI primitives.
+- **components/**: Reusable UI and page components.
+  - **assistant/PortfolioChat.tsx**: Chat assistant component.
+  - **layout/**: Main layout building blocks.
+  - **navigation/AppLink.tsx**: Navigation link component.
+  - **pages/**: Page-specific UI sections.
+  - **portfolio/**: Portfolio/homepage components.
+  - **sidebar/**: Sidebar-related components.
+  - **systems/**: System detail and gallery components.
+  - **tabs/**: Tab bar components.
+  - **ui/**: Shared UI primitives and utilities.
 
-- **config/**: Configuration files.
-  - **routes.ts**
+- **config/routes.ts**: Route definitions and page routing data.
 
 - **contexts/**: React context providers.
   - **NavigationContext.tsx**
   - **TabContext.tsx**
   - **ThemeContext.tsx**
 
-- **data/**: Data files for the application.
+- **data/**: Static data for the portfolio and system pages.
   - **experience.ts**
   - **systemMap.ts**
   - **systems.ts**
   - **techStack.ts**
 
-- **lib/**: Utilities and route definitions.
-  - **routes.ts**
-  - **utils.ts**
+- **emails/**: Email layout and notification templates.
+  - **ContactEmailLayout.tsx**
+  - **ContactOwnerNotificationEmail.tsx**
+  - **ContactUserConfirmationEmail.tsx**
+
+- **lib/**: Utility functions, AI helpers, and contact services.
+  - **ai/**: Chat, prompt, retrieval, and model helper utilities.
+  - **contact/**: Contact email service, validation, and types.
+  - **routes.ts**: Shared route helpers.
+  - **techIcons.tsx**: Tech icon component helpers.
+  - **utils.ts**: General utility functions.
+
+> Hidden/generated directories like `.git/`, `.next/`, and `node_modules/` are not listed above.
