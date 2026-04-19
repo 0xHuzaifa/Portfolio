@@ -8,6 +8,10 @@ export interface ExperienceItem {
   description: string;
   highlights: string[];
   current?: boolean;
+  relatedSystems?: {
+    slug: string;
+    label: string;
+  }[];
 }
 
 export const experience: ExperienceItem[] = [
@@ -25,6 +29,10 @@ export const experience: ExperienceItem[] = [
       "Built a rule-based inventory and allocation system with hierarchical portal architecture and complex allotment logic across user groups",
       "Designed and implemented REST and GraphQL APIs consumed by web and mobile clients across multiple projects",
       "Managed AWS deployments with Docker containerisation for production environments",
+    ],
+    relatedSystems: [
+      { slug: "crm-system", label: "CRM System" },
+      { slug: "inventory-system", label: "Inventory System" },
     ],
     current: true,
   },

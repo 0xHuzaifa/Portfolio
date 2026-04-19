@@ -1,5 +1,6 @@
-import { BriefcaseBusiness } from "lucide-react";
+import { ArrowUpRight, BriefcaseBusiness } from "lucide-react";
 import { experience } from "@/data/experience";
+import { AppLink } from "@/components/navigation/AppLink";
 
 export function ExperiencePageContent() {
   return (
@@ -49,7 +50,7 @@ export function ExperiencePageContent() {
                     {item.companyContext}
                   </p>
                 )}
-                
+
                 <p className="mt-4 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
                   {item.description}
                 </p>
@@ -70,6 +71,24 @@ export function ExperiencePageContent() {
                 </div>
               ))}
             </div>
+            {item.relatedSystems && item.relatedSystems.length > 0 && (
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <span className="text-xs text-[hsl(var(--vscode-text-muted))]/60">
+                  Related systems:
+                </span>
+                {item.relatedSystems.map((system) => (
+                  <AppLink
+                    key={system.slug}
+                    href={`/systems/${system.slug}`}
+                    tabTitle={`${system.label}.tsx`}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--vscode-accent))]/30 bg-[hsl(var(--vscode-accent))]/8 px-3 py-1 text-xs font-medium text-[hsl(var(--vscode-accent))] transition-colors hover:border-[hsl(var(--vscode-accent))]/50 hover:bg-[hsl(var(--vscode-accent))]/14"
+                  >
+                    {system.label}
+                    <ArrowUpRight className="h-3 w-3" />
+                  </AppLink>
+                ))}
+              </div>
+            )}
           </article>
         ))}
       </section>
