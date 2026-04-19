@@ -525,18 +525,19 @@ export function SystemPageContent({ system }: { system: System }) {
               </span>
               <div>
                 <h3 className="text-base font-bold text-[hsl(var(--vscode-text))]">
-                  Building something complex?
+                  Need something similar built?
                 </h3>
                 <p className="mt-2 text-sm leading-[1.75] text-[hsl(var(--vscode-text-muted))]">
-                  I design and build scalable systems like this — from
-                  architecture to production-ready implementation.
+                  Describe your system — the workflow, the users, the
+                  constraints. I'll respond with what it would take to build it
+                  properly.
                 </p>
                 <AppLink
                   href="/contact"
                   tabTitle="Contact"
                   className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[hsl(var(--vscode-accent))] px-4 py-2 text-sm font-bold text-[hsl(var(--vscode-bg))] shadow-md shadow-[hsl(var(--vscode-accent))]/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[hsl(var(--vscode-accent))]/35"
                 >
-                  Talk about your system
+                  Send your project brief
                   <ArrowRight className="h-3.5 w-3.5" />
                 </AppLink>
               </div>

@@ -290,13 +290,15 @@ export function HomePageContent() {
           <div className="mt-3 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <h2 className="text-4xl font-bold leading-tight text-[hsl(var(--vscode-text))]">
-                Need a system that feels professional from the first
-                walkthrough?
+                Have a system in mind? Let's scope it out.
               </h2>
               <p className="mt-3 text-[0.9375rem] leading-[1.85] text-[hsl(var(--vscode-text-muted))]">
-                I can help shape the architecture, user experience, and delivery
-                plan for platforms that need to be both reliable and easy to
-                use.
+                Send over what you're building — the workflow, the problem, or
+                even just a rough idea. I'll come back with a clear picture of
+                what it takes to build it properly.
+              </p>
+              <p className="mt-2 text-sm text-[hsl(var(--vscode-text-muted))]/70">
+                Typical response within 24 hours.
               </p>
             </div>
             <AppLink
@@ -304,7 +306,7 @@ export function HomePageContent() {
               tabTitle="Contact"
               className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-[hsl(var(--vscode-accent))] px-6 py-3.5 text-sm font-bold text-[hsl(var(--vscode-bg))] shadow-lg shadow-[hsl(var(--vscode-accent))]/25 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[hsl(var(--vscode-accent))]/40"
             >
-              Contact me
+              Send your project brief
               <ArrowRight className="h-4 w-4" />
             </AppLink>
           </div>

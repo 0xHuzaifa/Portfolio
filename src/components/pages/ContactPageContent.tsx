@@ -102,12 +102,16 @@ export function ContactPageContent() {
           Contact
         </p>
         <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
-          Let&apos;s talk about the system you want to build.
+          Tell me what you're building.
         </h1>
         <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
-          If you need a product-minded developer for a SaaS platform, internal
-          tool, dashboard, or custom business system, send over the context and
-          I&apos;ll take it from there.
+          Share the context — the workflow, the users, the problem you're
+          solving. I'll come back with a clear picture of scope, approach, and
+          next steps. No commitment required.
+        </p>
+        <p className="mt-2 text-sm text-[hsl(var(--vscode-text-muted))]/70">
+          Typical response within 24 hours. Available for SaaS platforms,
+          internal tools, CRMs, and custom business systems.
         </p>
       </section>
 
@@ -118,8 +122,12 @@ export function ContactPageContent() {
               Project brief
             </p>
             <h2 className="mt-2 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
-              Share the basics
+              Describe your system
             </h2>
+            <p className="mt-1.5 text-sm leading-[1.7] text-[hsl(var(--vscode-text-muted))]">
+              No need for a formal spec — a clear description of the problem and
+              who it affects is enough to start.
+            </p>
           </div>
 
           {submitted ? (
@@ -284,14 +292,39 @@ export function ContactPageContent() {
 
           <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[linear-gradient(135deg,hsla(194,100%,56%,0.14),transparent_42%),hsl(var(--vscode-sidebar-elevated))] p-6">
             <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
-              Availability
+              What to expect
             </p>
-            <h2 className="mt-3 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
-              Open to new builds and product collaborations
-            </h2>
-            <p className="mt-3 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
-              Best fit: systems that need both solid engineering and a more
-              thoughtful user experience.
+            <div className="mt-4 space-y-3">
+              {[
+                {
+                  step: "01",
+                  text: "You send a brief — workflow, problem, or rough idea.",
+                },
+                {
+                  step: "02",
+                  text: "I review and respond within 24 hours with questions or a clear next step.",
+                },
+                {
+                  step: "03",
+                  text: "If there's a fit, we scope the project together before any commitment.",
+                },
+              ].map(({ step, text }) => (
+                <div
+                  key={step}
+                  className="flex gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))]/80 p-3"
+                >
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[hsl(var(--vscode-accent))]/14 text-[10px] font-bold text-[hsl(var(--vscode-accent))]">
+                    {step}
+                  </span>
+                  <p className="text-sm leading-[1.7] text-[hsl(var(--vscode-text-muted))]">
+                    {text}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 text-xs leading-[1.7] text-[hsl(var(--vscode-text-muted))]/60">
+              Best fit: SaaS platforms, CRMs, internal tools, and custom
+              business systems.
             </p>
           </section>
         </div>
