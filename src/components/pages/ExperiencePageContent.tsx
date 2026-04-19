@@ -43,6 +43,13 @@ export function ExperiencePageContent() {
                 <p className="mt-1 text-sm text-[hsl(var(--vscode-text-muted))]">
                   {item.company}
                 </p>
+
+                {item.companyContext && (
+                  <p className="mt-0.5 text-xs text-[hsl(var(--vscode-text-muted))]/70">
+                    {item.companyContext}
+                  </p>
+                )}
+                
                 <p className="mt-4 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
                   {item.description}
                 </p>

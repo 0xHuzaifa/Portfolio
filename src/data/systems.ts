@@ -64,63 +64,7 @@ export type System = {
 };
 
 export const systems: System[] = [
-  {
-    slug: "article-platform",
-    title:
-      "Full-Stack Article Publishing Platform with Rich Editing & Role Control",
-    category: "SaaS / CMS System",
-    type: "Personal Project",
-
-    shortDescription:
-      "A feature-rich MERN stack platform enabling structured article publishing with role-based access, rich text editing, and scalable content workflows.",
-
-    problem:
-      "Basic blogging systems fail to support structured workflows, multi-user collaboration, and content lifecycle management, making them unsuitable for growing platforms or teams.",
-
-    solution:
-      "Developed a full-stack CMS platform with role-based access control, a modular REST API, and a rich text editing experience using Lexical. The system enables users to create, manage, and publish content efficiently, while giving administrators control over platform content.",
-
-    features: [
-      "Secure user authentication and session management",
-      "Role-based access control (Admin / User)",
-      "Rich text editor with headings, lists, embeds, and formatting",
-      "Draft and publishing workflow for content lifecycle",
-      "Slug-based routing for SEO-friendly article URLs",
-      "Search and filtering for content discovery",
-      "Pagination for scalable content loading",
-      "Image upload and management via Cloudinary",
-      "Admin dashboard to manage and moderate articles",
-      "RESTful API architecture for scalability",
-    ],
-
-    architecture: {
-      frontend: "React (component-driven UI)",
-      backend: "Node.js + Express (modular REST API)",
-      database: "MongoDB (schema-based modeling)",
-      auth: "JWT Authentication",
-      media: "Cloudinary (image storage and delivery)",
-    },
-
-    technologies: [
-      "React",
-      "Node.js",
-      "Express",
-      "MongoDB",
-      "JWT",
-      "Lexical Editor",
-      "Cloudinary",
-      "REST API",
-    ],
-
-    images: [articleMain, article1, article2, article3],
-
-    highlights: [
-      "Rich text editing with structured content workflows",
-      "Role-based content management system",
-      "Scalable content handling with search and pagination",
-    ],
-  },
-
+  // CRM System
   {
     slug: "crm-system",
     title:
@@ -134,10 +78,10 @@ export const systems: System[] = [
       "A complex, multi-tenant CRM platform built for real estate workflows, featuring campaign automation, real-time communication, and workspace-based architecture.",
 
     problem:
-      "Real estate businesses require more than basic CRMs — they need multi-tenant systems, automated follow-ups, contract workflows, and centralized communication to manage leads, clients, and transactions efficiently.",
+      "Real estate teams juggle leads, clients, realtors, and transactions across too many disconnected tools — emails get missed, follow-ups fall through, and there's no single place to see where a deal actually stands. For agencies running multiple business units, there's also no clean way to keep each team's data separate without building an entirely different system for each one.",
 
     solution:
-      "Contributed to the development of a scalable CRM platform with multi-tenant architecture (workspace + subdomain-based isolation), automation pipelines, and real-time features. Focused on building core modules, authentication flows, and campaign automation systems.",
+      "Built core modules of a scalable CRM platform with multi-tenant architecture (workspace + subdomain-based isolation), automation pipelines, and real-time features. Owned authentication flows, campaign automation systems, and real-time communication — from architecture decisions through to production delivery.",
 
     features: [
       "Multi-tenant architecture with workspace-based subdomains",
@@ -234,6 +178,7 @@ export const systems: System[] = [
     ],
   },
 
+  // Inventory & Allocation System
   {
     slug: "inventory-system",
     title:
@@ -246,10 +191,10 @@ export const systems: System[] = [
       "A configurable inventory and allocation platform enabling vendors to create rule-driven portals, manage product distribution, and control purchasing workflows across user groups.",
 
     problem:
-      "Traditional inventory systems fail to handle complex allocation rules, role-based purchasing control, and multi-portal distribution, making them unsuitable for organizations with structured product distribution workflows.",
+      "Organizations distributing products across departments, user groups, or client portals face a control problem: without allocation rules, some users take more than their share while others get nothing. Admins end up manually enforcing limits that should be automatic, and there's no clean way to configure different purchasing rules for different groups without rebuilding the system each time.",
 
     solution:
-      "Contributed to building a flexible inventory platform that allows vendors to configure custom portals with rule-based product allocation, user grouping, and controlled purchasing flows. Focused on building complex UI workflows and bulk data operations.",
+      "Built a flexible inventory platform that allows vendors to configure custom portals with rule-based product allocation, user grouping, and controlled purchasing flows. Owned complex UI workflows, allocation logic, and bulk data operations end-to-end.",
 
     features: [
       "Multi-portal system with isolated configurations per vendor",
@@ -342,6 +287,7 @@ export const systems: System[] = [
     ],
   },
 
+  // Real-Time Communication System
   {
     slug: "realtime-communication",
     title: "Real-Time Messaging System with Presence & Session Handling",
@@ -352,7 +298,7 @@ export const systems: System[] = [
       "A real-time communication system designed to handle messaging, presence tracking, and connection reliability using WebSocket-based architecture.",
 
     problem:
-      "Real-time systems require more than simple message delivery — they must handle user presence, connection drops, session recovery, and consistent state synchronization across clients.",
+      "Adding real-time messaging to a platform is straightforward until it isn't — users go offline, reconnect, and miss messages; presence indicators show people as online when they've already left; and a single dropped connection can leave the entire chat state inconsistent. These reliability gaps make real-time features feel broken even when the core functionality works.",
 
     solution:
       "Built a WebSocket-based messaging system that manages real-time communication along with presence tracking, reconnection handling, and persistent message storage. Focused on reliability and state synchronization across multiple users and sessions.",
@@ -401,6 +347,64 @@ export const systems: System[] = [
       "Real-time messaging with presence synchronization",
       "Connection recovery and session consistency handling",
       "Room-based architecture for scalable communication",
+    ],
+  },
+
+  // Article Publishing Platform
+  {
+    slug: "article-platform",
+    title:
+      "Full-Stack Article Publishing Platform with Rich Editing & Role Control",
+    category: "SaaS / CMS System",
+    type: "Personal Project",
+
+    shortDescription:
+      "A full-stack CMS built to explore structured content workflows, role-based access patterns, and rich text editing with the Lexical editor — demonstrating end-to-end MERN stack delivery on a content-heavy platform.",
+
+    problem:
+      "Growing content teams outgrow basic blog tools quickly — writers need drafts, editors need approval control, and admins need to manage who can publish what. Without structured workflows, content gets published inconsistently and managing a team of contributors becomes a manual, error-prone process.",
+
+    solution:
+      "Built a full-stack CMS with role-based access control, a modular REST API, and a rich text editing experience using Meta's Lexical editor framework. Implemented a draft-to-publish content lifecycle, slug-based routing, Cloudinary media management, and an admin moderation dashboard — covering the complete surface area of a content platform.",
+
+    features: [
+      "Secure user authentication and session management",
+      "Role-based access control (Admin / User)",
+      "Rich text editor with headings, lists, embeds, and formatting",
+      "Draft and publishing workflow for content lifecycle",
+      "Slug-based routing for SEO-friendly article URLs",
+      "Search and filtering for content discovery",
+      "Pagination for scalable content loading",
+      "Image upload and management via Cloudinary",
+      "Admin dashboard to manage and moderate articles",
+      "RESTful API architecture for scalability",
+    ],
+
+    architecture: {
+      frontend: "React (component-driven UI)",
+      backend: "Node.js + Express (modular REST API)",
+      database: "MongoDB (schema-based modeling)",
+      auth: "JWT Authentication",
+      media: "Cloudinary (image storage and delivery)",
+    },
+
+    technologies: [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "JWT",
+      "Lexical Editor",
+      "Cloudinary",
+      "REST API",
+    ],
+
+    images: [articleMain, article1, article2, article3],
+
+    highlights: [
+      "Rich text editing with structured content workflows",
+      "Role-based content management system",
+      "Scalable content handling with search and pagination",
     ],
   },
 ];

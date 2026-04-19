@@ -15,6 +15,7 @@ import FeaturedSystems from "@/components/portfolio/FeaturedSystems";
 import { TechChip } from "@/lib/techIcons";
 import { categoryLabels, techStack } from "@/data/techStack";
 import { systemBuildPrinciples } from "@/data/portfolio/process";
+import { SocialProof } from "@/components/portfolio/SocialProof";
 
 const capabilityCards = [
   {
@@ -209,6 +210,9 @@ export function HomePageContent() {
           </AppLink>
         </p>
       </section>
+
+      {/* ── SOCIAL PROOF ─────────────────────────────────── */}
+      <SocialProof />
 
       {/* ── APPROACH + TECH STACK ─────────────────────────── */}
       <section className="grid gap-6 xl:grid-cols-[1fr_1.08fr]">
