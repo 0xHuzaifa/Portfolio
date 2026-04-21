@@ -31,25 +31,25 @@ export const systemExplorerItems: readonly ExplorerItem[] = [
   {
     href: "/systems/article-platform",
     label: "Article Platform",
-    fileLabel: "Article Platform.tsx",
+    fileLabel: "Article Platform",
     group: "systems",
   },
   {
     href: "/systems/crm-system",
     label: "CRM System",
-    fileLabel: "CRM System.tsx",
+    fileLabel: "CRM System",
     group: "systems",
   },
   {
     href: "/systems/inventory-system",
     label: "Inventory System",
-    fileLabel: "Inventory System.tsx",
+    fileLabel: "Inventory System",
     group: "systems",
   },
   {
     href: "/systems/realtime-communication",
     label: "Realtime Communication",
-    fileLabel: "Realtime Communication.tsx",
+    fileLabel: "Realtime Communication",
     group: "systems",
   },
 ] as const;

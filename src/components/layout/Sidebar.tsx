@@ -14,6 +14,8 @@ import { SidebarAvatar } from "@/components/sidebar/SidebarAvatar";
 import { useNavigation } from "@/contexts/NavigationContext";
 import { rootExplorerItems, systemExplorerItems } from "@/lib/routes";
 import { cn } from "@/lib/utils";
+import { FaReact as FaReactF6 } from "react-icons/fa6";
+import { SiReact } from "react-icons/si";
 
 export interface SidebarProps {
   className?: string;
@@ -129,7 +131,7 @@ export function Sidebar({
                           : "text-[hsl(var(--vscode-text-muted))] hover:bg-[hsl(var(--vscode-hover))] hover:text-[hsl(var(--vscode-text))]",
                       )}
                     >
-                      <VscFileCode className="shrink-0 text-[hsl(var(--vscode-accent))]" />
+                      <FaReactF6 className="shrink-0 text-[hsl(var(--vscode-accent))]" />
                       <span className="truncate">{item.fileLabel}</span>
                     </AppLink>
                   );
@@ -153,7 +155,7 @@ export function Sidebar({
                       : "text-[hsl(var(--vscode-text-muted))] hover:bg-[hsl(var(--vscode-hover))] hover:text-[hsl(var(--vscode-text))]",
                   )}
                 >
-                  <VscFileCode className="shrink-0 text-[hsl(var(--vscode-accent))]" />
+                  <SiReact className="shrink-0 text-[hsl(var(--vscode-accent))]" />
                   <span className="truncate">{item.label}</span>
                 </AppLink>
               );
