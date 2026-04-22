@@ -45,7 +45,7 @@ export function ActivityBar({
               onClick={item.active ? onToggleExplorer : undefined}
               aria-pressed={item.active ? isActive : undefined}
               aria-label={item.label}
-              title={item.active ? item.label : `${item.label} - coming soon`}
+              title={item.label}
               className={cn(
                 "relative flex h-11 w-11 items-center justify-center rounded-xl text-lg transition-all duration-200",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--vscode-accent))]/45",
