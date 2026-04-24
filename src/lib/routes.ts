@@ -7,6 +7,13 @@ export type ExplorerItem = {
 
 export const rootExplorerItems: readonly ExplorerItem[] = [
   { href: "/", label: "Home", fileLabel: "Home", group: "root" },
+  { href: "/about", label: "About", fileLabel: "About", group: "root" },
+  {
+    href: "/services",
+    label: "Services",
+    fileLabel: "Services",
+    group: "root",
+  },
   {
     href: "/how-i-build-systems",
     label: "How I Build Systems",

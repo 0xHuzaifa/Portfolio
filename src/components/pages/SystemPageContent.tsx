@@ -255,15 +255,82 @@ export function SystemPageContent({ system }: { system: System }) {
           {/* Divider */}
           <div className="mt-6 border-t border-[hsl(var(--vscode-border))]/50" />
 
-          {/* Highlights + Quick stack mini-cards */}
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {/* Key highlights */}
-            {system.highlights && (
+          {/* ── METRICS STRIP (new) ─────────────────────────────────────────── */}
+          {system.metrics && system.metrics.length > 0 && (
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {system.metrics.map((metric) => (
+                <div
+                  key={metric.label}
+                  className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4"
+                >
+                  <p className="text-xl font-bold text-[hsl(var(--vscode-accent))]">
+                    {metric.value}
+                  </p>
+                  <p className="mt-1 text-[11px] leading-5 text-[hsl(var(--vscode-text-muted))]">
+                    {metric.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Quick stack mini-cards — shown only when no metrics */}
+          {(!system.metrics || system.metrics.length === 0) && (
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {system.highlights && (
+                <div className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4">
+                  <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
+                    Key highlights
+                  </p>
+                  <ul className="mt-3 space-y-2">
+                    {system.highlights.map((h) => (
+                      <li
+                        key={h}
+                        className="flex items-start gap-2 text-xs text-[hsl(var(--vscode-text))]"
+                      >
+                        <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[hsl(var(--vscode-success))]" />
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               <div className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4">
+                <div className="flex items-center gap-1.5">
+                  <Monitor className="h-3.5 w-3.5 text-[hsl(var(--vscode-accent))]" />
+                  <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
+                    Primary stack
+                  </p>
+                </div>
+                <p className="mt-2 text-sm font-medium text-[hsl(var(--vscode-text))]">
+                  {system.architecture.frontend}
+                </p>
+                <p className="mt-1 text-xs text-[hsl(var(--vscode-text-muted))]">
+                  {system.architecture.backend}
+                </p>
+              </div>
+              <div className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4">
+                <div className="flex items-center gap-1.5">
+                  <Database className="h-3.5 w-3.5 text-[#47A248]" />
+                  <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
+                    Data layer
+                  </p>
+                </div>
+                <p className="mt-2 text-sm font-medium text-[hsl(var(--vscode-text))]">
+                  {system.architecture.database}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Highlights row — shown below metrics when metrics exist */}
+          {system.metrics && system.metrics.length > 0 && system.highlights && (
+            <div className="mt-4 grid gap-4 md:grid-cols-3">
+              <div className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4 md:col-span-2">
                 <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
                   Key highlights
                 </p>
-                <ul className="mt-3 space-y-2">
+                <ul className="mt-3 grid gap-2 sm:grid-cols-3">
                   {system.highlights.map((h) => (
                     <li
                       key={h}
@@ -275,37 +342,22 @@ export function SystemPageContent({ system }: { system: System }) {
                   ))}
                 </ul>
               </div>
-            )}
-
-            {/* Primary stack */}
-            <div className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4">
-              <div className="flex items-center gap-1.5">
-                <Monitor className="h-3.5 w-3.5 text-[hsl(var(--vscode-accent))]" />
-                <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
-                  Primary stack
+              <div className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4">
+                <div className="flex items-center gap-1.5">
+                  <Database className="h-3.5 w-3.5 text-[#47A248]" />
+                  <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
+                    Data layer
+                  </p>
+                </div>
+                <p className="mt-2 text-sm font-medium text-[hsl(var(--vscode-text))]">
+                  {system.architecture.database}
+                </p>
+                <p className="mt-2 text-xs text-[hsl(var(--vscode-text-muted))]">
+                  {system.architecture.backend}
                 </p>
               </div>
-              <p className="mt-2 text-sm font-medium text-[hsl(var(--vscode-text))]">
-                {system.architecture.frontend}
-              </p>
-              <p className="mt-1 text-xs text-[hsl(var(--vscode-text-muted))]">
-                {system.architecture.backend}
-              </p>
             </div>
-
-            {/* Data layer */}
-            <div className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4">
-              <div className="flex items-center gap-1.5">
-                <Database className="h-3.5 w-3.5 text-[#47A248]" />
-                <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
-                  Data layer
-                </p>
-              </div>
-              <p className="mt-2 text-sm font-medium text-[hsl(var(--vscode-text))]">
-                {system.architecture.database}
-              </p>
-            </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -353,7 +405,6 @@ export function SystemPageContent({ system }: { system: System }) {
         <div className="mt-6 space-y-6">
           {groupedFeatures.map(({ group, items }) => (
             <div key={group.key}>
-              {/* Group label */}
               <div className="mb-3 flex items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-[hsl(var(--vscode-accent))]/12 text-[hsl(var(--vscode-accent))]">
                   {group.icon}
@@ -363,8 +414,6 @@ export function SystemPageContent({ system }: { system: System }) {
                 </span>
                 <div className="flex-1 border-t border-[hsl(var(--vscode-border))]/40" />
               </div>
-
-              {/* Feature cards */}
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {items.map((feature) => (
                   <div
@@ -397,7 +446,6 @@ export function SystemPageContent({ system }: { system: System }) {
                 key={c.title}
                 className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-5 transition-all duration-150 hover:-translate-y-0.5"
               >
-                {/* Title row */}
                 <div className="flex items-start gap-3">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[hsl(var(--vscode-accent))]/12 text-xs font-bold text-[hsl(var(--vscode-accent))]">
                     {String(i + 1).padStart(2, "0")}
@@ -408,7 +456,6 @@ export function SystemPageContent({ system }: { system: System }) {
                 </div>
 
                 <div className="mt-4 grid gap-3 lg:grid-cols-2">
-                  {/* Problem */}
                   <div className="rounded-xl border border-red-500/15 bg-red-500/5 p-4">
                     <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.28em] text-red-400">
                       Problem
@@ -417,8 +464,6 @@ export function SystemPageContent({ system }: { system: System }) {
                       {c.problem}
                     </p>
                   </div>
-
-                  {/* Solution */}
                   <div className="rounded-xl border border-[hsl(var(--vscode-success))]/15 bg-[hsl(var(--vscode-success))]/5 p-4">
                     <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.28em] text-[hsl(var(--vscode-success))]">
                       Solution
@@ -429,7 +474,6 @@ export function SystemPageContent({ system }: { system: System }) {
                   </div>
                 </div>
 
-                {/* Impact */}
                 {c.impact && (
                   <div className="mt-3 flex items-start gap-2 rounded-xl border border-[hsl(var(--vscode-accent))]/15 bg-[hsl(var(--vscode-accent))]/5 px-4 py-3">
                     <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[hsl(var(--vscode-accent))]" />
@@ -449,7 +493,6 @@ export function SystemPageContent({ system }: { system: System }) {
 
       {/* ── ARCHITECTURE + TECHNOLOGIES ──────────────────────────────────────── */}
       <section className="grid gap-6 xl:grid-cols-[1fr_0.92fr]">
-        {/* Architecture */}
         <article className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
           <div className="flex items-center gap-3">
             <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[hsl(var(--vscode-accent))]/14 text-[hsl(var(--vscode-accent))]">
@@ -475,9 +518,7 @@ export function SystemPageContent({ system }: { system: System }) {
                 <div
                   key={item.label}
                   className="flex items-start gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4 transition-all duration-150 hover:-translate-y-0.5"
-                  style={{
-                    borderLeft: `2px solid ${meta.accent}`,
-                  }}
+                  style={{ borderLeft: `2px solid ${meta.accent}` }}
                 >
                   <span
                     className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
@@ -502,7 +543,6 @@ export function SystemPageContent({ system }: { system: System }) {
           </div>
         </article>
 
-        {/* Technologies + CTA */}
         <article className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
           <p className="text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
             Technologies
@@ -517,7 +557,6 @@ export function SystemPageContent({ system }: { system: System }) {
             ))}
           </div>
 
-          {/* CTA card */}
           <div className="mt-8 rounded-2xl border border-[hsl(var(--vscode-accent))]/20 bg-[linear-gradient(135deg,hsla(194,100%,56%,0.14),transparent_42%),hsl(var(--vscode-panel))] p-5">
             <div className="flex items-start gap-3">
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--vscode-accent))]/14 text-[hsl(var(--vscode-accent))]">
