@@ -8,11 +8,13 @@ export interface SystemMetric {
   label: string;
 }
 
+export type SystemType = "Personal Project" | "Professional Experience";
+
 export interface System {
   slug: string;
   title: string;
   category: string;
-  type: string;
+  type: SystemType;
   systemType?: string;
   role?: string;
   shortDescription: string;
