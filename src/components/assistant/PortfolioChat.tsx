@@ -16,7 +16,7 @@ const initialMessages: LocalMessage[] = [
     id: "assistant-welcome",
     role: "assistant",
     content:
-      "Ask me about Huzaifa's systems, experience, technical approach, or whether he's a good fit for the product you're planning.",
+      "I can tell you about the systems I've built, how I work, or whether I'm the right fit for what you're planning. What would you like to know?",
     persist: false,
   },
 ];

@@ -88,7 +88,6 @@ function buildPortfolioKnowledgeBase(): PortfolioKnowledgeDocument[] {
       if (!accumulator[item.category]) {
         accumulator[item.category] = [];
       }
-
       accumulator[item.category].push(item.name);
       return accumulator;
     },
@@ -107,9 +106,14 @@ function buildPortfolioKnowledgeBase(): PortfolioKnowledgeDocument[] {
       "hire",
       "developer",
       "availability",
+      "karachi",
+      "pakistan",
+      "freelance",
+      "contract",
+      "project",
     ],
     content: [
-      `${portfolioProfile.name} is a ${portfolioProfile.title}.`,
+      `${portfolioProfile.name} is a ${portfolioProfile.title} based in Karachi, Pakistan.`,
       portfolioProfile.summary,
       `Specialties: ${portfolioProfile.specialties.join("; ")}.`,
       `Positioning: ${portfolioProfile.positioning.join("; ")}.`,
@@ -128,6 +132,9 @@ function buildPortfolioKnowledgeBase(): PortfolioKnowledgeDocument[] {
       "stack",
       "tech stack",
       "technologies",
+      "can you build",
+      "do you know",
+      "experience with",
       ...techStack.map((item) => item.name),
     ],
     content: [
@@ -151,6 +158,11 @@ function buildPortfolioKnowledgeBase(): PortfolioKnowledgeDocument[] {
       "delivery",
       "system design",
       "scalable",
+      "how do you work",
+      "how do you build",
+      "working style",
+      "timeline",
+      "how long",
     ],
     content: [
       "Huzaifa treats system building as product design, architecture, and delivery working together.",
@@ -176,10 +188,21 @@ function buildPortfolioKnowledgeBase(): PortfolioKnowledgeDocument[] {
       ...system.technologies,
       ...system.features,
       ...(system.highlights ?? []),
+      // Surface metric values as searchable terms
+      ...(system.metrics?.map((m) => m.label) ?? []),
+      ...(system.metrics?.map((m) => m.value) ?? []),
     ],
     content: [
       `Category: ${system.category}. Type: ${system.type}.`,
       system.shortDescription,
+      // Metrics surface first — most scannable for recruiters and clients
+      ...(system.metrics?.length
+        ? [
+            `Key metrics: ${system.metrics
+              .map((m) => `${m.value} ${m.label}`)
+              .join("; ")}.`,
+          ]
+        : []),
       `Problem: ${system.problem}`,
       `Approach: ${system.solution}`,
       `Key features: ${system.features.join("; ")}.`,
@@ -220,14 +243,20 @@ function buildPortfolioKnowledgeBase(): PortfolioKnowledgeDocument[] {
         item.role,
         item.company,
         item.period,
-        ...(item.current ? ["current"] : []),
-        ...item.highlights,
+        ...(item.duration ? [item.duration] : []),
+        ...(item.current ? ["current", "currently", "working"] : []),
+        // Highlights as keywords so they score higher on direct queries
+        ...item.highlights.flatMap((h) => tokenizeHighlight(h)),
       ],
       content: [
-        `Role: ${item.role}. Company: ${item.company}. Period: ${item.period}.`,
+        `Role: ${item.role}. Company: ${item.company}. Period: ${item.period}.${item.duration ? ` Duration: ${item.duration}.` : ""}`,
+        item.companyContext ? `Context: ${item.companyContext}.` : "",
         item.description,
-        `Highlights: ${item.highlights.join("; ")}.`,
-      ].join(" "),
+        // Highlights explicitly labelled for LLM extraction
+        `Key achievements: ${item.highlights.join("; ")}.`,
+      ]
+        .filter(Boolean)
+        .join(" "),
     }),
   );
 
@@ -238,6 +267,15 @@ function buildPortfolioKnowledgeBase(): PortfolioKnowledgeDocument[] {
     ...systemDocuments,
     ...experienceDocuments,
   ];
+}
+
+// Extracts meaningful tokens from a highlight string for keyword indexing
+function tokenizeHighlight(highlight: string): string[] {
+  return highlight
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((word) => word.length > 3 && !STOP_WORDS.has(word))
+    .map((word) => word.replace(/[^a-z0-9]/g, ""));
 }
 
 function scoreDocument(
@@ -251,6 +289,7 @@ function scoreDocument(
 
   let score = 0;
 
+  // Exact full-query matches
   if (normalizedQuery && title.includes(normalizedQuery)) {
     score += 10;
   }
@@ -262,6 +301,7 @@ function scoreDocument(
     score += 8;
   }
 
+  // Token-level matches
   for (const token of queryTokens) {
     if (title.includes(token)) {
       score += 5;
@@ -276,12 +316,21 @@ function scoreDocument(
     }
   }
 
+  // Boost current role for availability/hiring queries
+  if (
+    document.id === "experience-solvevare" &&
+    queryTokens.some((t) =>
+      ["current", "working", "available", "hire", "now"].includes(t),
+    )
+  ) {
+    score += 6;
+  }
+
   return score;
 }
 
 function tokenize(value: string) {
   const matches = value.match(/[a-z0-9][a-z0-9.+/-]*/g) ?? [];
-
   return [...new Set(matches)].filter(
     (token) => token.length > 1 && !STOP_WORDS.has(token),
   );

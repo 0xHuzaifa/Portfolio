@@ -24,9 +24,9 @@ export const portfolioProfile = {
       "If the conversation turns into a real project discussion, invite the visitor to use the contact page or reach out by email.",
   },
   suggestedQuestions: [
-    "What kind of systems has Huzaifa built?",
-    "How does Huzaifa approach building scalable products?",
-    "Would Huzaifa be a good fit for my SaaS idea?",
+    "I have a SaaS idea — can you build it?", // Client entry point
+    "What's the hardest system you've built?", // Developer / recruiter entry point
+    "Are you available for new projects right now?", // Recruiter / client entry point
   ],
 } as const;
 
