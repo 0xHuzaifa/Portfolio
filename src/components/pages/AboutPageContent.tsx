@@ -75,28 +75,31 @@ export function AboutPageContent() {
       <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <div className="relative overflow-hidden rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsla(194,100%,56%,0.18),transparent_40%),radial-gradient(circle_at_bottom_right,hsla(32,94%,63%,0.12),transparent_34%)]" />
-          <div className="relative">
-            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
-              About
-            </p>
-            <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
-              The person behind the systems
-            </h1>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
-              I grew up in Nawabshah and moved to Karachi to build things
-              professionally. Computers fascinated me not as tools but as
-              puzzles — I kept asking{" "}
-              <em>
-                how does this actually work, and could I build one myself?
-              </em>{" "}
-              That question led me to programming, and programming led me to
-              realising that software is really just a set of decisions made
-              concrete.
-            </p>
-            <p className="mt-4 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
-              My degree gave me foundations. Everything production-level came
-              from building things myself, breaking them, and figuring out why.
-            </p>
+          <div className="relative flex h-full flex-col">
+            <div className="flex-1">
+              <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
+                About
+              </p>
+              <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
+                The person behind the systems
+              </h1>
+              <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
+                I grew up in Nawabshah and moved to Karachi to build things
+                professionally. Computers fascinated me not as tools but as
+                puzzles — I kept asking{" "}
+                <em>
+                  how does this actually work, and could I build one myself?
+                </em>{" "}
+                That question led me to programming, and programming led me to
+                realising that software is really just a set of decisions made
+                concrete.
+              </p>
+              <p className="mt-4 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
+                My degree gave me foundations. Everything production-level came
+                from building things myself, breaking them, and figuring out
+                why.
+              </p>
+            </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
               <AppLink
@@ -194,8 +197,8 @@ export function AboutPageContent() {
 
       {/* Hardest problems + specialties */}
       <section className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        {/* Hardest problems */}
-        <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
+        {/* Hardest problems — stretches to match right column height */}
+        <section className="flex flex-col rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
           <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
             Real work
           </p>
@@ -208,7 +211,7 @@ export function AboutPageContent() {
             through from first principles.
           </p>
 
-          <div className="mt-6 grid gap-3">
+          <div className="mt-6 flex flex-1 flex-col justify-between gap-3">
             {hardestProblems.map((problem) => (
               <div
                 key={problem.number}
@@ -230,6 +233,26 @@ export function AboutPageContent() {
                 </div>
               </div>
             ))}
+
+            {/* Filler card — shows only when right column is taller */}
+            <div className="flex-1 rounded-2xl border border-[hsl(var(--vscode-border))]/50 border-dashed bg-[hsl(var(--vscode-panel))]/40 p-5 flex flex-col justify-center gap-2 min-h-[80px]">
+              <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]/50">
+                More on the systems
+              </p>
+              <p className="text-sm leading-6 text-[hsl(var(--vscode-text-muted))]/70">
+                Each of these problems is documented in detail on the system
+                pages — engineering decisions, tradeoffs, and what the solution
+                looks like in production.
+              </p>
+              <AppLink
+                href="/systems/crm-system"
+                tabTitle="CRM System"
+                className="mt-1 inline-flex w-fit items-center gap-1.5 text-xs font-medium text-[hsl(var(--vscode-accent))] hover:underline"
+              >
+                Read the CRM case study
+                <ArrowRight className="h-3 w-3" />
+              </AppLink>
+            </div>
           </div>
         </section>
 
