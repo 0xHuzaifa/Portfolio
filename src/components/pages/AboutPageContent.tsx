@@ -42,7 +42,7 @@ const originPoints = [
   {
     icon: GraduationCap,
     label: "Studied",
-    value: "Information Technology · SBBU Nawabshah · 2019–2022",
+    value: "Information Technology · SBBU Nawabshah",
   },
   {
     icon: Trophy,
