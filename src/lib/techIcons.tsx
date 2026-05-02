@@ -1,6 +1,8 @@
 import type { JSX } from "react";
 import {
   SiReact,
+  SiRedux,
+  SiShadcnui,
   SiNextdotjs,
   SiTypescript,
   SiNodedotjs,
@@ -30,6 +32,14 @@ const iconMap: Record<string, TechIconMeta> = {
     icon: <SiReact />,
     color: "#61DAFB",
   },
+  Redux: {
+    icon: <SiRedux />,
+    color: "#764ABC",
+  },
+  "Shadcn UI": {
+    icon: <SiShadcnui />,
+    color: "#E2E8F0",
+  },
   "Next.js": {
     icon: <SiNextdotjs />,
     color: "#E2E8F0",
@@ -37,6 +47,10 @@ const iconMap: Record<string, TechIconMeta> = {
   TypeScript: {
     icon: <SiTypescript />,
     color: "#3178C6",
+  },
+  "shadcn/ui": {
+    icon: <SiShadcnui />,
+    color: "#E2E8F0",
   },
   // Backend
   "Node.js": {
@@ -112,9 +126,13 @@ export function getTechIcon(name: string): TechIconMeta | null {
   // Exact match first
   if (iconMap[name]) return iconMap[name];
 
+  const normalize = (value: string) =>
+    value.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const normalizedName = normalize(name);
+
   // Fuzzy match for composite values like "React (Redux...)"
   const key = Object.keys(iconMap).find((k) =>
-    name.toLowerCase().includes(k.toLowerCase()),
+    normalizedName.includes(normalize(k)),
   );
   return key ? iconMap[key] : null;
 }

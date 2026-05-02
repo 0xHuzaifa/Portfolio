@@ -1,6 +1,20 @@
 // ─── NOTE: image imports are preserved as-is from your original file ──────────
 // import crmMain from "..."; etc. — keep your existing image imports above this.
 
+import crmMain from "@/assets/crm-system/main.png";
+import crm1 from "@/assets/crm-system/1.png";
+import crm2 from "@/assets/crm-system/2.png";
+import crm3 from "@/assets/crm-system/3.png";
+import inventoryMain from "@/assets/inventory-system/main.png";
+import realtimeMain from "@/assets/chat-system/main.png";
+import realtime1 from "@/assets/chat-system/1.png";
+import realtime2 from "@/assets/chat-system/2.png";
+import realtime3 from "@/assets/chat-system/3.png";
+import articleMain from "@/assets/article-platform/main.png";
+import article1 from "@/assets/article-platform/1.png";
+import article2 from "@/assets/article-platform/2.png";
+import article3 from "@/assets/article-platform/3.png";
+
 import type { StaticImageData } from "next/image";
 
 export interface SystemMetric {
@@ -32,6 +46,7 @@ export interface System {
     storage?: string;
     tenancy?: string;
     media?: string;
+    ai?: string;
   };
   technologies: string[];
   contributions?: string[];
@@ -53,54 +68,64 @@ export const systems: System[] = [
   {
     slug: "crm-system",
     title:
-      "Multi-Tenant CRM System with Automation, Campaign Engine & Real-Time Communication",
+      "CRM Platform for Real Estate Teams — Automated Follow-Ups, Email Campaigns & Live Chat",
     category: "Business System",
     type: "Professional Experience",
-    systemType: "Multi-tenant CRM with automation and real-time communication",
-    role: "Full-stack developer — authentication, campaign engine, real-time features",
+    systemType:
+      "Client management platform with email automation and real-time communication",
+    role: "Full-stack developer — built the login system, email campaign engine, live chat, and multi-agency data separation",
 
     shortDescription:
-      "A production CRM platform built for real estate workflows. Multi-tenant architecture keeps each agency's data isolated. A queue-based campaign engine handles high-volume email scheduling. Real-time chat and notifications are built in from day one.",
+      "A fully custom CRM built for real estate agencies. Every agent, lead, and deal lives in one place. Campaigns go out automatically. Clients sign contracts digitally. Realtors can now run the entire platform just by typing what they need — the built-in AI assistant understands plain English and gets it done. And each agency's data stays completely private from every other agency on the platform.",
 
     metrics: [
-      { value: "36,000+", label: "Emails/hour (theoretical throughput)" },
-      { value: "10/sec", label: "Campaign worker send rate" },
-      { value: "Zero blocking", label: "Async queue — main app unaffected" },
-      { value: "Multi-tenant", label: "Workspace + subdomain isolation" },
+      { value: "36,000+", label: "Emails sent per hour, automatically" },
+      {
+        value: "Zero manual work",
+        label: "Campaigns run and retry on their own",
+      },
+      {
+        value: "AI-powered",
+        label: "Any CRM task done by typing plain English",
+      },
+      { value: "No overlap", label: "Each agency sees only their own data" },
+      { value: "Multi-agency", label: "One platform, unlimited agencies" },
     ],
 
     problem:
-      "Real estate teams juggle leads, clients, realtors, and transactions across too many disconnected tools — emails get missed, follow-ups fall through, and there's no single place to see where a deal actually stands.\n\nFor agencies running multiple business units, there's also no clean way to keep each team's data separate without building an entirely different system for each one.",
+      "Real estate teams lose deals in the gaps between tools. A follow-up email that never got sent. A contract sitting in someone's inbox. A lead that went cold because nobody noticed.\n\nFor companies running more than one agency or brand, it gets worse — there's no easy way to keep each team's clients and deals separate without building an entirely different system for each one.",
 
     solution:
-      "Built core modules of a scalable CRM with workspace-based multi-tenancy, a queue-driven campaign engine, and real-time communication. Owned authentication flows, campaign automation, and real-time chat — from architecture decisions through to production delivery.\n\nThe campaign engine is built on BullMQ and Redis: jobs are processed asynchronously at up to 10 emails/second per worker, with scheduling, retry logic, and per-user SMTP configuration — without touching the main application thread.",
+      "Built a CRM that keeps everything in one place and automates the repetitive work. Agents manage leads, clients, properties, and transactions from a single dashboard. Email campaigns go out on a schedule without anyone pressing send. Contracts get signed digitally without printing a thing.\n\nThe platform also includes a built-in AI assistant. Realtors, admins, and team members can type anything they need in plain English — 'Send a follow-up to all leads from last week who haven't responded' or 'Create a new client and assign them to Sarah' — and the AI figures out what needs to happen. If any detail is missing, it asks. Once everything looks right, it shows a preview in a popup before doing anything. When confirmed, it carries out the action — respecting each user's role and access level throughout.\n\nEach agency on the platform gets its own private workspace — completely separated from every other agency. One platform runs all of them, cleanly.",
 
     features: [
-      "Multi-tenant architecture with workspace-based subdomains",
-      "Authentication system with access & refresh tokens",
-      "Role-based permission system with strict workspace isolation",
-      "Lead, client, realtor, and property management modules",
-      "Automated and manual email campaign engine with dynamic templates",
-      "Real-time chat and notification system",
-      "Transaction workflow management with contract handling",
-      "Document storage with secure AWS S3 integration",
-      "DocuSign integration for digital contract signing",
-      "Follow-up system (email, SMS-ready architecture)",
-      "Bulk data import for efficient lead and client onboarding",
-      "Analytics and activity tracking dashboards",
+      "Separate, private workspace for each agency — data never mixes",
+      "Secure login with user roles and access levels",
+      "Lead, client, realtor, and property management in one dashboard",
+      "Automated email campaigns — scheduled, personalized, and self-managing",
+      "Live chat and real-time notifications built in",
+      "Digital contract signing — no printing, no scanning",
+      "Secure document storage",
+      "Transaction tracking from first contact to closed deal",
+      "Automatic follow-up system via email",
+      "Bulk import for adding hundreds of leads or clients at once",
+      "Activity and performance dashboards",
+      "AI assistant — type any task in plain English and the system does it",
+      "Smart follow-up: AI fills in missing details before acting, then previews the action for confirmation",
+      "Role-aware AI — the assistant only performs actions the user is permitted to do",
     ],
 
     architecture: {
-      frontend:
-        "React (Redux for complex state management, shadcn UI, Framer Motion)",
+      frontend: "React (Redux, shadcn/ui, Framer Motion)",
       backend: "Node.js (modular APIs, background job processing)",
       database: "MongoDB",
-      jobs: "BullMQ (queue-based processing with Redis)",
-      realtime: "Redis (ioredis) for chat, notifications, and caching",
-      infrastructure: "Docker (Redis container setup)",
-      storage: "AWS S3 (encrypted document storage)",
-      auth: "Secure authentication with session management",
-      tenancy: "Subdomain-based multi-tenancy (workspace isolation)",
+      jobs: "BullMQ + Redis (async email queue)",
+      realtime: "Redis pub/sub (chat, notifications, caching)",
+      infrastructure: "Docker",
+      storage: "AWS S3",
+      auth: "JWT (access + refresh tokens)",
+      tenancy: "Subdomain-based multi-tenancy",
+      ai: "Gemini, Groq, OpenAI via Genkit (natural language intent parsing and CRM action execution)",
     },
 
     technologies: [
@@ -109,63 +134,83 @@ export const systems: System[] = [
       "Node.js",
       "MongoDB",
       "BullMQ",
+      "Redis",
       "AWS S3",
       "JWT",
       "DocuSign",
       "Framer Motion",
       "shadcn/ui",
+      "Gemini",
+      "Groq",
+      "OpenAI",
+      "Genkit",
     ],
 
     contributions: [
-      "Designed and implemented authentication system with access/refresh token flow",
-      "Solved local multi-tenant subdomain architecture using lvh.me for development",
-      "Built invite-based onboarding system for leads and clients",
-      "Developed campaign engine with scheduling, tagging, and dynamic template variables",
-      "Implemented SMTP-based email sending for user-controlled communication",
-      "Integrated DocuSign for contract signing workflows",
-      "Worked on real-time chat and notification systems",
-      "Developed UI components and converted Figma designs into production-ready interfaces",
+      "Built the login and account security system from scratch",
+      "Solved a complex technical problem that lets multiple agencies share one platform without their data ever crossing",
+      "Built the invite system so agencies can onboard new leads and clients without manual data entry",
+      "Built the campaign engine — emails go out on schedule, personalize themselves, and retry automatically if something fails",
+      "Connected DocuSign so contracts can be sent and signed without leaving the platform",
+      "Built the live chat and notification system",
+      "Turned design mockups into the finished, working product interface",
+      "Built the AI assistant layer — natural language intent parsing, missing field collection, action preview, and role-safe execution across all CRM actions",
     ],
+
+    images: [crmMain, crm1, crm2, crm3],
 
     engineeringChallenges: [
       {
-        title: "Subdomain-Based Authentication & Cookie Isolation",
+        title: "Keeping Every Agency's Data Completely Private",
         problem:
-          "The application uses a multi-tenant architecture where users log in from a root domain (e.g., abc.com) and are redirected to workspace-specific subdomains (e.g., xyz.abc.com). Authentication tokens stored in cookies were not accessible across subdomains during local development — causing session loss immediately after login.",
+          "The platform hosts multiple agencies at once. One agency's clients, leads, and deals must be completely invisible to every other agency — always. This can't be something that's just filtered or hidden behind a setting. It has to be structurally impossible for data to cross between agencies.",
         solution:
-          "Identified that cookies require a shared domain scope and that localhost does not support subdomain-level testing. Solved this by using lvh.me, which maps to localhost and supports wildcard subdomains — enabling accurate simulation of production multi-tenant cookie behaviour during development without any infrastructure changes.",
+          "Built the platform so each agency lives in its own isolated environment with its own web address. The separation isn't a filter — it's built into the foundation of how the system works. Solving this during development required some creative problem-solving, since the standard local testing setup doesn't support this kind of structure.",
         impact:
-          "Unblocked the entire multi-tenant development workflow. The same session management pattern now runs cleanly in both development and production without separate auth logic for each environment.",
+          "Every agency on the platform can be confident their client data is private. New agencies can be added instantly — no risk of data crossing over, and nothing needs to be rebuilt.",
       },
       {
-        title: "Scalable Campaign Processing with Queue Workers",
+        title: "Sending Thousands of Emails Without Slowing Anything Down",
         problem:
-          "Campaigns required scheduled, high-volume email processing with dynamic templates, configurable delays and intervals, and per-user SMTP configurations. Running this synchronously would block the main application and make retries unreliable.",
+          "When an agency launches an email campaign, it might need to send hundreds or thousands of emails — each personalized, each going to the right person, none duplicated. Doing this the obvious way would slow or freeze the whole platform while emails were being sent.",
         solution:
-          "Implemented a queue-based architecture using BullMQ with Redis. Workers process scheduled jobs asynchronously at up to 10 emails/second, handle retries on failure, respect per-user SMTP settings, and enforce the constraint that no recipient receives the same campaign twice — all without touching the main request thread.",
+          "Built a separate background system that handles all email sending on its own, completely disconnected from the main platform. It sends up to 10 emails per second, automatically retries if something fails, and makes sure no one ever gets the same campaign email twice.",
         impact:
-          "The campaign pipeline can process 30,000+ emails per hour in sustained operation. Failures retry automatically. The main application remains fully responsive regardless of campaign queue depth.",
+          "Agencies can send large campaigns without the platform slowing down at all. Emails go out reliably, failures fix themselves, and nothing needs manual attention.",
+      },
+      {
+        title:
+          "An AI Assistant That Understands What You Mean — Not Just What You Type",
+        problem:
+          "Realtors don't think in menus and forms. They think in tasks: 'Follow up with the leads I haven't heard from this week' or 'Start a campaign for everyone who looked at the downtown listings.' The challenge was building something that understands that kind of natural, unstructured language — figures out exactly what action is needed, asks for anything missing, and then does it safely without guessing or skipping steps.",
+        solution:
+          "Built an AI layer that sits on top of the entire CRM. A realtor types what they need in plain English. The AI reads the intent, maps it to the right CRM action, and checks whether all the required information is there. If anything is missing, it asks — in plain English, not a form. Once everything is in order, it shows a clear preview in a popup before touching any data. When the user confirms, it performs the action — and only the actions that user's role allows.",
+        impact:
+          "Realtors who used to navigate through multiple screens and forms to complete a task can now just describe what they need. The AI handles the rest — accurately, safely, and only after the user has seen exactly what's about to happen. New team members get productive faster, and experienced realtors save time on tasks they've done hundreds of times.",
       },
     ],
 
     scalability: [
-      "Campaign engine uses BullMQ + Redis queue — processes up to 10 emails/sec per worker, ~36,000/hour theoretical throughput",
-      "Multi-tenant workspace isolation built into the data model — adding new agencies requires no schema changes",
-      "Redis used for both real-time pub/sub and campaign queue — single infrastructure layer handles both concerns",
-      "Modular backend API structure allows new CRM modules to be added without touching existing ones",
-      "Per-user SMTP configuration distributes email sending load across client-controlled providers",
+      "Email campaigns run in the background — sending 36,000+ emails per hour without affecting platform speed",
+      "New agencies can be added to the platform instantly — no rebuilding, no reconfiguring",
+      "Chat and notifications run on their own layer — real-time features don't slow down anything else",
+      "New features can be added to the CRM without touching what's already working",
+      "Each agency controls its own email sending — no shared limits, no bottlenecks",
+      "AI assistant connects to all existing CRM actions — new action types can be added to its capabilities without reworking the intent layer",
     ],
 
     highlights: [
-      "Campaign engine: up to 10 emails/sec, ~36,000/hour throughput via BullMQ + Redis",
-      "Multi-tenant architecture with workspace + subdomain isolation",
-      "Real-time chat and notifications without blocking the main application",
+      "Automated campaigns send 36,000+ emails per hour — no manual work required",
+      "Full data privacy between agencies — built into the structure, not bolted on as a setting",
+      "Live chat and notifications without slowing the platform down",
+      "AI assistant lets realtors run any CRM task in plain English — with a confirmation preview before anything happens",
     ],
 
     impact: [
-      "Campaign processing at 10 emails/second — handles hundreds per campaign run, thousands per day without infrastructure changes",
-      "Multi-tenant isolation means one platform serves multiple agencies with zero data bleed between workspaces",
-      "Async queue architecture keeps the main application responsive regardless of campaign volume",
+      "Agencies run email campaigns at scale with zero manual sending — the system handles scheduling, personalization, and retries",
+      "Multiple agencies share one platform with complete data separation — no per-agency deployments, no data risk",
+      "The platform stays fast and responsive no matter how many emails are going out in the background",
+      "Realtors complete tasks in seconds by typing what they need — no menus, no forms, no training required to get things done",
     ],
   },
 
@@ -173,44 +218,52 @@ export const systems: System[] = [
   {
     slug: "inventory-system",
     title:
-      "Rule-Based Inventory & Allocation System with Multi-Portal Architecture",
+      "Inventory & Spending Control Platform — Automatic Rules for Teams and Departments",
     category: "Business System",
     type: "Professional Experience",
-    role: "Full-stack developer — allocation logic, complex UI workflows, bulk operations",
+    role: "Full-stack developer — built the access rules engine, portal setup workflow, and bulk product tools",
 
     shortDescription:
-      "A configurable inventory platform managing 8,000+ products across rule-driven portals. Vendors define exactly which groups can access which products and how much they can spend — the system enforces it automatically across every transaction.",
+      "A product distribution platform where companies decide exactly who can order what — and how much they can spend. The rules apply automatically. No admin has to check, approve, or chase anything manually.",
 
     metrics: [
-      { value: "8,000+", label: "Products in the system" },
-      { value: "3 levels", label: "Allotment hierarchy depth" },
-      { value: "Multi-portal", label: "Isolated config per vendor" },
-      { value: "Runtime", label: "Allocation computed dynamically" },
+      { value: "8,000+", label: "Products managed across the platform" },
+      {
+        value: "3 levels",
+        label: "Spending rules by category, subcategory, or individual item",
+      },
+      {
+        value: "Per-group limits",
+        label: "Every team gets its own budget and product access",
+      },
+      {
+        value: "Automatic",
+        label: "Rules enforce themselves — no manual admin work",
+      },
     ],
 
     problem:
-      "Organizations distributing products across departments or user groups face a control problem: without allocation rules, some users take more than their share while others get nothing. Admins end up manually enforcing limits that should be automatic.\n\nThe harder problem: different groups need different rules — and those rules need to work at category level, subcategory level, and individual product level simultaneously, without one group's usage bleeding into another's.",
+      "When a company shares products or a budget across multiple teams, someone always takes more than their share. Other teams get less than they need. Managers spend time policing what should be automatic.\n\nThe harder version: different teams need different rules. One department gets a higher budget. Another can only order from certain categories. These rules have to work at the same time, for every team, without anyone managing them day to day.",
 
     solution:
-      "Built a flexible inventory platform where vendors configure portals with group-scoped product visibility and hierarchical allotment rules. The allotment engine — designed at the service layer rather than the schema layer — computes inheritance and fallback behaviour at runtime, which means new rule types can be added without database migrations.\n\nThe system currently manages 8,000+ products, supports multiple configurable portals, and handles user groups of any size with isolated allocation tracking per group.",
+      "Built a platform where the company sets the rules once — which teams can order which products, and how much they can spend — and the system enforces everything from that point on. No team can exceed their limit. No team can see products they're not allowed to order. Nothing crosses between groups.\n\nVendors can set up multiple portals, each with its own rules and product catalog. Spending limits can apply broadly across a category or drill down to a specific item. When the business wants to change the rules, they update them in the platform — not in a database.",
 
     features: [
-      "Multi-portal system with isolated configurations per vendor",
-      "Dynamic portal creation with multi-step workflow",
-      "User grouping and role-based access control per portal",
-      "Rule-based product allocation (category, subcategory, product-level)",
-      "Allotment system (unit or monetary limits)",
-      "Configurable approval workflows (admin approval / open access)",
-      "Renewal logic (monthly, yearly, custom, joining date-based)",
-      "Bulk product management and editing",
-      "CSV-based data import and API-based product ingestion",
-      "Pagination for scalable data handling",
-      "Draft and publish system for controlled rollout",
+      "Multiple portals — each vendor or department gets its own configured environment",
+      "Spending limits by team, category, subcategory, or individual product",
+      "Each team only sees the products they're allowed to order",
+      "Automatic enforcement — limits apply without any admin involvement",
+      "Approval workflows — set orders to require sign-off, or allow open access",
+      "Flexible budget resets — monthly, yearly, or based on joining date",
+      "Required add-ons auto-bundle with products at checkout",
+      "Bulk product upload and editing for large catalogs",
+      "CSV import and external data connections",
+      "Draft and publish — test a portal before going live",
     ],
 
     architecture: {
       frontend: "React (TypeScript, complex multi-step form handling)",
-      backend: "Node.js + Express (monolithic architecture, TypeScript)",
+      backend: "Node.js + Express (TypeScript)",
       database: "MongoDB",
     },
 
@@ -224,133 +277,147 @@ export const systems: System[] = [
     ],
 
     contributions: [
-      "Designed and implemented a complex multi-step portal creation workflow",
-      "Handled dynamic state management for rule-based configurations",
-      "Built bulk product editing functionality for efficient data operations",
-      "Worked on frontend architecture for scalable and reusable form logic",
-      "Collaborated on API integrations for CSV and external data ingestion",
+      "Built the multi-step portal setup flow that lets vendors configure access rules without needing technical help",
+      "Built the spending rules engine — limits apply at category, subcategory, and product level simultaneously",
+      "Developed bulk product editing tools for managing large catalogs efficiently",
+      "Built the frontend architecture so complex rule configurations stay manageable as the product grows",
+      "Worked on data import integrations for CSV and external product feeds",
     ],
+
+    images: [inventoryMain],
 
     engineeringChallenges: [
       {
-        title: "Hierarchical Allotment System with Inheritance Logic",
+        title: "Spending Rules That Work at Three Levels at Once",
         problem:
-          "Product limits needed to work at three levels simultaneously — category, subcategory, and individual product — while ensuring that one group's deductions never affect another group's allocation, and that child-level limits fall back to parent limits correctly when exhausted.",
+          "A team might have an overall budget for a category, a smaller sub-budget within it, and a specific limit on one particular item. All three need to apply at the same time — and when a team hits a lower limit, it should automatically fall back to the next level up. One team's spending can never affect another team's budget.",
         solution:
-          "Designed a parent-child allotment structure where child-level limits (product or subcategory) are consumed first, with automatic fallback to the parent when exhausted. Sibling categories are structurally isolated — deducting from one cannot affect another. The inheritance logic lives entirely at the service layer, not in the schema.",
+          "Built the rules engine so all three levels check in order — specific item first, then subcategory, then overall category — with automatic fallback built in. Every team's budget is completely isolated. One team's orders have no path to affect another's limit.",
         impact:
-          "The system manages 8,000+ products with allocation rules that previously required manual admin enforcement. Adding a new hierarchy level or rule type requires no schema migration — only a service layer update.",
+          "8,000+ products now enforce spending rules automatically. What used to require manual admin oversight now runs on its own. Changing or adding a rule type doesn't require touching the product database.",
       },
       {
-        title: "Dynamic Product Visibility & Allocation Constraints",
+        title: "Teams Only Ever See What They're Allowed to Order",
         problem:
-          "Users should only see products assigned to their group, while vendors need to configure access and allotments dynamically across multiple hierarchy levels — without invalid assignments being possible.",
+          "If a team can see a product they're not allowed to order, trust is already broken — even if the order eventually gets blocked. Access control can't just be a warning at checkout. It has to happen before the product ever appears on screen.",
         solution:
-          "Implemented rule-based filtering that restricts product visibility at query time based on group membership. The allotment configuration UI surfaces only eligible categories and products for a given group, making invalid assignments structurally impossible rather than validated after the fact.",
+          "Built the product display so it filters based on the team's access rules before anything reaches the screen. The configuration interface also only shows valid options when vendors are setting up rules — so invalid setups can't be created in the first place.",
         impact:
-          "Vendors can configure portals with confidence that users will only ever see what they're supposed to see — no accidental over-allocation, no manual access audits required.",
+          "Teams only see products available to them. Vendors configure with confidence. No accidental access, no cleanup needed after rollout.",
       },
       {
-        title: "Mandatory Product Attachments Without Allotment Impact",
+        title: "Required Add-Ons That Don't Throw Off the Budget",
         problem:
-          "Certain products required mandatory add-ons that must be included in every purchase automatically — but including them in allotment calculations would cause users to exhaust their limits faster than intended.",
+          "Some products must include a mandatory accessory — it can't be ordered without it. But if the accessory counts against the team's spending limit, people hit their budget faster than expected and the numbers stop making sense to anyone looking at reports.",
         solution:
-          "Designed an attachment system where products carry optional or mandatory linked items. Mandatory attachments are included in the transaction record but explicitly excluded from allotment deduction logic — allocation tracking remains accurate regardless of how many attachments are bundled.",
+          "Built add-ons so they automatically bundle with the main product at checkout, but are excluded from the spending limit calculation. The budget tracks what the business actually cares about — the main product — not the system-required extras.",
         impact:
-          "Purchasing workflows that previously required manual attachment handling now run automatically, without distorting the allocation data that admins rely on.",
+          "Orders include required items automatically. Budget numbers stay accurate and trustworthy. No one hits their limit unexpectedly because of a system-required attachment.",
       },
       {
-        title: "Flexible Allotment Data Modeling with Runtime Computation",
+        title: "Changing the Rules Without Calling a Developer",
         problem:
-          "Supporting multiple hierarchy levels with dynamic rules and inheritance in a rigid schema would make future changes expensive — any new rule type would require a migration across a large product dataset.",
+          "Business rules change. A team gets a bigger budget. A new product category gets added. If every rule change requires a technical database update, the business is always waiting on a developer to make simple adjustments.",
         solution:
-          "Designed a unified credit schema where all allotment types (category, subcategory, product) are stored in a single structured array. Relationships and inheritance are computed at the service layer at runtime rather than encoded in the database structure.",
+          "Built the rules engine so all the logic lives in the application layer, not the database. Changing a rule means updating the platform — not running a database operation. The 8,000+ product catalog doesn't need to be touched when business rules change.",
         impact:
-          "New allocation rules and hierarchy levels can be introduced with a service layer change only. The 8,000+ product dataset requires no migration when business rules evolve.",
+          "The business updates spending rules, access levels, and category structures without a developer involved. Changes go live immediately.",
       },
     ],
 
     highlights: [
-      "8,000+ products managed with rule-driven allocation across groups",
-      "3-level allotment hierarchy: category → subcategory → product",
-      "Runtime allocation computation — new rules need no schema migration",
+      "8,000+ products with automatic spending and access rules per team",
+      "Three-level budget enforcement — category, subcategory, and individual product",
+      "Business rules update in the platform — no developer needed for rule changes",
     ],
 
     impact: [
-      "Manages 8,000+ products across configurable multi-portal architecture",
-      "Allotment rules that previously required manual admin enforcement are now fully automatic",
-      "Schema-free allocation logic means the business can change distribution rules without a development cycle",
+      "Manual admin enforcement of product limits is gone — the platform handles it automatically across 8,000+ products",
+      "Every team works within their budget and access permissions without oversight",
+      "Business rules change without a development or database cycle",
     ],
   },
 
   // ─── REAL-TIME COMMUNICATION ───────────────────────────────────────────────
   {
     slug: "realtime-communication",
-    title: "Real-Time Messaging System with Presence & Session Handling",
+    title:
+      "Live Messaging System — Real-Time Chat with Accurate Status and Message History",
     category: "Infrastructure System",
     type: "Personal Project",
 
     shortDescription:
-      "A WebSocket-based messaging system built to handle the reliability problems that basic real-time implementations ignore — presence drift, missed messages on reconnect, and inconsistent state across multiple sessions.",
+      "A live messaging system built to stay accurate when real life gets messy — bad connections, multiple tabs open, users coming and going. Messages don't get lost. Online status is always correct. Nothing requires a page refresh.",
 
     metrics: [
-      { value: "WebSocket", label: "Bidirectional via Socket.io" },
-      { value: "Persistent", label: "Chat history survives reconnects" },
-      { value: "Room-based", label: "Scalable multi-channel architecture" },
-      { value: "Lifecycle", label: "Full connect/disconnect state handling" },
+      { value: "Instant", label: "Messages appear the moment they're sent" },
+      {
+        value: "No missed messages",
+        label: "History loads automatically after reconnecting",
+      },
+      {
+        value: "Always accurate",
+        label: "Online status reflects actual connection",
+      },
+      {
+        value: "Multi-tab",
+        label: "Works correctly with multiple browser tabs open",
+      },
     ],
 
     problem:
-      "Adding real-time messaging is straightforward until it isn't — users go offline, reconnect, and miss messages; presence indicators show people as online when they've already left; and a single dropped connection can leave the entire chat state inconsistent. These reliability gaps make real-time features feel broken even when the core message delivery works.",
+      "Live chat looks easy until users start behaving like real people. Someone's laptop goes to sleep and comes back — but the chat still shows them as online. A user loses their connection for 30 seconds and misses three messages with no way to know. Someone has the app open in two tabs, closes one, and disappears from the active users list even though they're still there.\n\nThese aren't edge cases. They happen constantly, and each one makes the product feel unreliable.",
 
     solution:
-      "Built a WebSocket-based system that manages the full connection lifecycle — not just message delivery. Presence state is tied to socket events, not just login state. Reconnection logic restores room subscriptions and fetches missed messages from persisted history. The result is a messaging system that stays consistent whether a user has been connected for an hour or just rejoined after a dropout.",
+      "Built a messaging system that tracks the full picture — not just whether a message was sent, but whether the user is actually connected, across how many devices, and what they may have missed. When someone reconnects, their missed messages load automatically. When they close one tab out of two, they stay marked as online. The experience stays consistent without anyone needing to refresh.",
 
     features: [
-      "Real-time messaging with persistent chat history",
-      "User presence tracking (online/offline with sync)",
-      "Typing indicators for active conversations",
-      "Room-based communication architecture",
-      "Reconnection handling for session recovery",
-      "Authentication for secure messaging access",
+      "Instant messaging — messages appear the moment they're sent",
+      "Accurate online/offline status that updates in real time",
+      "Missed messages load automatically when a user reconnects",
+      "Typing indicators so users know when someone is responding",
+      "Chat rooms for group conversations",
+      "Works correctly across multiple browser tabs",
+      "Secure — login required to access any conversation",
+      "Full message history stored and retrievable",
     ],
 
     architecture: {
       frontend: "React",
       backend: "Node.js (event-driven WebSocket handling)",
-      database: "MongoDB (message persistence)",
-      realtime: "Socket.io (bidirectional communication)",
+      database: "MongoDB (message persistence and history)",
+      realtime: "Socket.io (bidirectional communication with lifecycle events)",
     },
 
-    technologies: ["React", "Node.js", "MongoDB", "Socket.io"],
+    technologies: ["React", "Node.js", "MongoDB", "Socket.io", "JWT"],
+
+    images: [realtimeMain, realtime1, realtime2, realtime3],
 
     engineeringChallenges: [
       {
-        title: "Reliable Presence & Session Synchronization",
+        title: "Online Status That's Actually Accurate",
         problem:
-          "Maintaining accurate presence state is difficult when users disconnect unexpectedly, open multiple tabs, or experience network instability — naive implementations leave ghost users marked online indefinitely.",
+          "Most chat systems mark you as offline the moment your connection drops — even if you have the app open in another tab. Or they keep you marked as online long after you've left. Users notice both, and neither feels right.",
         solution:
-          "Implemented presence tracking tied to the full socket connection lifecycle — connect, disconnect, and reconnect events all update presence state atomically. Multiple tabs are handled by tracking socket IDs per user, so a user is only marked offline when all their connections close.",
+          "Built the system to track every active connection per user individually. A user is only marked offline when every single one of their connections closes — not just one. Status updates the moment that last connection drops, not on a timer.",
         impact:
-          "Presence indicators reflect actual connection state rather than last-known state — the reliability gap that makes most real-time implementations feel broken is eliminated.",
+          "Online indicators are accurate. Users aren't shown as offline when they're still there, and they're not shown as online after they've left. It's a small thing that makes the whole product feel more trustworthy.",
       },
       {
-        title: "Reconnection & Message Consistency",
+        title: "No Missing Messages After a Dropped Connection",
         problem:
-          "Users who disconnect and reconnect miss messages sent during their absence, and naive reconnection leaves the client with a stale view of the chat room.",
+          "If a user loses their internet for 30 seconds and reconnects, they have no idea what they missed. A system that doesn't handle this just shows the chat as it is now — with a silent gap no one warned them about.",
         solution:
-          "Designed reconnection handling that re-subscribes to rooms on socket restoration and fetches the message delta from persisted MongoDB history since the last known message. The client UI is patched with missed messages without requiring a full page reload.",
+          "When a user reconnects, the system automatically figures out what messages arrived while they were gone and loads them in. The chat catches up on its own. No refresh, no manual reload, no visible gap.",
         impact:
-          "Reconnecting users see a consistent chat history immediately — no missed messages, no manual refresh required.",
+          "Users reconnect and see everything — in order, with nothing missing. The experience feels seamless even after a dropped connection.",
       },
     ],
 
-    images: [],
-
     highlights: [
-      "Full connection lifecycle management — not just message delivery",
-      "Presence state tied to socket events, not login state",
-      "Reconnection restores room state and fetches missed messages",
+      "Online status is always accurate — even across multiple open tabs",
+      "Missed messages load automatically after reconnecting — no refresh needed",
+      "Built to handle real-world connection problems, not just the ideal case",
     ],
   },
 
@@ -358,45 +425,56 @@ export const systems: System[] = [
   {
     slug: "article-platform",
     title:
-      "Full-Stack Article Publishing Platform with Rich Editing & Role Control",
+      "Article Publishing Platform — Write, Review, Approve, and Publish with Full Team Control",
     category: "SaaS / CMS System",
     type: "Personal Project",
 
     shortDescription:
-      "A full-stack CMS demonstrating end-to-end MERN delivery on a content-heavy platform — rich text editing with Meta's Lexical framework, role-based access control, draft-to-publish workflows, and Cloudinary media management.",
+      "A content management platform where writers draft, editors review, and admins control what goes live. Everyone has the right level of access — and nothing gets published without going through the right steps.",
 
     metrics: [
-      { value: "Lexical", label: "Meta's editor framework" },
-      { value: "RBAC", label: "Admin / User role separation" },
-      { value: "Draft→Publish", label: "Full content lifecycle" },
-      { value: "SEO slugs", label: "Slug-based article routing" },
+      {
+        value: "Role-based",
+        label: "Admins and writers with separate permissions",
+      },
+      {
+        value: "Draft→Publish",
+        label: "Content goes through review before going live",
+      },
+      {
+        value: "SEO-ready",
+        label: "Clean URLs built for search engine visibility",
+      },
+      {
+        value: "Media included",
+        label: "Image uploads managed and delivered automatically",
+      },
     ],
 
     problem:
-      "Growing content teams outgrow basic blog tools quickly — writers need drafts, editors need approval control, and admins need to manage who can publish what. Without structured workflows, content gets published inconsistently and managing contributors becomes manual and error-prone.",
+      "Growing content teams outgrow basic blog tools fast. Writers save drafts in one place, editors leave notes somewhere else, and nobody's sure what's actually live. Without a proper workflow, something half-finished ends up published — or a finished piece sits forgotten in a folder.",
 
     solution:
-      "Built a full-stack CMS covering the complete surface area of a content platform: role-based access (Admin/User), draft-to-publish lifecycle, rich text editing via Meta's Lexical framework, Cloudinary media management, slug-based SEO routing, and an admin moderation dashboard. Built as a personal project to demonstrate MERN stack delivery depth on a non-trivial domain.",
+      "Built a publishing platform where every piece of content follows a clear path: written, reviewed, approved, published. Writers get a proper editor with real formatting tools. Admins can see everything, manage every article, and control who can publish. Images upload and store automatically. Article URLs are clean and built for search engines from day one.",
 
     features: [
-      "Secure user authentication and session management",
-      "Role-based access control (Admin / User)",
-      "Rich text editor with headings, lists, embeds, and formatting",
-      "Draft and publishing workflow for content lifecycle",
-      "Slug-based routing for SEO-friendly article URLs",
-      "Search and filtering for content discovery",
-      "Pagination for scalable content loading",
-      "Image upload and management via Cloudinary",
-      "Admin dashboard to manage and moderate articles",
-      "RESTful API architecture for scalability",
+      "Secure login with separate Admin and Writer access levels",
+      "Rich text editor — headings, lists, images, links, and formatting",
+      "Drafts save automatically — nothing gets lost mid-write",
+      "Admin review and approval before anything goes live",
+      "Clean, readable article URLs — good for sharing and search engines",
+      "Search and filter to find any article instantly",
+      "Image upload and management built in",
+      "Admin dashboard showing all articles, authors, and status at a glance",
+      "Pagination so the platform stays fast with hundreds of articles",
     ],
 
     architecture: {
-      frontend: "React (component-driven UI)",
-      backend: "Node.js + Express (modular REST API)",
-      database: "MongoDB (schema-based modeling)",
-      auth: "JWT Authentication",
-      media: "Cloudinary (image storage and delivery)",
+      frontend: "React (component-driven UI, rich editor integration)",
+      backend: "Node.js + Express (modular REST API structure)",
+      database: "MongoDB (schema-based content modeling)",
+      auth: "JWT authentication with role-based middleware",
+      media: "Cloudinary (image storage, transformation, and delivery)",
     },
 
     technologies: [
@@ -410,12 +488,12 @@ export const systems: System[] = [
       "REST API",
     ],
 
-    images: [],
+    images: [articleMain, article1, article2, article3],
 
     highlights: [
-      "Rich text editing via Meta's Lexical — headings, lists, embeds, formatting",
-      "Draft-to-publish content lifecycle with role-based access control",
-      "Full MERN stack delivery: auth, media, search, pagination, admin dashboard",
+      "Draft-to-publish workflow — nothing goes live without going through the right steps",
+      "Separate access levels for writers and admins — everyone sees only what they need",
+      "Built-in image management, search, and SEO-ready article URLs",
     ],
   },
 ];
