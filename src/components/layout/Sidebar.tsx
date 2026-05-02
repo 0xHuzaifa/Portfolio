@@ -115,6 +115,20 @@ export function Sidebar({
 
             {isSystemsOpen && (
               <div className="space-y-1 pl-6">
+                <AppLink
+                  href="/systems"
+                  tabTitle="Systems"
+                  onClick={() => handlePageOpen(pathname === "/systems")}
+                  className={cn(
+                    "flex items-center gap-2 rounded-xl px-2.5 py-2 text-sm transition-colors",
+                    pathname === "/systems"
+                      ? "bg-[hsl(var(--vscode-active))] text-[hsl(var(--vscode-text))]"
+                      : "text-[hsl(var(--vscode-text-muted))] hover:bg-[hsl(var(--vscode-hover))] hover:text-[hsl(var(--vscode-text))]",
+                  )}
+                >
+                  <VscFileCode className="shrink-0 text-[hsl(var(--vscode-warm))]" />
+                  <span className="truncate">Overview</span>
+                </AppLink>
                 {systemExplorerItems.map((item) => {
                   const active = pathname === item.href;
 
