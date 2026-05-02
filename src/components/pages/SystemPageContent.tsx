@@ -174,6 +174,7 @@ const archLayerMeta: Record<string, { icon: React.ReactNode; accent: string }> =
     Storage: { icon: <HardDrive className="h-4 w-4" />, accent: "#FF9900" },
     Tenancy: { icon: <Users className="h-4 w-4" />, accent: "#68D391" },
     Media: { icon: <Globe className="h-4 w-4" />, accent: "#3448C5" },
+    AI: { icon: <Sparkles className="h-4 w-4" />, accent: "#8B5CF6" },
   };
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -202,6 +203,9 @@ export function SystemPageContent({ system }: { system: System }) {
       : []),
     ...(system.architecture.media
       ? [{ label: "Media", value: system.architecture.media }]
+      : []),
+    ...(system.architecture.ai
+      ? [{ label: "AI", value: system.architecture.ai }]
       : []),
   ];
 
