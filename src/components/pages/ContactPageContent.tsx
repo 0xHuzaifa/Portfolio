@@ -97,22 +97,25 @@ export function ContactPageContent() {
 
   return (
     <div className="space-y-8">
-      <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-        <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
-          Contact
-        </p>
-        <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
-          Tell me what you're building.
-        </h1>
-        <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
-          Share the context — the workflow, the users, the problem you're
-          solving. I'll come back with a clear picture of scope, approach, and
-          next steps. No commitment required.
-        </p>
-        <p className="mt-2 text-sm text-[hsl(var(--vscode-text-muted))]/70">
-          Typical response within 24 hours. Available for SaaS platforms,
-          internal tools, CRMs, and custom business systems.
-        </p>
+      <section className="relative overflow-hidden rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsla(194,100%,56%,0.18),transparent_40%),radial-gradient(circle_at_bottom_right,hsla(32,94%,63%,0.12),transparent_34%)]" />
+        <div className="relative">
+          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
+            Contact
+          </p>
+          <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
+            Tell me what you're building.
+          </h1>
+          <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
+            Share the context — the workflow, the users, the problem you're
+            solving. I'll come back with a clear picture of scope, approach, and
+            next steps. No commitment required.
+          </p>
+          <p className="mt-2 text-sm text-[hsl(var(--vscode-text-muted))]/70">
+            Typical response within 24 hours. Available for SaaS platforms,
+            internal tools, CRMs, and custom business systems.
+          </p>
+        </div>
       </section>
 
       <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">

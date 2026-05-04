@@ -1,10 +1,10 @@
 "use client";
 
-import { ArrowRight, Package, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Filter, Package, Sparkles, X } from "lucide-react";
 import { AppLink } from "@/components/navigation/AppLink";
 import { TechChip } from "@/lib/techIcons";
 import { systems } from "@/data/systems";
-import { systemExplorerItems } from "@/lib/routes";
 
 // Import images
 import articlePlatformMain from "@/assets/article-platform/main.png";
@@ -40,160 +40,219 @@ const systemIcons: Record<string, React.ReactNode> = {
   "realtime-communication": <Package className="h-5 w-5" />,
 };
 
+// Get unique categories and types for filtering
+const categories = Array.from(new Set(systems.map((s) => s.category)));
+const types = Array.from(new Set(systems.map((s) => s.type)));
+
 export function SystemsPageContent() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+
+  const filteredSystems = systems.filter((system) => {
+    if (selectedCategory && system.category !== selectedCategory) return false;
+    if (selectedType && system.type !== selectedType) return false;
+    return true;
+  });
+
+  const clearFilters = () => {
+    setSelectedCategory(null);
+    setSelectedType(null);
+  };
+
+  const hasActiveFilters = selectedCategory || selectedType;
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-        <div className="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div>
             <p className="text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
-              Systems
+              Project Gallery
             </p>
             <h1 className="mt-2 text-3xl font-bold text-[hsl(var(--vscode-text))]">
-              Full-Stack Projects & Platform Work
+              Systems & Projects
             </h1>
+            <p className="mt-2 text-sm leading-[1.75] text-[hsl(var(--vscode-text-muted))]">
+              Explore my portfolio of full-stack systems and platforms
+            </p>
           </div>
-          <p className="max-w-xl text-sm leading-[1.75] text-[hsl(var(--vscode-text-muted))]">
-            A collection of production systems including CRMs, inventory platforms, real-time communication, and content management tools.
-          </p>
+
+          <div className="flex items-center gap-2 text-sm text-[hsl(var(--vscode-text-muted))]">
+            <span>{filteredSystems.length}</span>
+            <span>project{filteredSystems.length !== 1 ? "s" : ""}</span>
+            {hasActiveFilters && (
+              <span className="text-[hsl(var(--vscode-accent))]">
+                • filtered
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div className="mt-6 flex flex-wrap gap-3">
+          <div className="flex items-center gap-2">
+            <Filter className="h-4 w-4 text-[hsl(var(--vscode-text-muted))]" />
+            <span className="text-xs font-medium text-[hsl(var(--vscode-text-muted))]">
+              Filters:
+            </span>
+          </div>
+
+          {/* Category Filter */}
+          <div className="flex flex-wrap gap-2">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() =>
+                  setSelectedCategory(
+                    selectedCategory === category ? null : category,
+                  )
+                }
+                className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                  selectedCategory === category
+                    ? "border-[hsl(var(--vscode-accent))] bg-[hsl(var(--vscode-accent))]/10 text-[hsl(var(--vscode-accent))]"
+                    : "border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] text-[hsl(var(--vscode-text-muted))] hover:border-[hsl(var(--vscode-accent))]/30 hover:text-[hsl(var(--vscode-text))]"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+
+          {/* Type Filter */}
+          <div className="flex flex-wrap gap-2">
+            {types.map((type) => (
+              <button
+                key={type}
+                onClick={() =>
+                  setSelectedType(selectedType === type ? null : type)
+                }
+                className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                  selectedType === type
+                    ? "border-[hsl(var(--vscode-accent))] bg-[hsl(var(--vscode-accent))]/10 text-[hsl(var(--vscode-accent))]"
+                    : "border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] text-[hsl(var(--vscode-text-muted))] hover:border-[hsl(var(--vscode-accent))]/30 hover:text-[hsl(var(--vscode-text))]"
+                }`}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
+
+          {/* Clear Filters */}
+          {hasActiveFilters && (
+            <button
+              onClick={clearFilters}
+              className="flex items-center gap-1 rounded-full border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-3 py-1 text-xs font-medium text-[hsl(var(--vscode-text-muted))] hover:border-[hsl(var(--vscode-warm))]/30 hover:text-[hsl(var(--vscode-warm))]"
+            >
+              <X className="h-3 w-3" />
+              Clear
+            </button>
+          )}
         </div>
       </section>
 
       {/* Systems Grid */}
-      <section className="grid gap-4 lg:grid-cols-2">
-        {systems.map((system, index) => (
-          <AppLink
-            key={system.slug}
-            href={`/systems/${system.slug}`}
-            tabTitle={`${system.title.split(" ").slice(0, 4).join(" ")}...tsx`}
-            className="group relative overflow-hidden rounded-[26px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-[hsl(var(--vscode-accent))]/20 hover:shadow-lg hover:shadow-black/20"
-          >
-            {/* Hover spotlight */}
-            <div
-              className="absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-              style={{ backgroundImage: spotlightGradient[system.type] }}
-            />
-
-            <div className="relative flex h-full flex-col gap-4">
-              {/* Header row */}
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
-                      System {String(index + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <h3 className="mt-1.5 text-lg font-bold leading-snug text-[hsl(var(--vscode-text))]">
-                    {system.title}
-                  </h3>
-                </div>
-
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] text-[hsl(var(--vscode-accent))]">
-                  {systemIcons[system.slug] ?? <Package className="h-5 w-5" />}
-                </span>
-              </div>
-
-              {/* Badges */}
-              <div className="flex flex-wrap gap-2">
-                <span
-                  className={`rounded-full border px-3 py-0.5 text-xs font-medium ${typeStyles[system.type]}`}
-                >
-                  {system.type}
-                </span>
-                <span className="rounded-full border border-[hsl(var(--vscode-border))] px-3 py-0.5 text-xs text-[hsl(var(--vscode-text-muted))]">
-                  {system.category}
-                </span>
-              </div>
-
-              {/* Short description */}
-              <p className="text-sm leading-[1.75] text-[hsl(var(--vscode-text-muted))]">
-                {system.shortDescription}
-              </p>
-
-              {/* Main image */}
-              {imageMap[system.slug] && (
-                <div className="relative overflow-hidden rounded-lg bg-[hsl(var(--vscode-panel))] aspect-video border border-[hsl(var(--vscode-border))]">
-                  <img
-                    src={imageMap[system.slug].src}
-                    alt={system.title}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-              )}
-
-              {/* Highlights */}
-              {system.highlights && system.highlights.length > 0 && (
-                <ul className="space-y-1.5">
-                  {system.highlights.slice(0, 3).map((h) => (
-                    <li
-                      key={h}
-                      className="flex items-start gap-2 text-xs text-[hsl(var(--vscode-text-muted))]"
-                    >
-                      <span className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[hsl(var(--vscode-success))]">✓</span>
-                      <span>{h}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {/* Tech chips */}
-              <div className="flex flex-wrap gap-1.5">
-                {system.technologies.slice(0, 5).map((tech) => (
-                  <TechChip key={tech} name={tech} size="sm" />
-                ))}
-                {system.technologies.length > 5 && (
-                  <span className="inline-flex items-center rounded-full border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-3 py-1 text-xs text-[hsl(var(--vscode-text-muted))]">
-                    +{system.technologies.length - 5} more
-                  </span>
-                )}
-              </div>
-
-              {/* Footer CTA */}
-              <div className="mt-auto flex items-center justify-between border-t border-[hsl(var(--vscode-border))]/60 pt-3 text-sm">
-                <span className="inline-flex items-center gap-2 text-[hsl(var(--vscode-accent))]">
-                  <Sparkles className="h-3.5 w-3.5" />
-                  <span className="text-xs font-medium">Open system</span>
-                </span>
-                <ArrowRight className="h-4 w-4 text-[hsl(var(--vscode-text-muted))] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[hsl(var(--vscode-text))]" />
-              </div>
-            </div>
-          </AppLink>
-        ))}
-      </section>
-
-      {/* CTA Section */}
-      <section className="relative overflow-hidden rounded-[30px] border border-[hsl(var(--vscode-accent))]/20 bg-[linear-gradient(135deg,hsla(194,100%,56%,0.16),transparent_45%),hsl(var(--vscode-sidebar-elevated))] p-6 md:p-10">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsla(32,94%,63%,0.10),transparent_55%)]" />
-        <div className="relative">
-          <p className="text-[10px] font-medium uppercase tracking-[0.36em] text-[hsl(var(--vscode-accent))]">
-            Ready to build
-          </p>
-          <div className="mt-3 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-2xl">
-              <h2 className="text-4xl font-bold leading-tight text-[hsl(var(--vscode-text))]">
-                Have a system in mind? Let's scope it out.
-              </h2>
-              <p className="mt-3 text-[0.9375rem] leading-[1.85] text-[hsl(var(--vscode-text-muted))]">
-                Send over what you're building — the workflow, the problem, or
-                even just a rough idea. I'll come back with a clear picture of
-                what it takes to build it properly.
-              </p>
-              <p className="mt-2 text-sm text-[hsl(var(--vscode-text-muted))]/70">
-                Typical response within 24 hours.
-              </p>
-            </div>
+      {filteredSystems.length > 0 ? (
+        <section className="grid gap-4 lg:grid-cols-2">
+          {filteredSystems.map((system, index) => (
             <AppLink
-              href="/contact"
-              tabTitle="Contact"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-[hsl(var(--vscode-accent))] px-6 py-3.5 text-sm font-bold text-[hsl(var(--vscode-bg))] shadow-lg shadow-[hsl(var(--vscode-accent))]/25 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[hsl(var(--vscode-accent))]/40"
+              key={system.slug}
+              href={`/systems/${system.slug}`}
+              tabTitle={`${system.title.split(" ").slice(0, 4).join(" ")}...tsx`}
+              className="group relative overflow-hidden rounded-[26px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-[hsl(var(--vscode-accent))]/20 hover:shadow-lg hover:shadow-black/20"
             >
-              Send your project brief
-              <ArrowRight className="h-4 w-4" />
+              {/* Hover spotlight */}
+              <div
+                className="absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                style={{ backgroundImage: spotlightGradient[system.type] }}
+              />
+
+              <div className="relative flex h-full flex-col gap-4">
+                {/* Header row */}
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <h3 className="mt-1.5 text-lg font-bold leading-snug text-[hsl(var(--vscode-text))]">
+                      {system.title}
+                    </h3>
+                  </div>
+
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] text-[hsl(var(--vscode-accent))]">
+                    {systemIcons[system.slug] ?? (
+                      <Package className="h-5 w-5" />
+                    )}
+                  </span>
+                </div>
+
+                {/* Badges */}
+                <div className="flex flex-wrap gap-2">
+                  <span
+                    className={`rounded-full border px-3 py-0.5 text-xs font-medium ${typeStyles[system.type]}`}
+                  >
+                    {system.type}
+                  </span>
+                  <span className="rounded-full border border-[hsl(var(--vscode-border))] px-3 py-0.5 text-xs text-[hsl(var(--vscode-text-muted))]">
+                    {system.category}
+                  </span>
+                </div>
+
+                {/* Short description */}
+                <p className="text-sm leading-[1.75] text-[hsl(var(--vscode-text-muted))]">
+                  {system.shortDescription}
+                </p>
+
+                {/* Main image */}
+                {imageMap[system.slug] && (
+                  <div className="relative overflow-hidden rounded-lg bg-[hsl(var(--vscode-panel))] aspect-video border border-[hsl(var(--vscode-border))]">
+                    <img
+                      src={imageMap[system.slug].src}
+                      alt={system.title}
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                )}
+
+                {/* Tech stack */}
+                <div className="flex flex-wrap gap-1.5">
+                  {system.technologies.slice(0, 4).map((tech) => (
+                    <TechChip key={tech} name={tech} size="sm" />
+                  ))}
+                  {system.technologies.length > 4 && (
+                    <span className="inline-flex items-center rounded-full border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-3 py-1 text-xs text-[hsl(var(--vscode-text-muted))]">
+                      +{system.technologies.length - 4}
+                    </span>
+                  )}
+                </div>
+
+                {/* Footer CTA */}
+                <div className="mt-auto flex items-center justify-between border-t border-[hsl(var(--vscode-border))]/60 pt-3 text-sm">
+                  <span className="inline-flex items-center gap-2 text-[hsl(var(--vscode-accent))]">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    <span className="text-xs font-medium">View details</span>
+                  </span>
+                  <ArrowRight className="h-4 w-4 text-[hsl(var(--vscode-text-muted))] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[hsl(var(--vscode-text))]" />
+                </div>
+              </div>
             </AppLink>
-          </div>
-        </div>
-      </section>
+          ))}
+        </section>
+      ) : (
+        <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-12 text-center">
+          <p className="text-[hsl(var(--vscode-text-muted))]">
+            No projects found matching your filters.
+          </p>
+          <button
+            onClick={clearFilters}
+            className="mt-4 rounded-2xl border border-[hsl(var(--vscode-accent))] bg-[hsl(var(--vscode-accent))]/10 px-4 py-2 text-sm font-medium text-[hsl(var(--vscode-accent))] transition-colors hover:bg-[hsl(var(--vscode-accent))]/20"
+          >
+            Clear filters
+          </button>
+        </section>
+      )}
     </div>
   );
 }

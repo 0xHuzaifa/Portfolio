@@ -10,19 +10,22 @@ const phaseIcons = [Compass, Blocks, Workflow, Rocket] as const;
 export function HowIBuildSystemsPageContent() {
   return (
     <div className="space-y-8">
-      <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-        <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
-          Process
-        </p>
-        <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
-          I treat system building as product design, architecture, and delivery
-          working together.
-        </h1>
-        <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
-          The strongest systems are not only technically sound. They also make
-          sense to the people using them, the teams maintaining them, and the
-          business relying on them.
-        </p>
+      <section className="relative overflow-hidden rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsla(194,100%,56%,0.18),transparent_40%),radial-gradient(circle_at_bottom_right,hsla(32,94%,63%,0.12),transparent_34%)]" />
+        <div className="relative">
+          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
+            Process
+          </p>
+          <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
+            I treat system building as product design, architecture, and
+            delivery working together.
+          </h1>
+          <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
+            The strongest systems are not only technically sound. They also make
+            sense to people using them, teams maintaining them, and business
+            relying on them.
+          </p>
+        </div>
       </section>
 
       <section className="grid gap-4 lg:grid-cols-2">

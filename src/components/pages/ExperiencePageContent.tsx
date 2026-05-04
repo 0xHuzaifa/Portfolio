@@ -14,35 +14,38 @@ export function ExperiencePageContent() {
   return (
     <div className="space-y-8">
       {/* Hero */}
-      <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-        <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
-          Experience
-        </p>
-        <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
-          Full-stack experience across product delivery, client systems, and
-          applied technical research.
-        </h1>
-        <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
-          Two years building production systems across a software agency, a
-          global IT consultancy, and a bank-backed research institution. Every
-          role involved shipping real work to real users.
-        </p>
+      <section className="relative overflow-hidden rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsla(194,100%,56%,0.18),transparent_40%),radial-gradient(circle_at_bottom_right,hsla(32,94%,63%,0.12),transparent_34%)]" />
+        <div className="relative">
+          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
+            Experience
+          </p>
+          <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
+            Full-stack experience across product delivery, client systems, and
+            applied technical research.
+          </h1>
+          <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
+            Two years building production systems across a software agency, a
+            global IT consultancy, and a bank-backed research institution. Every
+            role involved shipping real work to real users.
+          </p>
 
-        {/* Impact stats strip */}
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-          {impactStats.map((stat) => (
-            <div
-              key={stat.label}
-              className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4"
-            >
-              <p className="text-2xl font-semibold text-[hsl(var(--vscode-accent))]">
-                {stat.value}
-              </p>
-              <p className="mt-1 text-xs leading-5 text-[hsl(var(--vscode-text-muted))]">
-                {stat.label}
-              </p>
-            </div>
-          ))}
+          {/* Impact stats strip */}
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {impactStats.map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4"
+              >
+                <p className="text-2xl font-semibold text-[hsl(var(--vscode-accent))]">
+                  {stat.value}
+                </p>
+                <p className="mt-1 text-xs leading-5 text-[hsl(var(--vscode-text-muted))]">
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

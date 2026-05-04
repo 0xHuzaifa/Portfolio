@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import { SystemsPageContent } from "@/components/pages/SystemsPageContent";
 
 export const metadata: Metadata = {
-  title: "Systems — Full-Stack Projects & Platform Work",
+  title: "Project Gallery — Systems & Portfolio",
   description:
-    "Explore my portfolio of full-stack systems: CRM platforms, inventory tools, real-time communication, and content management systems. Built with React, Node.js, and modern web technologies.",
+    "Browse my complete portfolio of full-stack projects and systems. Filter by category or type to explore CRM platforms, inventory systems, real-time communication tools, and content management platforms.",
   openGraph: {
-    title: "Systems — Full-Stack Projects & Platform Work",
+    title: "Project Gallery — Systems & Portfolio",
     description:
-      "A collection of production systems including CRMs, inventory platforms, real-time chat, and content management tools.",
+      "Interactive gallery of full-stack projects with filtering by category and type. Explore production systems built with React, Node.js, and modern web technologies.",
     type: "website",
     url: "https://0xhuzaifa.com/systems",
   },
