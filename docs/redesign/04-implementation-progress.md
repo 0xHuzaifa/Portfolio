@@ -32,14 +32,19 @@ Working doc. Update after every phase: mark status, write what was actually done
 
 **Not done in this phase (deliberate):** browser visual check at 375/768/1440 — do at start of Phase 1.
 
-## ⬜ Phase 1 — Home page (Tier 1 — rich)
+## ✅ Phase 1 — Home page (Tier 1 — rich) (2026-07-23)
 
-Plan (`03-build-plan.md`):
-- Rebuild `HomePageContent`: credibility hero (headline + subline + proof strip + single CTA) → systems grid → principles → social proof → approach + tech stack → closing CTA.
-- Hero 3D: R3F + drei schematic node/connector scene, GSAP ScrollTrigger `scrub` camera/object motion. Guardrails mandatory: `next/dynamic({ ssr:false })` code-split, mount only in view, static schematic fallback for `prefers-reduced-motion` / `pointer:coarse` / low `hardwareConcurrency`.
-- GSAP section reveals (stagger 30–50ms grid cards).
-- Copy reused as-is; copy pass is Phase 6.
-- Tools: 21st Magic MCP or `stitch-generate-design` for scaffolds, `gsap-react`/`gsap-scrolltrigger` skills.
+**Done:**
+- `src/components/three/HeroScene.tsx` — R3F scene: 12-node/18-edge schematic (hub-and-spoke architecture diagram look), cobalt nodes/lines + 2 warm "active" nodes, `meshBasicMaterial` (no lights, cheap), slow deliberate y-rotation via `useFrame`, GSAP ScrollTrigger `scrub` tilts + recedes group over first 700px scroll. `dpr [1,1.75]`, alpha canvas.
+- `src/components/three/SchematicVisual.tsx` — gate wrapper: `next/dynamic({ ssr:false })` code-split; starts static, upgrades to 3D only when in view (`IntersectionObserver`, 200px margin) AND not `prefers-reduced-motion` / `pointer:coarse` / `hardwareConcurrency<4`. Static fallback = inline SVG schematic (same motif, low opacity). `aria-hidden`.
+- `HomePageContent.tsx` full rewrite: full-width sections (max-w-6xl containers) replacing IDE card-in-card. Hero = availability pill → H1 (tight tracking) → subline → dual CTA → proof strip (3 mono stats: 4 systems, 36K+ emails/hr, 2+ yrs). 3D canvas absolute right 55%, `lg:` only. Capabilities / systems / principles / social proof / approach+stack / CTA sections carried over, restyled to new tokens (`--card`, `--primary`, `--font-data` eyebrows, rounded-2xl).
+- Scroll reveals: one `useGSAP` (scope container), `[data-reveal]` elements fade/slide via per-element ScrollTrigger, wrapped in `gsap.matchMedia("(prefers-reduced-motion: no-preference)")`.
+- "See the work" CTA now → `/systems` (was `/systems/crm-system`).
+- `@gsap/react` added.
+- `FeaturedSystems`/`SocialProof`/`TechChip` child components untouched (render fine via legacy aliases; restyle in later phases).
+- Verified: `tsc` clean, biome clean, `next build` clean (18/18 routes), page serves with new markup.
+
+**Deviation:** capability cards' per-card gradient hovers dropped (was novelty); reveal stagger achieved by per-card triggers, not `stagger:` param.
 
 ## ⬜ Phase 2 — Services + Contact (Tier 2 — fast)
 
