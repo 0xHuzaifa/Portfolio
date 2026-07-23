@@ -66,12 +66,18 @@ Working doc. Update after every phase: mark status, write what was actually done
 
 **Deviation:** kept the card-based hero layout on these two pages (vs. full-bleed hero on home/services/contact) — works fine visually, avoids unneeded rewrite. `frontend-design` polish deferred to Phase 6 UI audit.
 
-## ⬜ Phase 4 — Systems list + case-study pages (Tier 1 — rich; biggest phase)
+## ✅ Phase 4 — Systems list + case-study pages (Tier 1 — rich) (2026-07-23)
 
-- `SystemsPageContent`: grid restyle + R3F schematic treatment (object responds to card focus).
-- `SystemPageContent` (593 lines): restyle as long-form case study; architecture section carries 3D schematic motif.
-- **Per-project OG images:** add `openGraph.images`/`twitter.images` to `generateMetadata` in `src/app/systems/[slug]/page.tsx` from `system.images[0]` — shared links unfurl with real project screenshot.
-- `ImageLightbox`/`SystemImageGallery` restyle only, logic untouched.
+**Done:**
+- Token migration (sed) on `SystemsPageContent`, `SystemPageContent`, plus `FeaturedSystems` + `SocialProof` (home children picked up as bonus — legacy aliases no longer needed by them). Zero `vscode` refs remain in any of the four.
+- Both pages wrapped in `RevealContainer` + own `max-w-6xl` container.
+- `SystemPageContent` hero now carries the 3D schematic: `SchematicVisual` absolute right 40%, opacity-60, `lg:` only, clipped by hero's `overflow-hidden` — same component as home hero (code-split bundle shared, all fallback gates inherited).
+- **Per-project OG/Twitter images shipped**: `generateMetadata` in `src/app/systems/[slug]/page.tsx` now emits `openGraph.images` + `twitter.images` (`summary_large_image`) from `system.images[0]` with real width/height from `StaticImageData`. Verified in served HTML: `og:image` resolves to the project's actual screenshot.
+- Verified: tsc clean, build 18/18, `/systems` + `/systems/crm-system` screenshot-checked.
+
+**Deviations:**
+- Skipped bespoke "3D object responds to card focus" interaction on the list page — reused the same hero schematic on detail pages instead; interaction idea parked as possible Phase 6 polish. // ponytail: revisit only if the static treatment feels flat in real use
+- 7 pre-existing biome lint findings in these files (`useButtonType`, `noImgElement`, `noExplicitAny`) left untouched — present before this phase, queued for Phase 6 UI audit.
 
 ## ⬜ Phase 5 — How I Build Systems (Tier 2 — fast)
 

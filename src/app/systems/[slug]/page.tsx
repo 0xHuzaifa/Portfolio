@@ -17,6 +17,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  // First project screenshot as social preview — shared links unfurl with the real system
+  const ogImage = system.images?.[0];
+  const images = ogImage
+    ? [
+        {
+          url: typeof ogImage === "string" ? ogImage : ogImage.src,
+          width: typeof ogImage === "string" ? 1200 : ogImage.width,
+          height: typeof ogImage === "string" ? 630 : ogImage.height,
+          alt: system.title,
+        },
+      ]
+    : undefined;
+
   return {
     title: `${system.title} | Huzaifa Ahmed`,
     description: system.shortDescription,
@@ -24,6 +37,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${system.title} | Huzaifa Ahmed`,
       description: system.shortDescription,
       type: "article",
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${system.title} | Huzaifa Ahmed`,
+      description: system.shortDescription,
+      images: images?.map((image) => image.url),
     },
   };
 }
