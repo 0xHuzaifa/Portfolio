@@ -83,14 +83,19 @@ Working doc. Update after every phase: mark status, write what was actually done
 
 **Done:** token migration (sed) + `RevealContainer` wrapper + `max-w-6xl` container. Content untouched. tsc clean, build 18/18, screenshot-checked.
 
-## ⬜ Phase 6 — Cross-cutting polish (last, all pages)
+## 🔨 Phase 6 — Cross-cutting polish (in progress, 2026-07-23)
 
-- Copy pass: `copywriting` + `cro` skills across every page.
-- Motion pass: consistent GSAP reveal rhythm site-wide.
-- UI audit: `web-design-guidelines` review (a11y, touch targets, contrast, responsive).
-- SEO check: `sitemap.ts`/`robots.ts`/metadata still match structure.
-- Cleanup: delete `--vscode-*` legacy aliases from `globals.css`; drop `react-icons` if `techIcons.tsx` migrated off it (else keep pinned); verify `next-themes` only used by `sonner.tsx`.
-- Browser check every page at 375/768/1440.
+**Done so far:**
+- Cleanup (commit `f212231`): last 3 legacy-token files migrated (`PortfolioChat`, `SystemImageGallery`, `techIcons`); `--vscode-*` aliases deleted from `globals.css` — zero vscode refs repo-wide. `react-icons` stays (pinned 5.5.0, `techIcons` brand icons). `next-themes` only in `sonner.tsx` — fine.
+- Lint (commit `301f8bd`): 4× `useButtonType` fixed, `imageMap` typed `StaticImageData`, systems-grid `<img>` → `next/image` with `fill`/`sizes`. All 7 previously-flagged findings resolved.
+- SEO check: `sitemap.ts` already lists all static routes + per-system routes — matches new structure, no change. `robots.ts` untouched.
+- All phases' builds verified: tsc clean, biome clean on touched files, `next build` 18/18 routes.
+
+**Remaining:**
+- Copy pass: `copywriting` + `cro` skills across pages (incl. deferred Phase 2 cro pass on services/contact).
+- Motion rhythm consistency review site-wide.
+- UI audit: `web-design-guidelines` (a11y, touch targets, contrast).
+- Browser check at 375/768 (1440 done per page during phases; 375 check was interrupted by a wedged automation browser — retry).
 
 ---
 
