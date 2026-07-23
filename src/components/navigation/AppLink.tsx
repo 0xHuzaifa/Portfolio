@@ -1,44 +1,18 @@
-"use client";
-
-import type { AnchorHTMLAttributes, MouseEvent } from "react";
-import { useTabs } from "@/contexts/TabContext";
+import Link from "next/link";
+import type { AnchorHTMLAttributes } from "react";
 
 type AppLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;
+  /** Legacy prop from the tab-based IDE shell — ignored. */
   tabTitle?: string;
 };
 
-export function AppLink({
-  href,
-  onClick,
-  tabTitle,
-  target,
-  rel,
-  ...props
-}: AppLinkProps) {
-  const { openTab } = useTabs();
+export function AppLink({ href, tabTitle: _tabTitle, ...props }: AppLinkProps) {
   const isInternal = href.startsWith("/");
 
-  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    onClick?.(event);
+  if (!isInternal) {
+    return <a href={href} {...props} />;
+  }
 
-    if (
-      event.defaultPrevented ||
-      !isInternal ||
-      target === "_blank" ||
-      event.metaKey ||
-      event.ctrlKey ||
-      event.shiftKey ||
-      event.altKey
-    ) {
-      return;
-    }
-
-    event.preventDefault();
-    openTab(href, tabTitle);
-  };
-
-  return (
-    <a href={href} onClick={handleClick} target={target} rel={rel} {...props} />
-  );
+  return <Link href={href} {...props} />;
 }
