@@ -46,11 +46,15 @@ Working doc. Update after every phase: mark status, write what was actually done
 
 **Deviation:** capability cards' per-card gradient hovers dropped (was novelty); reveal stagger achieved by per-card triggers, not `stagger:` param.
 
-## ⬜ Phase 2 — Services + Contact (Tier 2 — fast)
+## ✅ Phase 2 — Services + Contact (Tier 2 — fast) (2026-07-23)
 
-- Restyle both in new visual language; form + `/api/contact` wiring untouched.
-- GSAP reveals only — no 3D canvas.
-- `cro` skill pass on both pages (form friction, CTA placement, fit-check copy).
+**Done:**
+- Shared components extracted first: `src/components/motion/RevealContainer.tsx` (client wrapper — `[data-reveal]` descendants fade/slide in via GSAP ScrollTrigger, no-op under reduced motion) and `src/components/ui/eyebrow.tsx`. `HomePageContent` refactored onto both (inline hook/Eyebrow deleted, back to server-compatible component without own GSAP imports).
+- `ServicesPageContent`: full rewrite in new language — full-width sections replacing IDE cards, all content/data arrays byte-identical. Hero (no card, no 3D — Tier 2), service cards, differentiators, engagement + fit 2-col, phases strip. `data-reveal` on cards/sections.
+- `ContactPageContent`: restyle only — form logic, `/api/contact` wiring, validation, submitted state all untouched. Input classes deduped into one `inputClasses` const. Hero flattened, form + sidebar cards in new tokens.
+- Verified: tsc clean, biome clean, build 18/18, both pages screenshot-checked at 1440px in browser.
+
+**Not done:** `cro` skill pass — deferred to Phase 6 copy/conversion pass (both pages get it there anyway; avoids two copy passes).
 
 ## ⬜ Phase 3 — About + Experience (Tier 2 — fast)
 

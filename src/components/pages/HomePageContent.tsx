@@ -1,8 +1,3 @@
-"use client";
-
-import { useGSAP } from "@gsap/react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowRight,
   BriefcaseBusiness,
@@ -13,16 +8,15 @@ import {
   ServerCog,
   ShieldCheck,
 } from "lucide-react";
-import { useRef } from "react";
+import { RevealContainer } from "@/components/motion/RevealContainer";
 import { AppLink } from "@/components/navigation/AppLink";
 import FeaturedSystems from "@/components/portfolio/FeaturedSystems";
 import { SocialProof } from "@/components/portfolio/SocialProof";
 import { SchematicVisual } from "@/components/three/SchematicVisual";
+import { Eyebrow } from "@/components/ui/eyebrow";
 import { systemBuildPrinciples } from "@/data/portfolio/process";
 import { categoryLabels, techStack } from "@/data/techStack";
 import { TechChip } from "@/lib/techIcons";
-
-gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const proofStrip = [
   { value: "4", label: "production systems shipped" },
@@ -59,35 +53,7 @@ const categoryIcons: Record<string, React.ReactNode> = {
   other: <Layers3 className="h-3.5 w-3.5" />,
 };
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="font-data text-[11px] font-medium uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
-      {children}
-    </p>
-  );
-}
-
 export function HomePageContent() {
-  const container = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        for (const el of gsap.utils.toArray<HTMLElement>("[data-reveal]")) {
-          gsap.from(el, {
-            y: 28,
-            opacity: 0,
-            duration: 0.7,
-            ease: "power3.out",
-            scrollTrigger: { trigger: el, start: "top 85%", once: true },
-          });
-        }
-      });
-    },
-    { scope: container },
-  );
-
   const grouped = techStack.reduce(
     (acc, item) => {
       if (!acc[item.category]) acc[item.category] = [];
@@ -98,7 +64,7 @@ export function HomePageContent() {
   );
 
   return (
-    <div ref={container}>
+    <RevealContainer>
       {/* ── HERO ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden">
         {/* 3D schematic — right-biased background layer */}
@@ -344,6 +310,6 @@ export function HomePageContent() {
           </div>
         </div>
       </section>
-    </div>
+    </RevealContainer>
   );
 }

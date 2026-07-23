@@ -3,6 +3,8 @@
 import { Github, Linkedin, LoaderCircle, Mail, Send } from "lucide-react";
 import { type ChangeEvent, useState } from "react";
 import { toast } from "sonner";
+import { RevealContainer } from "@/components/motion/RevealContainer";
+import { Eyebrow } from "@/components/ui/eyebrow";
 import type {
   ContactApiResponse,
   ContactFieldErrors,
@@ -15,6 +17,9 @@ const initialFormState: ContactFormData = {
   email: "",
   message: "",
 };
+
+const inputClasses =
+  "w-full rounded-xl border bg-[hsl(var(--background))]/60 px-4 py-3 text-sm outline-none transition-colors placeholder:text-[hsl(var(--muted-foreground))]/60 focus:border-[hsl(var(--primary))] disabled:cursor-not-allowed disabled:opacity-70";
 
 export function ContactPageContent() {
   const [formState, setFormState] = useState(initialFormState);
@@ -96,59 +101,56 @@ export function ContactPageContent() {
   };
 
   return (
-    <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsla(194,100%,56%,0.18),transparent_40%),radial-gradient(circle_at_bottom_right,hsla(32,94%,63%,0.12),transparent_34%)]" />
-        <div className="relative">
-          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
-            Contact
-          </p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
-            Tell me what you're building.
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
-            Share the context — the workflow, the users, the problem you're
-            solving. I'll come back with a clear picture of scope, approach, and
-            next steps. No commitment required.
-          </p>
-          <p className="mt-2 text-sm text-[hsl(var(--vscode-text-muted))]/70">
-            Typical response within 24 hours. Available for SaaS platforms,
-            internal tools, CRMs, and custom business systems.
-          </p>
-        </div>
+    <RevealContainer>
+      {/* Hero */}
+      <section className="mx-auto w-full max-w-6xl px-4 pt-16 md:px-6 md:pt-20">
+        <Eyebrow className="text-[hsl(var(--primary))]">Contact</Eyebrow>
+        <h1 className="mt-3 max-w-3xl text-4xl font-bold leading-[1.15] tracking-[-0.02em] md:text-5xl">
+          Tell me what you're building.
+        </h1>
+        <p className="mt-5 max-w-2xl text-base leading-[1.7] text-[hsl(var(--muted-foreground))]">
+          Share the context — the workflow, the users, the problem you're
+          solving. I'll come back with a clear picture of scope, approach, and
+          next steps. No commitment required.
+        </p>
+        <p className="mt-2 text-sm text-[hsl(var(--muted-foreground))]/70">
+          Typical response within 24 hours. Available for SaaS platforms,
+          internal tools, CRMs, and custom business systems.
+        </p>
       </section>
 
-      <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-        <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
+      <div className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-12 md:px-6 md:pb-24 xl:grid-cols-[1.15fr_0.85fr]">
+        <section
+          data-reveal
+          className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8"
+        >
           <div className="mb-6">
-            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
-              Project brief
-            </p>
-            <h2 className="mt-2 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
+            <Eyebrow>Project brief</Eyebrow>
+            <h2 className="mt-2 text-2xl font-semibold">
               Describe your system
             </h2>
-            <p className="mt-1.5 text-sm leading-[1.7] text-[hsl(var(--vscode-text-muted))]">
+            <p className="mt-1.5 text-sm leading-[1.7] text-[hsl(var(--muted-foreground))]">
               No need for a formal spec — a clear description of the problem and
               who it affects is enough to start.
             </p>
           </div>
 
           {submitted ? (
-            <div className="rounded-[26px] border border-[hsl(var(--vscode-success))]/30 bg-[hsl(var(--vscode-success))]/10 p-6">
-              <p className="text-xs uppercase tracking-[0.24em] text-[hsl(var(--vscode-success))]">
+            <div className="rounded-2xl border border-[hsl(var(--state-success))]/30 bg-[hsl(var(--state-success))]/10 p-6">
+              <Eyebrow className="text-[hsl(var(--state-success))]">
                 Message received
-              </p>
-              <h3 className="mt-3 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
+              </Eyebrow>
+              <h3 className="mt-3 text-2xl font-semibold">
                 Thanks, your message is on its way.
               </h3>
-              <p className="mt-3 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+              <p className="mt-3 text-sm leading-[1.7] text-[hsl(var(--muted-foreground))]">
                 I&apos;ve sent a confirmation email to your inbox, and I&apos;ll
                 review your message and respond as soon as possible.
               </p>
               <button
                 type="button"
                 onClick={() => setSubmitted(false)}
-                className="mt-5 inline-flex items-center gap-2 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-5 py-3 text-sm font-semibold text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
+                className="mt-5 inline-flex items-center gap-2 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 px-5 py-3 text-sm font-semibold transition-colors hover:border-[hsl(var(--primary))]/35"
               >
                 Send another message
               </button>
@@ -157,7 +159,7 @@ export function ContactPageContent() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <label className="block">
-                  <span className="mb-2 block text-xs uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
+                  <span className="mb-2 block font-data text-[11px] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
                     Name
                   </span>
                   <input
@@ -168,10 +170,10 @@ export function ContactPageContent() {
                     onChange={handleFieldChange("name")}
                     placeholder="Your name"
                     className={cn(
-                      "w-full rounded-2xl border bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] outline-none transition-colors placeholder:text-[hsl(var(--vscode-text-muted))]/60 focus:border-[hsl(var(--vscode-accent))] disabled:cursor-not-allowed disabled:opacity-70",
+                      inputClasses,
                       fieldErrors.name
                         ? "border-[hsl(var(--destructive))]"
-                        : "border-[hsl(var(--vscode-border))]",
+                        : "border-[hsl(var(--border))]",
                     )}
                   />
                   {fieldErrors.name ? (
@@ -182,7 +184,7 @@ export function ContactPageContent() {
                 </label>
 
                 <label className="block">
-                  <span className="mb-2 block text-xs uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
+                  <span className="mb-2 block font-data text-[11px] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
                     Email
                   </span>
                   <input
@@ -193,10 +195,10 @@ export function ContactPageContent() {
                     onChange={handleFieldChange("email")}
                     placeholder="you@example.com"
                     className={cn(
-                      "w-full rounded-2xl border bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] outline-none transition-colors placeholder:text-[hsl(var(--vscode-text-muted))]/60 focus:border-[hsl(var(--vscode-accent))] disabled:cursor-not-allowed disabled:opacity-70",
+                      inputClasses,
                       fieldErrors.email
                         ? "border-[hsl(var(--destructive))]"
-                        : "border-[hsl(var(--vscode-border))]",
+                        : "border-[hsl(var(--border))]",
                     )}
                   />
                   {fieldErrors.email ? (
@@ -208,7 +210,7 @@ export function ContactPageContent() {
               </div>
 
               <label className="block">
-                <span className="mb-2 block text-xs uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
+                <span className="mb-2 block font-data text-[11px] uppercase tracking-[0.2em] text-[hsl(var(--muted-foreground))]">
                   What are you building?
                 </span>
                 <textarea
@@ -219,10 +221,11 @@ export function ContactPageContent() {
                   onChange={handleFieldChange("message")}
                   placeholder="Tell me about the product, workflows, users, or technical constraints."
                   className={cn(
-                    "w-full resize-none rounded-2xl border bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm leading-7 text-[hsl(var(--vscode-text))] outline-none transition-colors placeholder:text-[hsl(var(--vscode-text-muted))]/60 focus:border-[hsl(var(--vscode-accent))] disabled:cursor-not-allowed disabled:opacity-70",
+                    inputClasses,
+                    "resize-none leading-[1.7]",
                     fieldErrors.message
                       ? "border-[hsl(var(--destructive))]"
-                      : "border-[hsl(var(--vscode-border))]",
+                      : "border-[hsl(var(--border))]",
                   )}
                 />
                 {fieldErrors.message ? (
@@ -236,7 +239,7 @@ export function ContactPageContent() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center gap-2 rounded-2xl bg-[hsl(var(--vscode-accent))] px-5 py-3 text-sm font-semibold text-[hsl(var(--vscode-bg))] transition-transform duration-200 hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[hsl(var(--primary))] px-5 py-3 text-sm font-semibold text-[hsl(var(--primary-foreground))] transition-transform duration-200 hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   {isSubmitting ? (
                     <LoaderCircle className="h-4 w-4 animate-spin" />
@@ -249,7 +252,7 @@ export function ContactPageContent() {
                 {errorMessage ? (
                   <p
                     role="alert"
-                    className="text-sm leading-7 text-[hsl(var(--destructive))]"
+                    className="text-sm leading-[1.7] text-[hsl(var(--destructive))]"
                   >
                     {errorMessage}
                   </p>
@@ -260,43 +263,47 @@ export function ContactPageContent() {
         </section>
 
         <div className="space-y-4">
-          <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6">
-            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
-              Direct contact
-            </p>
+          <section
+            data-reveal
+            className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6"
+          >
+            <Eyebrow>Direct contact</Eyebrow>
             <div className="mt-5 space-y-3">
               <a
                 href="mailto:huzaifa.rb00@gmail.com"
-                className="flex items-center gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
+                className="flex items-center gap-3 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 px-4 py-3 text-sm transition-colors hover:border-[hsl(var(--primary))]/35"
               >
-                <Mail className="h-4 w-4 text-[hsl(var(--vscode-accent))]" />
+                <Mail className="h-4 w-4 text-[hsl(var(--primary))]" />
                 huzaifa.rb00@gmail.com
               </a>
               <a
                 href="https://linkedin.com/in/0xhuzaifa"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
+                className="flex items-center gap-3 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 px-4 py-3 text-sm transition-colors hover:border-[hsl(var(--primary))]/35"
               >
-                <Linkedin className="h-4 w-4 text-[hsl(var(--vscode-accent))]" />
+                <Linkedin className="h-4 w-4 text-[hsl(var(--primary))]" />
                 LinkedIn profile
               </a>
               <a
                 href="https://github.com/0xhuzaifa"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
+                className="flex items-center gap-3 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 px-4 py-3 text-sm transition-colors hover:border-[hsl(var(--primary))]/35"
               >
-                <Github className="h-4 w-4 text-[hsl(var(--vscode-accent))]" />
+                <Github className="h-4 w-4 text-[hsl(var(--primary))]" />
                 GitHub profile
               </a>
             </div>
           </section>
 
-          <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[linear-gradient(135deg,hsla(194,100%,56%,0.14),transparent_42%),hsl(var(--vscode-sidebar-elevated))] p-6">
-            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
+          <section
+            data-reveal
+            className="rounded-2xl border border-[hsl(var(--primary))]/25 bg-[linear-gradient(135deg,hsla(227,68%,55%,0.14),transparent_42%),hsl(var(--card))] p-6"
+          >
+            <Eyebrow className="text-[hsl(var(--primary))]">
               What to expect
-            </p>
+            </Eyebrow>
             <div className="mt-4 space-y-3">
               {[
                 {
@@ -314,24 +321,24 @@ export function ContactPageContent() {
               ].map(({ step, text }) => (
                 <div
                   key={step}
-                  className="flex gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))]/80 p-3"
+                  className="flex gap-3 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 p-3"
                 >
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[hsl(var(--vscode-accent))]/14 text-[10px] font-bold text-[hsl(var(--vscode-accent))]">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[hsl(var(--primary))]/14 font-data text-[10px] font-semibold text-[hsl(var(--primary))]">
                     {step}
                   </span>
-                  <p className="text-sm leading-[1.7] text-[hsl(var(--vscode-text-muted))]">
+                  <p className="text-sm leading-[1.7] text-[hsl(var(--muted-foreground))]">
                     {text}
                   </p>
                 </div>
               ))}
             </div>
-            <p className="mt-4 text-xs leading-[1.7] text-[hsl(var(--vscode-text-muted))]/60">
+            <p className="mt-4 text-xs leading-[1.7] text-[hsl(var(--muted-foreground))]/60">
               Best fit: SaaS platforms, CRMs, internal tools, and custom
               business systems.
             </p>
           </section>
         </div>
       </div>
-    </div>
+    </RevealContainer>
   );
 }
