@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
 import type { StaticImageData } from "next/image";
+import Image from "next/image";
+import React, { useState } from "react";
 import { ImageLightbox } from "./ImageLightbox";
 
 interface SystemImageGalleryProps {
@@ -25,7 +25,7 @@ export function SystemImageGallery({ images }: SystemImageGalleryProps) {
       return (
         <div className="grid grid-cols-1">
           <div
-            className="relative w-full h-64 md:h-96 rounded-2xl border border-[hsl(var(--vscode-border))] overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:brightness-110"
+            className="relative w-full h-64 md:h-96 rounded-2xl border border-[hsl(var(--border))] overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:brightness-110"
             onClick={() => handleImageClick(0)}
           >
             <Image
@@ -46,7 +46,7 @@ export function SystemImageGallery({ images }: SystemImageGalleryProps) {
           {images.map((img, i) => (
             <div
               key={i}
-              className="relative w-full h-48 md:h-64 rounded-2xl border border-[hsl(var(--vscode-border))] overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:brightness-110"
+              className="relative w-full h-48 md:h-64 rounded-2xl border border-[hsl(var(--border))] overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:brightness-110"
               onClick={() => handleImageClick(i)}
             >
               <Image
@@ -66,7 +66,7 @@ export function SystemImageGallery({ images }: SystemImageGalleryProps) {
       return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div
-            className="relative w-full h-48 md:h-64 rounded-2xl border border-[hsl(var(--vscode-border))] overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:brightness-110 md:col-span-2"
+            className="relative w-full h-48 md:h-64 rounded-2xl border border-[hsl(var(--border))] overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:brightness-110 md:col-span-2"
             onClick={() => handleImageClick(0)}
           >
             <Image
@@ -82,7 +82,7 @@ export function SystemImageGallery({ images }: SystemImageGalleryProps) {
           {images.slice(1).map((img, i) => (
             <div
               key={i + 1}
-              className="relative w-full h-48 md:h-64 rounded-2xl border border-[hsl(var(--vscode-border))] overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:brightness-110"
+              className="relative w-full h-48 md:h-64 rounded-2xl border border-[hsl(var(--border))] overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:brightness-110"
               onClick={() => handleImageClick(i + 1)}
             >
               <Image
@@ -104,7 +104,7 @@ export function SystemImageGallery({ images }: SystemImageGalleryProps) {
           {images.slice(0, 4).map((img, i) => (
             <div
               key={i}
-              className="relative w-full h-48 md:h-64 rounded-2xl border border-[hsl(var(--vscode-border))] overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:brightness-110"
+              className="relative w-full h-48 md:h-64 rounded-2xl border border-[hsl(var(--border))] overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:brightness-110"
               onClick={() => handleImageClick(i)}
             >
               <Image
@@ -125,8 +125,8 @@ export function SystemImageGallery({ images }: SystemImageGalleryProps) {
 
   return (
     <>
-      <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-        <p className="text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
+      <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8">
+        <p className="text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--muted-foreground))]">
           System Preview
         </p>
         <div className="mt-4">{renderImages()}</div>

@@ -1,24 +1,24 @@
 import type { JSX } from "react";
+import { FaLayerGroup } from "react-icons/fa";
 import {
+  SiAmazonwebservices,
+  SiCloudinary,
+  SiDocker,
+  SiExpress,
+  SiFramer,
+  SiGraphql,
+  SiJsonwebtokens,
+  SiMongodb,
+  SiNextdotjs,
+  SiNodedotjs,
+  SiPostgresql,
   SiReact,
+  SiRedis,
   SiRedux,
   SiShadcnui,
-  SiNextdotjs,
-  SiTypescript,
-  SiNodedotjs,
-  SiExpress,
-  SiGraphql,
   SiSocketdotio,
-  SiMongodb,
-  SiPostgresql,
-  SiRedis,
-  SiDocker,
-  SiAmazonwebservices,
-  SiJsonwebtokens,
-  SiCloudinary,
-  SiFramer,
+  SiTypescript,
 } from "react-icons/si";
-import { FaLayerGroup } from "react-icons/fa";
 import { TbApi } from "react-icons/tb";
 
 export interface TechIconMeta {
@@ -149,7 +149,7 @@ export function TechChip({ name, size = "sm", className = "" }: TechChipProps) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-3 transition-all duration-150 hover:border-[hsl(var(--vscode-accent))]/30 hover:bg-[hsl(var(--vscode-accent))]/5 ${isSmall ? "py-1 text-xs" : "py-1.5 text-sm"} text-[hsl(var(--vscode-text))] ${className}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 px-3 transition-all duration-150 hover:border-[hsl(var(--primary))]/30 hover:bg-[hsl(var(--primary))]/5 ${isSmall ? "py-1 text-xs" : "py-1.5 text-sm"} text-[hsl(var(--foreground))] ${className}`}
     >
       {meta && (
         <span

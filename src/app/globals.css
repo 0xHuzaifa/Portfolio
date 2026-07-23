@@ -46,20 +46,6 @@
     --input: var(--surface-border);
     --ring: var(--accent-cool);
     --radius: 0.875rem;
-
-    /* ponytail: legacy aliases — 22 page files still use --vscode-*; delete after per-page rewrites (Phases 1-5) */
-    --vscode-bg: var(--surface-bg);
-    --vscode-panel: var(--surface-card);
-    --vscode-sidebar: var(--surface-card);
-    --vscode-sidebar-elevated: var(--surface-elevated);
-    --vscode-border: var(--surface-border);
-    --vscode-text: var(--text);
-    --vscode-text-muted: var(--text-muted);
-    --vscode-accent: var(--accent-cool);
-    --vscode-hover: var(--surface-elevated);
-    --vscode-active: 228 25% 18%;
-    --vscode-success: var(--state-success);
-    --vscode-warm: var(--accent-warm);
   }
 
   * {
