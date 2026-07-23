@@ -56,10 +56,15 @@ Working doc. Update after every phase: mark status, write what was actually done
 
 **Not done:** `cro` skill pass — deferred to Phase 6 copy/conversion pass (both pages get it there anyway; avoids two copy passes).
 
-## ⬜ Phase 3 — About + Experience (Tier 2 — fast)
+## ✅ Phase 3 — About + Experience (Tier 2 — fast) (2026-07-23)
 
-- Restyle only; content structure stays. GSAP reveals only.
-- `frontend-design` polish pass.
+**Done:**
+- Mechanical token migration on both pages (sed): `--vscode-*` → new semantic tokens, `rounded-[26/30px]` → `rounded-2xl`, old cyan/amber gradient hsla values → new cool/warm pair. Zero `vscode` references remain in either file.
+- Both wrapped in `RevealContainer` with own `max-w-6xl` container (old EditorLayout container gone).
+- Content, structure, and card-grid layouts untouched — restyle only, per plan.
+- Verified: tsc clean, build 18/18, both screenshot-checked at 1440px.
+
+**Deviation:** kept the card-based hero layout on these two pages (vs. full-bleed hero on home/services/contact) — works fine visually, avoids unneeded rewrite. `frontend-design` polish deferred to Phase 6 UI audit.
 
 ## ⬜ Phase 4 — Systems list + case-study pages (Tier 1 — rich; biggest phase)
 

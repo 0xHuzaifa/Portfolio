@@ -1,13 +1,14 @@
 import {
   ArrowRight,
   BriefcaseBusiness,
-  ShieldCheck,
-  Workflow,
-  MapPin,
   GraduationCap,
+  MapPin,
+  ShieldCheck,
   Trophy,
+  Workflow,
 } from "lucide-react";
 import Image from "next/image";
+import { RevealContainer } from "@/components/motion/RevealContainer";
 import { AppLink } from "@/components/navigation/AppLink";
 import { portfolioProfile } from "@/data/portfolio";
 import { systemBuildPrinciples } from "@/data/portfolio/process";
@@ -70,20 +71,20 @@ const hardestProblems = [
 
 export function AboutPageContent() {
   return (
-    <div className="space-y-8">
+    <RevealContainer className="mx-auto w-full max-w-6xl space-y-8 px-4 py-16 md:px-6">
       {/* Hero */}
       <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-        <div className="relative overflow-hidden rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsla(194,100%,56%,0.18),transparent_40%),radial-gradient(circle_at_bottom_right,hsla(32,94%,63%,0.12),transparent_34%)]" />
+        <div className="relative overflow-hidden rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsla(227,68%,55%,0.18),transparent_40%),radial-gradient(circle_at_bottom_right,hsla(30,71%,55%,0.12),transparent_34%)]" />
           <div className="relative flex h-full flex-col">
             <div className="flex-1">
-              <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
+              <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--primary))]">
                 About
               </p>
-              <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
+              <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--foreground))]">
                 The person behind the systems
               </h1>
-              <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
+              <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--muted-foreground))]">
                 I grew up in Nawabshah and moved to Karachi to build things
                 professionally. Computers fascinated me not as tools but as
                 puzzles — I kept asking{" "}
@@ -94,7 +95,7 @@ export function AboutPageContent() {
                 realising that software is really just a set of decisions made
                 concrete.
               </p>
-              <p className="mt-4 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
+              <p className="mt-4 max-w-2xl text-base leading-8 text-[hsl(var(--muted-foreground))]">
                 My degree gave me foundations. Everything production-level came
                 from building things myself, breaking them, and figuring out
                 why.
@@ -105,7 +106,7 @@ export function AboutPageContent() {
               <AppLink
                 href="/contact"
                 tabTitle="Contact"
-                className="inline-flex items-center gap-2 rounded-2xl bg-[hsl(var(--vscode-accent))] px-5 py-3 text-sm font-semibold text-[hsl(var(--vscode-bg))] transition-transform duration-200 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-2xl bg-[hsl(var(--primary))] px-5 py-3 text-sm font-semibold text-[hsl(var(--primary-foreground))] transition-transform duration-200 hover:-translate-y-0.5"
               >
                 Start a project
                 <ArrowRight className="h-4 w-4" />
@@ -113,7 +114,7 @@ export function AboutPageContent() {
               <AppLink
                 href="/experience"
                 tabTitle="Experience"
-                className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-5 py-3 text-sm font-medium text-[hsl(var(--vscode-text))] transition-colors hover:bg-[hsl(var(--vscode-hover))]"
+                className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 px-5 py-3 text-sm font-medium text-[hsl(var(--foreground))] transition-colors hover:bg-[hsl(var(--secondary))]"
               >
                 See experience
               </AppLink>
@@ -122,12 +123,12 @@ export function AboutPageContent() {
         </div>
 
         {/* Snapshot + origin facts */}
-        <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6">
-          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
+        <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6">
+          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--muted-foreground))]">
             Snapshot
           </p>
 
-          <div className="mt-5 rounded-[26px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-5">
+          <div className="mt-5 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 p-5">
             <Image
               src="/huzaifa.jpg"
               alt={portfolioProfile.name}
@@ -135,13 +136,13 @@ export function AboutPageContent() {
               height={64}
               className="h-16 w-16 rounded-2xl object-cover"
             />
-            <h2 className="mt-4 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
+            <h2 className="mt-4 text-2xl font-semibold text-[hsl(var(--foreground))]">
               {portfolioProfile.name}
             </h2>
-            <p className="mt-1 text-sm text-[hsl(var(--vscode-text-muted))]">
+            <p className="mt-1 text-sm text-[hsl(var(--muted-foreground))]">
               {portfolioProfile.title}
             </p>
-            <p className="mt-4 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+            <p className="mt-4 text-sm leading-7 text-[hsl(var(--muted-foreground))]">
               {portfolioProfile.availability}
             </p>
           </div>
@@ -152,16 +153,16 @@ export function AboutPageContent() {
               return (
                 <div
                   key={point.label}
-                  className="flex items-start gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4"
+                  className="flex items-start gap-3 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 p-4"
                 >
-                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--vscode-accent))]/14 text-[hsl(var(--vscode-accent))]">
+                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--primary))]/14 text-[hsl(var(--primary))]">
                     <Icon className="h-3.5 w-3.5" />
                   </span>
                   <div>
-                    <p className="text-[11px] uppercase tracking-widest text-[hsl(var(--vscode-text-muted))]/60">
+                    <p className="text-[11px] uppercase tracking-widest text-[hsl(var(--muted-foreground))]/60">
                       {point.label}
                     </p>
-                    <p className="mt-0.5 text-sm leading-6 text-[hsl(var(--vscode-text-muted))]">
+                    <p className="mt-0.5 text-sm leading-6 text-[hsl(var(--muted-foreground))]">
                       {point.value}
                     </p>
                   </div>
@@ -179,15 +180,15 @@ export function AboutPageContent() {
           return (
             <article
               key={point.title}
-              className="rounded-[26px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6"
+              className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[hsl(var(--vscode-accent))]/14 text-[hsl(var(--vscode-accent))]">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[hsl(var(--primary))]/14 text-[hsl(var(--primary))]">
                 <Icon className="h-5 w-5" />
               </span>
-              <h2 className="mt-5 text-xl font-semibold text-[hsl(var(--vscode-text))]">
+              <h2 className="mt-5 text-xl font-semibold text-[hsl(var(--foreground))]">
                 {point.title}
               </h2>
-              <p className="mt-3 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+              <p className="mt-3 text-sm leading-7 text-[hsl(var(--muted-foreground))]">
                 {point.description}
               </p>
             </article>
@@ -198,14 +199,14 @@ export function AboutPageContent() {
       {/* Hardest problems + specialties */}
       <section className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
         {/* Hardest problems — stretches to match right column height */}
-        <section className="flex flex-col rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
+        <section className="flex flex-col rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8">
+          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--muted-foreground))]">
             Real work
           </p>
-          <h2 className="mt-2 text-3xl font-semibold text-[hsl(var(--vscode-text))]">
+          <h2 className="mt-2 text-3xl font-semibold text-[hsl(var(--foreground))]">
             The hardest problems I have solved
           </h2>
-          <p className="mt-3 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+          <p className="mt-3 text-sm leading-7 text-[hsl(var(--muted-foreground))]">
             These are the kinds of problems I am built for — complex enough that
             no tutorial covers them, specific enough that they had to be thought
             through from first principles.
@@ -215,19 +216,19 @@ export function AboutPageContent() {
             {hardestProblems.map((problem) => (
               <div
                 key={problem.number}
-                className="flex gap-4 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-5"
+                className="flex gap-4 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 p-5"
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--vscode-accent))]/14 text-sm font-bold text-[hsl(var(--vscode-accent))]">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--primary))]/14 text-sm font-bold text-[hsl(var(--primary))]">
                   {problem.number}
                 </span>
                 <div>
-                  <p className="text-sm font-semibold text-[hsl(var(--vscode-text))]">
+                  <p className="text-sm font-semibold text-[hsl(var(--foreground))]">
                     {problem.title}
                   </p>
-                  <p className="mt-0.5 text-[11px] uppercase tracking-widest text-[hsl(var(--vscode-text-muted))]/60">
+                  <p className="mt-0.5 text-[11px] uppercase tracking-widest text-[hsl(var(--muted-foreground))]/60">
                     {problem.context}
                   </p>
-                  <p className="mt-2 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+                  <p className="mt-2 text-sm leading-7 text-[hsl(var(--muted-foreground))]">
                     {problem.description}
                   </p>
                 </div>
@@ -235,11 +236,11 @@ export function AboutPageContent() {
             ))}
 
             {/* Filler card — shows only when right column is taller */}
-            <div className="flex-1 rounded-2xl border border-[hsl(var(--vscode-border))]/50 border-dashed bg-[hsl(var(--vscode-panel))]/40 p-5 flex flex-col justify-center gap-2 min-h-[80px]">
-              <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]/50">
+            <div className="flex-1 rounded-2xl border border-[hsl(var(--border))]/50 border-dashed bg-[hsl(var(--background))]/40 p-5 flex flex-col justify-center gap-2 min-h-[80px]">
+              <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--muted-foreground))]/50">
                 More on the systems
               </p>
-              <p className="text-sm leading-6 text-[hsl(var(--vscode-text-muted))]/70">
+              <p className="text-sm leading-6 text-[hsl(var(--muted-foreground))]/70">
                 Each of these problems is documented in detail on the system
                 pages — engineering decisions, tradeoffs, and what the solution
                 looks like in production.
@@ -247,7 +248,7 @@ export function AboutPageContent() {
               <AppLink
                 href="/systems/crm-system"
                 tabTitle="CRM System"
-                className="mt-1 inline-flex w-fit items-center gap-1.5 text-xs font-medium text-[hsl(var(--vscode-accent))] hover:underline"
+                className="mt-1 inline-flex w-fit items-center gap-1.5 text-xs font-medium text-[hsl(var(--primary))] hover:underline"
               >
                 Read the CRM case study
                 <ArrowRight className="h-3 w-3" />
@@ -258,11 +259,11 @@ export function AboutPageContent() {
 
         {/* Specialties + principles */}
         <div className="flex flex-col gap-6">
-          <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
+          <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8">
+            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--muted-foreground))]">
               What I focus on
             </p>
-            <h2 className="mt-2 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
+            <h2 className="mt-2 text-2xl font-semibold text-[hsl(var(--foreground))]">
               The kind of work I do best
             </h2>
 
@@ -270,12 +271,12 @@ export function AboutPageContent() {
               {portfolioProfile.specialties.map((specialty, index) => (
                 <div
                   key={specialty}
-                  className="flex gap-4 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4"
+                  className="flex gap-4 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 p-4"
                 >
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--vscode-accent))]/14 text-sm font-bold text-[hsl(var(--vscode-accent))]">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--primary))]/14 text-sm font-bold text-[hsl(var(--primary))]">
                     0{index + 1}
                   </span>
-                  <p className="text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+                  <p className="text-sm leading-7 text-[hsl(var(--muted-foreground))]">
                     {specialty}
                   </p>
                 </div>
@@ -283,11 +284,11 @@ export function AboutPageContent() {
             </div>
           </section>
 
-          <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
+          <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8">
+            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--muted-foreground))]">
               Working principles
             </p>
-            <h2 className="mt-2 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
+            <h2 className="mt-2 text-2xl font-semibold text-[hsl(var(--foreground))]">
               How I keep builds practical
             </h2>
 
@@ -295,7 +296,7 @@ export function AboutPageContent() {
               {systemBuildPrinciples.map((principle) => (
                 <div
                   key={principle}
-                  className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]"
+                  className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 p-4 text-sm leading-7 text-[hsl(var(--muted-foreground))]"
                 >
                   {principle}
                 </div>
@@ -307,41 +308,41 @@ export function AboutPageContent() {
 
       {/* Philosophy strip */}
       <section className="grid gap-4 lg:grid-cols-2">
-        <div className="rounded-[26px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
+        <div className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8">
+          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--muted-foreground))]">
             How I think
           </p>
-          <h2 className="mt-2 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
+          <h2 className="mt-2 text-2xl font-semibold text-[hsl(var(--foreground))]">
             Systems before code
           </h2>
-          <p className="mt-4 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+          <p className="mt-4 text-sm leading-7 text-[hsl(var(--muted-foreground))]">
             Most developers build for the ticket in front of them. I try to
             build for the system that ticket belongs to. Before writing a line
             of code I spend time on paper — mapping flows, permissions, data
             models, and edge cases. The decisions that matter most in a system
             are usually made in the first hour, not the last week.
           </p>
-          <p className="mt-4 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+          <p className="mt-4 text-sm leading-7 text-[hsl(var(--muted-foreground))]">
             I also play chess. Both disciplines share the same underlying logic
             — read the full board before making a move, not just the piece in
             front of you.
           </p>
         </div>
 
-        <div className="rounded-[26px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
+        <div className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8">
+          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--muted-foreground))]">
             Where I am going
           </p>
-          <h2 className="mt-2 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
+          <h2 className="mt-2 text-2xl font-semibold text-[hsl(var(--foreground))]">
             Building toward ownership
           </h2>
-          <p className="mt-4 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+          <p className="mt-4 text-sm leading-7 text-[hsl(var(--muted-foreground))]">
             Three years from now I want to be running my own software house or
             shipping a SaaS product. I am building toward that every day — in
             the systems I architect, the clients I work with, and the standards
             I hold myself to.
           </p>
-          <p className="mt-4 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+          <p className="mt-4 text-sm leading-7 text-[hsl(var(--muted-foreground))]">
             Every production system I build is practice for that. Not just code
             that ships — decisions that hold up six months later when the team
             grows and requirements change.
@@ -350,15 +351,15 @@ export function AboutPageContent() {
       </section>
 
       {/* CTA */}
-      <section className="rounded-[30px] border border-[hsl(var(--vscode-accent))]/20 bg-[linear-gradient(135deg,hsla(194,100%,56%,0.14),transparent_45%),hsl(var(--vscode-sidebar-elevated))] p-6 md:p-8">
-        <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
+      <section className="rounded-2xl border border-[hsl(var(--primary))]/20 bg-[linear-gradient(135deg,hsla(227,68%,55%,0.14),transparent_45%),hsl(var(--card))] p-6 md:p-8">
+        <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--primary))]">
           Next step
         </p>
-        <h2 className="mt-3 max-w-2xl text-3xl font-semibold text-[hsl(var(--vscode-text))]">
+        <h2 className="mt-3 max-w-2xl text-3xl font-semibold text-[hsl(var(--foreground))]">
           If you need a developer who thinks in product, architecture, and
           delivery at the same time — we should talk.
         </h2>
-        <p className="mt-3 max-w-2xl text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+        <p className="mt-3 max-w-2xl text-sm leading-7 text-[hsl(var(--muted-foreground))]">
           Bring the rough idea, existing workflow, or messy process. I will help
           shape it into a system that makes sense to build — and to maintain
           after you ship it.
@@ -367,7 +368,7 @@ export function AboutPageContent() {
           <AppLink
             href="/contact"
             tabTitle="Contact"
-            className="inline-flex items-center gap-2 rounded-2xl bg-[hsl(var(--vscode-accent))] px-5 py-3 text-sm font-semibold text-[hsl(var(--vscode-bg))] transition-transform duration-200 hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 rounded-2xl bg-[hsl(var(--primary))] px-5 py-3 text-sm font-semibold text-[hsl(var(--primary-foreground))] transition-transform duration-200 hover:-translate-y-0.5"
           >
             Start a project
             <ArrowRight className="h-4 w-4" />
@@ -375,12 +376,12 @@ export function AboutPageContent() {
           <AppLink
             href="/systems/crm-system"
             tabTitle="CRM System"
-            className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-5 py-3 text-sm font-medium text-[hsl(var(--vscode-text))] transition-colors hover:bg-[hsl(var(--vscode-hover))]"
+            className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 px-5 py-3 text-sm font-medium text-[hsl(var(--foreground))] transition-colors hover:bg-[hsl(var(--secondary))]"
           >
             See the work
           </AppLink>
         </div>
       </section>
-    </div>
+    </RevealContainer>
   );
 }

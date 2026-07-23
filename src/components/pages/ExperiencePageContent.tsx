@@ -1,6 +1,7 @@
 import { ArrowUpRight, BriefcaseBusiness, TrendingUp } from "lucide-react";
-import { experience } from "@/data/experience";
+import { RevealContainer } from "@/components/motion/RevealContainer";
 import { AppLink } from "@/components/navigation/AppLink";
+import { experience } from "@/data/experience";
 
 // Impact stats pulled from real production numbers
 const impactStats = [
@@ -12,19 +13,19 @@ const impactStats = [
 
 export function ExperiencePageContent() {
   return (
-    <div className="space-y-8">
+    <RevealContainer className="mx-auto w-full max-w-6xl space-y-8 px-4 py-16 md:px-6">
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsla(194,100%,56%,0.18),transparent_40%),radial-gradient(circle_at_bottom_right,hsla(32,94%,63%,0.12),transparent_34%)]" />
+      <section className="relative overflow-hidden rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsla(227,68%,55%,0.18),transparent_40%),radial-gradient(circle_at_bottom_right,hsla(30,71%,55%,0.12),transparent_34%)]" />
         <div className="relative">
-          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
+          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--primary))]">
             Experience
           </p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
+          <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--foreground))]">
             Full-stack experience across product delivery, client systems, and
             applied technical research.
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
+          <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--muted-foreground))]">
             Two years building production systems across a software agency, a
             global IT consultancy, and a bank-backed research institution. Every
             role involved shipping real work to real users.
@@ -35,12 +36,12 @@ export function ExperiencePageContent() {
             {impactStats.map((stat) => (
               <div
                 key={stat.label}
-                className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4"
+                className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 p-4"
               >
-                <p className="text-2xl font-semibold text-[hsl(var(--vscode-accent))]">
+                <p className="text-2xl font-semibold text-[hsl(var(--primary))]">
                   {stat.value}
                 </p>
-                <p className="mt-1 text-xs leading-5 text-[hsl(var(--vscode-text-muted))]">
+                <p className="mt-1 text-xs leading-5 text-[hsl(var(--muted-foreground))]">
                   {stat.label}
                 </p>
               </div>
@@ -54,48 +55,48 @@ export function ExperiencePageContent() {
         {experience.map((item) => (
           <article
             key={item.id}
-            className="rounded-[26px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8"
+            className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8"
           >
             {/* Header row */}
             <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
               <div className="max-w-2xl">
                 <div className="flex flex-wrap items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[hsl(var(--vscode-accent))]/14 text-[hsl(var(--vscode-accent))]">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[hsl(var(--primary))]/14 text-[hsl(var(--primary))]">
                     <BriefcaseBusiness className="h-5 w-5" />
                   </span>
                   {item.current && (
-                    <span className="rounded-full border border-[hsl(var(--vscode-success))]/35 bg-[hsl(var(--vscode-success))]/10 px-3 py-1 text-xs font-medium text-[hsl(var(--vscode-success))]">
+                    <span className="rounded-full border border-[hsl(var(--state-success))]/35 bg-[hsl(var(--state-success))]/10 px-3 py-1 text-xs font-medium text-[hsl(var(--state-success))]">
                       Current
                     </span>
                   )}
                   {!item.current && item.duration && (
-                    <span className="rounded-full border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-3 py-1 text-xs font-medium text-[hsl(var(--vscode-text-muted))]">
+                    <span className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 px-3 py-1 text-xs font-medium text-[hsl(var(--muted-foreground))]">
                       {item.duration}
                     </span>
                   )}
                 </div>
 
-                <h2 className="mt-4 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
+                <h2 className="mt-4 text-2xl font-semibold text-[hsl(var(--foreground))]">
                   {item.role}
                 </h2>
-                <p className="mt-1 text-base font-medium text-[hsl(var(--vscode-text-muted))]">
+                <p className="mt-1 text-base font-medium text-[hsl(var(--muted-foreground))]">
                   {item.company}
                 </p>
                 {item.companyContext && (
-                  <p className="mt-0.5 text-xs text-[hsl(var(--vscode-text-muted))]/60">
+                  <p className="mt-0.5 text-xs text-[hsl(var(--muted-foreground))]/60">
                     {item.companyContext}
                   </p>
                 )}
               </div>
 
               {/* Period badge — top right on desktop */}
-              <div className="shrink-0 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm tabular-nums text-[hsl(var(--vscode-text))]">
+              <div className="shrink-0 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 px-4 py-3 text-sm tabular-nums text-[hsl(var(--foreground))]">
                 {item.period}
               </div>
             </div>
 
             {/* Description */}
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-[hsl(var(--muted-foreground))]">
               {item.description}
             </p>
 
@@ -104,12 +105,12 @@ export function ExperiencePageContent() {
               {item.highlights.map((highlight, index) => (
                 <div
                   key={highlight}
-                  className="flex gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4"
+                  className="flex gap-3 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 p-4"
                 >
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center">
-                    <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--vscode-accent))]/60" />
+                    <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--primary))]/60" />
                   </span>
-                  <p className="text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+                  <p className="text-sm leading-7 text-[hsl(var(--muted-foreground))]">
                     {highlight}
                   </p>
                 </div>
@@ -119,7 +120,7 @@ export function ExperiencePageContent() {
             {/* Related systems */}
             {item.relatedSystems && item.relatedSystems.length > 0 && (
               <div className="mt-5 flex flex-wrap items-center gap-2">
-                <span className="text-xs text-[hsl(var(--vscode-text-muted))]/60">
+                <span className="text-xs text-[hsl(var(--muted-foreground))]/60">
                   Related systems:
                 </span>
                 {item.relatedSystems.map((system) => (
@@ -127,7 +128,7 @@ export function ExperiencePageContent() {
                     key={system.slug}
                     href={`/systems/${system.slug}`}
                     tabTitle={`${system.label}.tsx`}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--vscode-accent))]/30 bg-[hsl(var(--vscode-accent))]/8 px-3 py-1 text-xs font-medium text-[hsl(var(--vscode-accent))] transition-colors hover:border-[hsl(var(--vscode-accent))]/50 hover:bg-[hsl(var(--vscode-accent))]/14"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--primary))]/30 bg-[hsl(var(--primary))]/8 px-3 py-1 text-xs font-medium text-[hsl(var(--primary))] transition-colors hover:border-[hsl(var(--primary))]/50 hover:bg-[hsl(var(--primary))]/14"
                   >
                     {system.label}
                     <ArrowUpRight className="h-3 w-3" />
@@ -140,14 +141,14 @@ export function ExperiencePageContent() {
       </section>
 
       {/* CTA */}
-      <section className="rounded-[30px] border border-[hsl(var(--vscode-accent))]/20 bg-[linear-gradient(135deg,hsla(194,100%,56%,0.14),transparent_45%),hsl(var(--vscode-sidebar-elevated))] p-6 md:p-8">
-        <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
+      <section className="rounded-2xl border border-[hsl(var(--primary))]/20 bg-[linear-gradient(135deg,hsla(227,68%,55%,0.14),transparent_45%),hsl(var(--card))] p-6 md:p-8">
+        <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--primary))]">
           Next step
         </p>
-        <h2 className="mt-3 max-w-xl text-3xl font-semibold text-[hsl(var(--vscode-text))]">
+        <h2 className="mt-3 max-w-xl text-3xl font-semibold text-[hsl(var(--foreground))]">
           Two years of production systems. Ready for the next one.
         </h2>
-        <p className="mt-3 max-w-xl text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
+        <p className="mt-3 max-w-xl text-sm leading-7 text-[hsl(var(--muted-foreground))]">
           If you need a developer who has shipped complex business systems end
           to end — not just contributed to them — let's talk about what you are
           building.
@@ -156,7 +157,7 @@ export function ExperiencePageContent() {
           <AppLink
             href="/contact"
             tabTitle="Contact"
-            className="inline-flex items-center gap-2 rounded-2xl bg-[hsl(var(--vscode-accent))] px-5 py-3 text-sm font-semibold text-[hsl(var(--vscode-bg))] transition-transform duration-200 hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 rounded-2xl bg-[hsl(var(--primary))] px-5 py-3 text-sm font-semibold text-[hsl(var(--primary-foreground))] transition-transform duration-200 hover:-translate-y-0.5"
           >
             Start a conversation
             <ArrowUpRight className="h-4 w-4" />
@@ -164,12 +165,12 @@ export function ExperiencePageContent() {
           <AppLink
             href="/systems/crm-system"
             tabTitle="CRM System"
-            className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-5 py-3 text-sm font-medium text-[hsl(var(--vscode-text))] transition-colors hover:bg-[hsl(var(--vscode-hover))]"
+            className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 px-5 py-3 text-sm font-medium text-[hsl(var(--foreground))] transition-colors hover:bg-[hsl(var(--secondary))]"
           >
             See the systems
           </AppLink>
         </div>
       </section>
-    </div>
+    </RevealContainer>
   );
 }
