@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowRight, Filter, Package, Sparkles, X } from "lucide-react";
+import Image, { type StaticImageData } from "next/image";
 import { useState } from "react";
 // Import images
 import articlePlatformMain from "@/assets/article-platform/main.png";
@@ -19,7 +20,7 @@ const typeStyles = {
     "border-[hsl(var(--state-success))]/35 bg-[hsl(var(--state-success))]/10 text-[hsl(var(--state-success))]",
 } as const;
 
-const imageMap: Record<string, any> = {
+const imageMap: Record<string, StaticImageData> = {
   "article-platform": articlePlatformMain,
   "crm-system": crmSystemMain,
   "inventory-system": inventorySystemMain,
@@ -100,6 +101,7 @@ export function SystemsPageContent() {
           <div className="flex flex-wrap gap-2">
             {categories.map((category) => (
               <button
+                type="button"
                 key={category}
                 onClick={() =>
                   setSelectedCategory(
@@ -121,6 +123,7 @@ export function SystemsPageContent() {
           <div className="flex flex-wrap gap-2">
             {types.map((type) => (
               <button
+                type="button"
                 key={type}
                 onClick={() =>
                   setSelectedType(selectedType === type ? null : type)
@@ -139,6 +142,7 @@ export function SystemsPageContent() {
           {/* Clear Filters */}
           {hasActiveFilters && (
             <button
+              type="button"
               onClick={clearFilters}
               className="flex items-center gap-1 rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--background))]/60 px-3 py-1 text-xs font-medium text-[hsl(var(--muted-foreground))] hover:border-[hsl(var(--accent-warm))]/30 hover:text-[hsl(var(--accent-warm))]"
             >
@@ -206,10 +210,12 @@ export function SystemsPageContent() {
                 {/* Main image */}
                 {imageMap[system.slug] && (
                   <div className="relative overflow-hidden rounded-lg bg-[hsl(var(--background))]/60 aspect-video border border-[hsl(var(--border))]">
-                    <img
-                      src={imageMap[system.slug].src}
+                    <Image
+                      src={imageMap[system.slug]}
                       alt={system.title}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      fill
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
                 )}
@@ -244,6 +250,7 @@ export function SystemsPageContent() {
             No projects found matching your filters.
           </p>
           <button
+            type="button"
             onClick={clearFilters}
             className="mt-4 rounded-2xl border border-[hsl(var(--primary))] bg-[hsl(var(--primary))]/10 px-4 py-2 text-sm font-medium text-[hsl(var(--primary))] transition-colors hover:bg-[hsl(var(--primary))]/20"
           >

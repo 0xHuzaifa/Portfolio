@@ -134,7 +134,9 @@ function groupFeatures(features: string[]) {
       return g.keywords.some((kw) => f.toLowerCase().includes(kw));
     });
     if (matched.length > 0) {
-      matched.forEach((f) => assigned.add(f));
+      for (const f of matched) {
+        assigned.add(f);
+      }
       result.push({ group: g, items: matched });
     }
   }
