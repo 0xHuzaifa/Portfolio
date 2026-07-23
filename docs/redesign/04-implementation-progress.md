@@ -79,9 +79,9 @@ Working doc. Update after every phase: mark status, write what was actually done
 - Skipped bespoke "3D object responds to card focus" interaction on the list page — reused the same hero schematic on detail pages instead; interaction idea parked as possible Phase 6 polish. // ponytail: revisit only if the static treatment feels flat in real use
 - 7 pre-existing biome lint findings in these files (`useButtonType`, `noImgElement`, `noExplicitAny`) left untouched — present before this phase, queued for Phase 6 UI audit.
 
-## ⬜ Phase 5 — How I Build Systems (Tier 2 — fast)
+## ✅ Phase 5 — How I Build Systems (Tier 2 — fast) (2026-07-23)
 
-- Smallest page (94 lines). Restyle + GSAP reveals only.
+**Done:** token migration (sed) + `RevealContainer` wrapper + `max-w-6xl` container. Content untouched. tsc clean, build 18/18, screenshot-checked.
 
 ## ⬜ Phase 6 — Cross-cutting polish (last, all pages)
 
