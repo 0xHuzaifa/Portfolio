@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
-import Image from "next/image";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { StaticImageData } from "next/image";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import React, { useEffect } from "react";
 
 interface ImageLightboxProps {
   images: (string | StaticImageData)[];

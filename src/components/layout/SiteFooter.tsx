@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const footerLinks = [
   { href: "/systems", label: "Work" },
@@ -8,9 +11,12 @@ const footerLinks = [
 ] as const;
 
 export function SiteFooter() {
+  // The homepage ends with the FinalCta section, which carries its own footer.
+  if (usePathname() === "/") return null;
+
   return (
     <footer className="border-t border-[hsl(var(--border))]/60">
-      <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-[hsl(var(--muted-foreground))] md:flex-row md:px-6">
+      {/* <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-[hsl(var(--muted-foreground))] md:flex-row md:px-6">
         <p>© {new Date().getFullYear()} Huzaifa Ahmed — Full-Stack Developer</p>
 
         <nav className="flex items-center gap-4" aria-label="Footer">
@@ -40,7 +46,7 @@ export function SiteFooter() {
             LinkedIn
           </a>
         </nav>
-      </div>
+      </div> */}
     </footer>
   );
 }

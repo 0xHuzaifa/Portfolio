@@ -61,7 +61,7 @@ A modern, interactive portfolio website built with Next.js, featuring a VS Code-
    bun dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. Open [http://localhost:3002](http://localhost:3002) in your browser.
 
 ## Project Structure
 
@@ -90,4 +90,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-For inquiries, please visit the [Contact](http://localhost:3000/contact) page or reach out via the integrated contact form.
+For inquiries, please visit the [Contact](http://localhost:3002/contact) page or reach out via the integrated contact form.
