@@ -15,36 +15,61 @@
 
 @layer base {
   :root {
-    --surface-bg: 226 55% 4%;
-    --surface-card: 226 32% 9%;
-    --surface-elevated: 228 27% 14%;
-    --surface-border: 226 22% 20%;
-    --text: 220 20% 96%;
-    --text-muted: 218 12% 63%;
-    --accent-cool: 227 68% 55%;
-    --accent-warm: 30 71% 55%;
-    --state-success: 152 51% 45%;
-    --state-destructive: 357 78% 61%;
+    /* --- palette (design system §1) — HSL triplets so hsl(var(--x)) works --- */
+    --beige-1: 40 27% 85%; /* #E3DCCE page canvas */
+    --beige-2: 41 26% 81%; /* #DBD3C2 layered panel */
+    --beige-3: 41 24% 77%; /* #D2C9B5 deepest warm neutral */
+    --ink-1: 0 0% 7%; /* #111111 */
+    --ink-2: 0 0% 33%; /* #555555 */
+    --ink-3: 37 7% 51%; /* #8A8378 */
+    --paper: 0 0% 100%;
+    --yellow: 59 91% 60%; /* #F6F23C — the one accent */
+    --yellow-deep: 59 72% 50%; /* #DCD824 pressed */
 
-    --background: var(--surface-bg);
-    --foreground: var(--text);
-    --card: var(--surface-card);
-    --card-foreground: var(--text);
-    --popover: var(--surface-elevated);
-    --popover-foreground: var(--text);
-    --primary: var(--accent-cool);
-    --primary-foreground: 220 20% 98%;
-    --secondary: var(--surface-elevated);
-    --secondary-foreground: var(--text);
-    --muted: var(--surface-elevated);
-    --muted-foreground: var(--text-muted);
-    --accent: var(--accent-warm);
-    --accent-foreground: 226 55% 4%;
-    --destructive: var(--state-destructive);
+    /* --- glass + alpha inks (literal rgba, not triplets) --- */
+    --glass-fill: rgba(255, 255, 255, 0.25);
+    --glass-fill-strong: rgba(255, 255, 255, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.35);
+    --glass-border-ink: rgba(17, 17, 17, 0.08);
+    --glass-blur: blur(22px) saturate(140%);
+    --ink-a04: rgba(17, 17, 17, 0.04);
+    --ink-a06: rgba(17, 17, 17, 0.06);
+    --ink-a08: rgba(17, 17, 17, 0.08);
+    --ink-a12: rgba(17, 17, 17, 0.12);
+    --bg-type: rgba(17, 17, 17, 0.05);
+
+    /* --- the one shadow (design system §4) --- */
+    --shadow: 0 30px 80px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 38px 90px rgba(0, 0, 0, 0.1);
+    --shadow-sm: 0 12px 34px rgba(0, 0, 0, 0.06);
+
+    /* --- motion --- */
+    --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --dur-fast: 200ms;
+    --dur-normal: 400ms;
+    --dur-large: 800ms;
+    --dur-section: 1200ms;
+
+    /* --- semantic aliases consumed across the app --- */
+    --background: var(--beige-1);
+    --foreground: var(--ink-1);
+    --card: var(--paper);
+    --card-foreground: var(--ink-1);
+    --popover: var(--paper);
+    --popover-foreground: var(--ink-1);
+    --primary: var(--yellow);
+    --primary-foreground: var(--ink-1); /* ink on yellow, never white */
+    --secondary: var(--beige-2);
+    --secondary-foreground: var(--ink-1);
+    --muted: var(--beige-2);
+    --muted-foreground: var(--ink-2);
+    --accent: var(--yellow);
+    --accent-foreground: var(--ink-1);
+    --destructive: 357 68% 45%;
     --destructive-foreground: 0 0% 100%;
-    --border: var(--surface-border);
-    --input: var(--surface-border);
-    --ring: var(--accent-cool);
+    --border: var(--beige-3);
+    --input: var(--beige-3);
+    --ring: var(--yellow);
     --radius: 0.875rem;
   }
 
@@ -54,30 +79,20 @@
   }
 
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   body {
     min-height: 100vh;
     background-color: hsl(var(--background));
-    background-image:
-      radial-gradient(
-        circle at top left,
-        hsla(227, 68%, 55%, 0.1),
-        transparent 30%
-      ),
-      radial-gradient(
-        circle at bottom right,
-        hsla(30, 71%, 55%, 0.06),
-        transparent 28%
-      );
     color: hsl(var(--foreground));
-    font-family: var(--font-geist-sans), "Segoe UI", sans-serif;
+    /* Inlined, not custom props: Tailwind v4 prunes `--font-*` names as theme vars. */
+    font-family: var(--font-geist-sans), "Inter", system-ui, sans-serif;
   }
 
   ::selection {
-    background: hsla(227, 68%, 55%, 0.3);
-    color: hsl(var(--text));
+    background: hsl(var(--yellow));
+    color: hsl(var(--ink-1));
   }
 
   a {
@@ -91,17 +106,17 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: hsl(var(--surface-card));
+    background: hsl(var(--beige-2));
   }
 
   ::-webkit-scrollbar-thumb {
-    border: 2px solid hsl(var(--surface-card));
+    border: 2px solid hsl(var(--beige-2));
     border-radius: 999px;
-    background: hsl(var(--surface-border));
+    background: hsl(var(--beige-3));
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--surface-elevated));
+    background: hsl(var(--ink-3));
   }
 }
 
@@ -112,5 +127,23 @@
 
   .font-data {
     font-family: var(--font-geist-mono), ui-monospace, monospace;
+  }
+
+  .font-hand {
+    font-family: var(--font-caveat), cursive;
+  }
+
+  /* One geometric sans does everything (design system §2). */
+  .font-display {
+    font-family: var(--font-geist-sans), "Inter", sans-serif;
+  }
+
+  .glass {
+    background: var(--glass-fill);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow);
+    transform: translateZ(0);
   }
 }
