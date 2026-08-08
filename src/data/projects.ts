@@ -35,7 +35,7 @@ export const projects: ProjectEntry[] = [
     title: "Real Estate CRM",
     categories: ["CRM", "AI", "SaaS"],
     description:
-      "Multi-tenant CRM for real estate agencies — leads, deals, contracts and teams in one workspace, with an AI assistant that runs any task from plain English.",
+      "Multi-tenant CRM for real estate agencies to manage leads, deals, contracts and teams — driven by plain English.",
     image: crmSystemMain,
     caseStudySlug: "crm-system",
   },
@@ -44,7 +44,7 @@ export const projects: ProjectEntry[] = [
     title: "Inventory & Ordering Platform",
     categories: ["IMS", "SaaS"],
     description:
-      "Product distribution platform where companies set exactly who can order what and how much they can spend. The rules apply themselves — nobody chases approvals.",
+      "Distribution platform where companies control who can order what, and how much they can spend. The rules apply themselves.",
     image: inventorySystemMain,
     caseStudySlug: "inventory-system",
   },
@@ -53,7 +53,7 @@ export const projects: ProjectEntry[] = [
     title: "Article Publishing Platform",
     categories: ["CMS", "SaaS"],
     description:
-      "Writers draft, editors review, admins control what goes live. Everyone gets the right level of access, and nothing publishes without clearing every step.",
+      "Content platform where writers draft, editors review, and admins control exactly what goes live.",
     image: articlePlatformMain,
     caseStudySlug: "article-platform",
   },
@@ -62,7 +62,7 @@ export const projects: ProjectEntry[] = [
     title: "Realtime Chat System",
     categories: ["SaaS"],
     description:
-      "Live messaging built to stay accurate when real life gets messy — dropped connections, several tabs, users coming and going. No lost messages, no refreshes.",
+      "Live messaging that stays accurate through dropped connections, multiple tabs and busy rooms.",
     image: chatSystemMain,
     caseStudySlug: "realtime-communication",
   },

@@ -69,7 +69,9 @@ export function ProjectsGrid({
         </div>
 
         {shown.length > 0 ? (
-          <div className="grid gap-6 lg:grid-cols-2 lg:gap-7">
+          // Column and row gaps differ, as they do in the reference: 23 and 17
+          // against its 1022 grid, scaled by 1400/1022.
+          <div className="grid gap-6 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-6">
             {shown.map((project, i) => (
               <ProjectCard key={project.id} project={project} index={i} />
             ))}
