@@ -9,6 +9,7 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
+import { useRef } from "react";
 import {
   scale,
   sectionClass,
@@ -21,6 +22,7 @@ import {
   projectsDelivered,
 } from "@/data/projects";
 import { CategoryDeck } from "./CategoryDeck";
+import { useGlassParallax } from "./useGlassParallax";
 
 /**
  * Section 1 of /systems, fitted to the shared 1620x875 canvas so it stands at
@@ -42,8 +44,12 @@ export function ProjectsHero({
   active: ProjectCategory | null;
   onSelect: (category: ProjectCategory) => void;
 }) {
+  const root = useRef<HTMLElement>(null);
+
+  useGlassParallax(root);
+
   return (
-    <section style={stageStyle} className={sectionClass}>
+    <section ref={root} style={stageStyle} className={sectionClass}>
       <div style={scale} className={stageClass}>
         {/* ---------- headline column ---------- */}
         <div className="ph-head flex items-center gap-[14px] pt-16 lg:absolute lg:left-[calc(60*var(--s))] lg:top-[calc(195*var(--s))] lg:z-[3] lg:gap-[calc(14*var(--s))] lg:pt-0">
@@ -65,20 +71,30 @@ export function ProjectsHero({
         </p>
 
         {/* projects-delivered card — canvas 60,548 · 333x138 */}
-        <div className="ph-delivered mt-8 flex w-full max-w-[360px] items-center gap-[18px] rounded-[22px] border border-[var(--glass-border)] bg-[var(--glass-fill)] p-[24px] shadow-[var(--shadow)] backdrop-blur-[16px] [transform:translateZ(0)] lg:absolute lg:left-[calc(60*var(--s))] lg:top-[calc(548*var(--s))] lg:z-[3] lg:mt-0 lg:h-[calc(138*var(--s))] lg:w-[calc(333*var(--s))] lg:max-w-none lg:gap-[calc(20*var(--s))] lg:rounded-[calc(22*var(--s))] lg:p-[calc(26*var(--s))]">
-          <span className="flex h-[64px] w-[64px] flex-none items-center justify-center rounded-full bg-[hsl(var(--yellow))] shadow-[0_10px_26px_rgba(246,242,60,0.5)] lg:h-[calc(72*var(--s))] lg:w-[calc(72*var(--s))]">
-            <Code2
-              className="h-[28px] w-[28px] lg:h-[calc(30*var(--s))] lg:w-[calc(30*var(--s))]"
-              strokeWidth={2.2}
-              aria-hidden="true"
-            />
-          </span>
-          <div>
-            <div className="text-[34px] font-extrabold leading-none tracking-[-0.02em] lg:text-[calc(38*var(--s))]">
-              {projectsDelivered.value}
-            </div>
-            <div className="mt-[8px] text-[14px] text-[hsl(var(--ink-2))] lg:mt-[calc(8*var(--s))] lg:text-[calc(15*var(--s))]">
-              {projectsDelivered.label}
+        <div
+          style={{
+            ["--in-delay" as string]: "0.5s",
+            ["--float-dur" as string]: "5.4s",
+            ["--float-delay" as string]: "-2.1s",
+            ["--float-tilt" as string]: "-0.8deg",
+          }}
+          className="ph-delivered glass-card mt-8 w-full max-w-[360px] rounded-[22px] lg:absolute lg:left-[calc(60*var(--s))] lg:top-[calc(548*var(--s))] lg:z-[3] lg:mt-0 lg:h-[calc(138*var(--s))] lg:w-[calc(333*var(--s))] lg:max-w-none lg:rounded-[calc(22*var(--s))] lg:[transform:translate(calc(var(--px,0)*2px),calc(var(--py,0)*2px))]"
+        >
+          <div className="glass-card-inner flex h-full items-center gap-[18px] p-[24px] lg:gap-[calc(20*var(--s))] lg:p-[calc(26*var(--s))]">
+            <span className="flex h-[64px] w-[64px] flex-none items-center justify-center rounded-full bg-[hsl(var(--yellow))] shadow-[0_10px_26px_rgba(246,242,60,0.5)] lg:h-[calc(72*var(--s))] lg:w-[calc(72*var(--s))]">
+              <Code2
+                className="h-[28px] w-[28px] lg:h-[calc(30*var(--s))] lg:w-[calc(30*var(--s))]"
+                strokeWidth={2.2}
+                aria-hidden="true"
+              />
+            </span>
+            <div>
+              <div className="text-[34px] font-extrabold leading-none tracking-[-0.02em] lg:text-[calc(38*var(--s))]">
+                {projectsDelivered.value}
+              </div>
+              <div className="mt-[8px] text-[14px] text-[hsl(var(--ink-2))] lg:mt-[calc(8*var(--s))] lg:text-[calc(15*var(--s))]">
+                {projectsDelivered.label}
+              </div>
             </div>
           </div>
         </div>
@@ -96,40 +112,47 @@ export function ProjectsHero({
           Select a category to filter the projects below
         </p>
 
-        {/* ---------- impact strip — canvas 60,731 · 1500x112 ---------- */}
-        <div className="ph-strip mt-10 grid grid-cols-2 gap-x-6 gap-y-6 rounded-[22px] border border-[var(--glass-border)] bg-[var(--glass-fill)] px-[24px] py-[24px] shadow-[var(--shadow)] backdrop-blur-[16px] [transform:translateZ(0)] sm:grid-cols-3 lg:absolute lg:left-[calc(60*var(--s))] lg:top-[calc(731*var(--s))] lg:z-[3] lg:mt-0 lg:flex lg:h-[calc(112*var(--s))] lg:w-[calc(1500*var(--s))] lg:items-center lg:justify-between lg:gap-0 lg:rounded-[calc(26*var(--s))] lg:px-[calc(48*var(--s))] lg:py-0">
-          {impactStats.map((stat, i) => {
-            const Icon = statIcons[i];
-            return (
-              <div
-                key={stat.label}
-                className="ph-stat flex items-center gap-[14px] lg:gap-[calc(16*var(--s))]"
-              >
-                {/* The divider is the item's own left edge rather than a
-                    separate node, so the flex row spaces five items evenly
-                    instead of nine. */}
-                {i > 0 && (
-                  <span
+        {/* ---------- impact strip — canvas 60,731 · 1500x112 ----------
+            `glass-panel-static`: it takes the surface and the arrival but never
+            the drift, because it is the floor the deck stands on. */}
+        <div
+          style={{ ["--in-delay" as string]: "0.9s" }}
+          className="ph-strip glass-card glass-panel-static mt-10 rounded-[22px] lg:absolute lg:left-[calc(60*var(--s))] lg:top-[calc(731*var(--s))] lg:z-[3] lg:mt-0 lg:h-[calc(112*var(--s))] lg:w-[calc(1500*var(--s))] lg:rounded-[calc(26*var(--s))]"
+        >
+          <div className="glass-card-inner grid h-full grid-cols-2 gap-x-6 gap-y-6 px-[24px] py-[24px] sm:grid-cols-3 lg:flex lg:items-center lg:justify-between lg:gap-0 lg:px-[calc(48*var(--s))] lg:py-0">
+            {impactStats.map((stat, i) => {
+              const Icon = statIcons[i];
+              return (
+                <div
+                  key={stat.label}
+                  className="ph-stat flex items-center gap-[14px] lg:gap-[calc(16*var(--s))]"
+                >
+                  {/* The divider is the item's own left edge rather than a
+                      separate node, so the flex row spaces five items evenly
+                      instead of nine. */}
+                  {i > 0 && (
+                    <span
+                      aria-hidden="true"
+                      className="mr-[calc(16*var(--s))] hidden w-px bg-[var(--ink-a12)] lg:block lg:h-[calc(48*var(--s))]"
+                    />
+                  )}
+                  <Icon
+                    className="h-[24px] w-[24px] flex-none text-[hsl(var(--ink-1))] lg:h-[calc(28*var(--s))] lg:w-[calc(28*var(--s))]"
+                    strokeWidth={1.8}
                     aria-hidden="true"
-                    className="hidden bg-[var(--ink-a12)] lg:block lg:h-[calc(48*var(--s))] lg:w-px lg:mr-[calc(16*var(--s))]"
                   />
-                )}
-                <Icon
-                  className="h-[24px] w-[24px] flex-none text-[hsl(var(--ink-1))] lg:h-[calc(28*var(--s))] lg:w-[calc(28*var(--s))]"
-                  strokeWidth={1.8}
-                  aria-hidden="true"
-                />
-                <div>
-                  <div className="text-[22px] font-extrabold leading-none tracking-[-0.02em] lg:text-[calc(26*var(--s))]">
-                    {stat.value}
-                  </div>
-                  <div className="mt-[6px] whitespace-nowrap text-[13px] text-[hsl(var(--ink-2))] lg:mt-[calc(7*var(--s))] lg:text-[calc(14*var(--s))]">
-                    {stat.label}
+                  <div>
+                    <div className="text-[22px] font-extrabold leading-none tracking-[-0.02em] lg:text-[calc(26*var(--s))]">
+                      {stat.value}
+                    </div>
+                    <div className="mt-[6px] whitespace-nowrap text-[13px] text-[hsl(var(--ink-2))] lg:mt-[calc(7*var(--s))] lg:text-[calc(14*var(--s))]">
+                      {stat.label}
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

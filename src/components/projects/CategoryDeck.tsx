@@ -42,6 +42,23 @@ const SPACING = 190;
 const FALLOFF = 0.0425;
 const ACTIVE_LIFT = 0.1;
 
+/**
+ * Per-card drift, so five cards never breathe in lockstep. Fixed values rather
+ * than random ones, so the deck looks identical on every visit and survives a
+ * resize unchanged — the same reasoning as the Capabilities pile's TILT.
+ *
+ * The negative delays start each card mid-cycle: without them all five would
+ * begin at the bottom of the stroke together and the offsets would take a full
+ * period to separate.
+ */
+const DRIFT = [
+  { dur: "5s", delay: "0s", tilt: "1deg" },
+  { dur: "5.6s", delay: "-1.2s", tilt: "-1deg" },
+  { dur: "4.6s", delay: "-0.6s", tilt: "0.8deg" },
+  { dur: "6s", delay: "-1.8s", tilt: "-0.9deg" },
+  { dur: "5.2s", delay: "-0.3s", tilt: "1.1deg" },
+] as const;
+
 export function CategoryDeck({
   active,
   onSelect,
@@ -96,6 +113,7 @@ function DeckCard({
 }) {
   const Icon = icons[category.id];
   const count = categoryCount(category);
+  const drift = DRIFT[index];
 
   return (
     <button
@@ -110,24 +128,31 @@ function DeckCard({
         ["--card-x" as string]: `calc(${index * SPACING}*var(--s))`,
         ["--card-scale" as string]:
           1 - index * FALLOFF + (active ? ACTIVE_LIFT : 0),
+        ["--in-delay" as string]: `${index * 0.1}s`,
+        ["--float-dur" as string]: drift.dur,
+        ["--float-delay" as string]: drift.delay,
+        ["--float-tilt" as string]: drift.tilt,
         zIndex: active ? 20 : 10 - index,
       }}
-      className={`ph-deck-card relative flex w-[160px] flex-none snap-start flex-col items-center justify-center rounded-[22px] px-4 py-10 text-center backdrop-blur-[16px] transition-[background-color,border-color,box-shadow] duration-300 ease-[var(--ease)] [transform:translateZ(0)] lg:absolute lg:left-[var(--card-x)] lg:top-0 lg:h-[calc(330*var(--s))] lg:w-[calc(186*var(--s))] lg:rounded-[calc(26*var(--s))] lg:px-0 lg:py-0 lg:[transform-origin:50%_50%] lg:[transform:translate(0,-50%)_rotateY(-24deg)_scale(var(--card-scale))] ${
-        active
-          ? "border border-[hsl(var(--yellow))] bg-[rgba(246,242,60,0.2)] shadow-[0_22px_60px_rgba(246,242,60,0.5)]"
-          : "border border-[var(--glass-border)] bg-[var(--glass-fill-strong)] shadow-[var(--shadow)] hover:bg-[rgba(255,255,255,0.72)]"
+      className={`ph-deck-card glass-card w-[160px] flex-none snap-start rounded-[22px] text-center lg:absolute lg:left-[var(--card-x)] lg:top-0 lg:h-[calc(330*var(--s))] lg:w-[calc(186*var(--s))] lg:rounded-[calc(26*var(--s))] lg:[transform-origin:50%_50%] lg:[transform:translate(calc(var(--px,0)*3px),calc(-50%_+_var(--py,0)*3px))_rotateY(-24deg)_scale(var(--card-scale))] ${
+        active ? "is-active" : ""
       }`}
     >
-      <Icon
-        className="h-[32px] w-[32px] text-[hsl(var(--ink-1))] lg:h-[calc(38*var(--s))] lg:w-[calc(38*var(--s))]"
-        strokeWidth={1.7}
-        aria-hidden="true"
-      />
-      <span className="mt-4 block text-[21px] font-extrabold tracking-[-0.02em] lg:mt-[calc(26*var(--s))] lg:text-[calc(25*var(--s))]">
-        {category.label}
-      </span>
-      <span className="mt-1.5 block whitespace-nowrap text-[12px] text-[hsl(var(--ink-3))] lg:mt-[calc(10*var(--s))] lg:text-[calc(13*var(--s))]">
-        {count} Project{count === 1 ? "" : "s"}
+      {/* The inner element owns every transform that moves on its own — the
+          arrival, the drift, the hover lift — leaving the outer free for the
+          deck's 3D placement and the pointer parallax. */}
+      <span className="glass-card-inner flex h-full w-full flex-col items-center justify-center px-4 py-10 lg:px-0 lg:py-0">
+        <Icon
+          className="h-[32px] w-[32px] text-[hsl(var(--ink-1))] lg:h-[calc(38*var(--s))] lg:w-[calc(38*var(--s))]"
+          strokeWidth={1.7}
+          aria-hidden="true"
+        />
+        <span className="mt-4 block text-[21px] font-extrabold tracking-[-0.02em] lg:mt-[calc(26*var(--s))] lg:text-[calc(25*var(--s))]">
+          {category.label}
+        </span>
+        <span className="mt-1.5 block whitespace-nowrap text-[12px] text-[hsl(var(--ink-3))] lg:mt-[calc(10*var(--s))] lg:text-[calc(13*var(--s))]">
+          {count} Project{count === 1 ? "" : "s"}
+        </span>
       </span>
     </button>
   );
