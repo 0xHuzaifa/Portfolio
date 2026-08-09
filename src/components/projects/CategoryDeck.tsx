@@ -17,8 +17,8 @@ import {
  * where it meets it. The surface treatment lives in globals.css under
  * `.deck-slab` / `.deck-face`; the geometry lives here.
  *
- * Canvas geometry: the scene is anchored at 610,250 and runs 960x300. Slabs are
- * 180x300 before scale and step 190 apart — measured off the reference by
+ * Canvas geometry: the scene is anchored at 610,258 and runs 960x284. Slabs are
+ * 170x284 before scale and step 190 apart — measured off the reference by
  * undoing the foreshortening (apparent width / cos 14°) and rescaling its crop
  * onto the 1620-unit canvas.
  *
@@ -92,7 +92,7 @@ export function CategoryDeck({
         className="deck-floor ph-floor hidden lg:block lg:left-[calc(470*var(--s))] lg:top-[calc(470*var(--s))] lg:z-[1] lg:h-[calc(250*var(--s))] lg:w-[calc(1150*var(--s))]"
       />
 
-      <div className="ph-deck -mx-6 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 md:-mx-8 md:px-8 lg:absolute lg:left-[calc(610*var(--s))] lg:top-[calc(250*var(--s))] lg:z-[2] lg:mx-0 lg:mt-0 lg:block lg:h-[calc(300*var(--s))] lg:w-[calc(960*var(--s))] lg:snap-none lg:overflow-visible lg:px-0 lg:pb-0 lg:[perspective-origin:50%_14%] lg:[perspective:calc(1400*var(--s))] lg:[transform-style:preserve-3d]">
+      <div className="ph-deck -mx-6 mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 md:-mx-8 md:px-8 lg:absolute lg:left-[calc(610*var(--s))] lg:top-[calc(258*var(--s))] lg:z-[2] lg:mx-0 lg:mt-0 lg:block lg:h-[calc(284*var(--s))] lg:w-[calc(960*var(--s))] lg:snap-none lg:overflow-visible lg:px-0 lg:pb-0 lg:[perspective-origin:50%_14%] lg:[perspective:calc(1400*var(--s))] lg:[transform-style:preserve-3d]">
         {categories.map((category, i) => (
           <DeckCard
             key={category.id}
@@ -141,7 +141,7 @@ function DeckCard({
         ["--float-tilt" as string]: drift.tilt,
         zIndex: active ? 20 : 10 - index,
       }}
-      className={`ph-deck-card deck-slab w-[160px] flex-none snap-start rounded-[22px] text-center lg:absolute lg:left-[var(--card-x)] lg:top-0 lg:h-[calc(300*var(--s))] lg:w-[calc(180*var(--s))] lg:rounded-[calc(24*var(--s))] lg:[transform-origin:50%_50%] lg:[transform:translate(calc(var(--px,0)*3px),calc(var(--py,0)*3px))_rotateY(-14deg)_scale(var(--card-scale))] ${
+      className={`ph-deck-card deck-slab w-[150px] flex-none snap-start rounded-[22px] text-center lg:absolute lg:left-[var(--card-x)] lg:top-0 lg:h-[calc(284*var(--s))] lg:w-[calc(170*var(--s))] lg:rounded-[calc(24*var(--s))] lg:[transform-origin:50%_50%] lg:[transform:translate(calc(var(--px,0)*3px),calc(var(--py,0)*3px))_rotateY(-14deg)_scale(var(--card-scale))] ${
         active ? "is-active" : ""
       }`}
     >
@@ -150,14 +150,14 @@ function DeckCard({
           leaving the slab free for 3D placement and pointer parallax. */}
       <span className="deck-face glass-card-inner flex h-full w-full flex-col items-center justify-center px-4 py-10 lg:px-0 lg:py-0">
         <Icon
-          className="h-[32px] w-[32px] text-[hsl(var(--ink-1))] lg:h-[calc(34*var(--s))] lg:w-[calc(34*var(--s))]"
+          className="h-[32px] w-[32px] text-[hsl(var(--ink-1))] lg:h-[calc(32*var(--s))] lg:w-[calc(32*var(--s))]"
           strokeWidth={1.7}
           aria-hidden="true"
         />
-        <span className="mt-4 block text-[21px] font-extrabold tracking-[-0.02em] lg:mt-[calc(22*var(--s))] lg:text-[calc(23*var(--s))]">
+        <span className="mt-4 block text-[21px] font-extrabold tracking-[-0.02em] lg:mt-[calc(20*var(--s))] lg:text-[calc(22*var(--s))]">
           {category.label}
         </span>
-        <span className="mt-1.5 block whitespace-nowrap text-[12px] text-[hsl(var(--ink-3))] lg:mt-[calc(9*var(--s))] lg:text-[calc(12*var(--s))]">
+        <span className="mt-1.5 block whitespace-nowrap text-[12px] text-[hsl(var(--ink-3))] lg:mt-[calc(8*var(--s))] lg:text-[calc(11.5*var(--s))]">
           {count} Project{count === 1 ? "" : "s"}
         </span>
       </span>
