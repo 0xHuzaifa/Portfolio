@@ -1,5 +1,7 @@
 import { ArrowRight, CalendarDays } from "lucide-react";
 import Link from "next/link";
+import { scale, stageStyle } from "@/components/portfolio/stage";
+import { contentClass } from "./ProjectsGrid";
 
 /**
  * The band that closes the grid. Flows with section 2 rather than sitting on
@@ -12,8 +14,14 @@ import Link from "next/link";
 
 export function ProjectsCta() {
   return (
-    <section className="w-full bg-[hsl(var(--beige-1))] px-6 pb-24 text-[hsl(var(--ink-1))] md:px-10">
-      <div className="pg-cta mx-auto flex w-full max-w-[1400px] flex-col items-start gap-7 rounded-[22px] border border-[var(--glass-border)] bg-[var(--glass-fill)] px-7 py-8 shadow-[var(--shadow)] backdrop-blur-[16px] [transform:translateZ(0)] md:px-10 lg:h-[129px] lg:flex-row lg:items-center lg:gap-9 lg:py-0">
+    <section
+      style={stageStyle}
+      className="w-full bg-[hsl(var(--beige-1))] px-6 pb-24 text-[hsl(var(--ink-1))] md:px-10 lg:px-0"
+    >
+      <div
+        style={scale}
+        className={`pg-cta flex flex-col ${contentClass} items-start gap-7 rounded-[22px] border border-[var(--glass-border)] bg-[var(--glass-fill)] px-7 py-8 shadow-[var(--shadow)] backdrop-blur-[16px] [transform:translateZ(0)] md:px-10 lg:h-[129px] lg:flex-row lg:items-center lg:gap-9 lg:py-0`}
+      >
         <span className="flex h-[62px] w-[62px] flex-none items-center justify-center rounded-full bg-[hsl(var(--yellow))] shadow-[0_10px_26px_rgba(246,242,60,0.5)] lg:h-[68px] lg:w-[68px]">
           <CalendarDays
             className="h-[27px] w-[27px] lg:h-[30px] lg:w-[30px]"

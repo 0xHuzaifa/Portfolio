@@ -2,6 +2,7 @@
 
 import { ChevronDown, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { scale, stageStyle } from "@/components/portfolio/stage";
 import type { ProjectCategory, ProjectEntry } from "@/data/projects";
 import { ProjectCard } from "./ProjectCard";
 
@@ -17,6 +18,10 @@ import { ProjectCard } from "./ProjectCard";
 
 /** Cards revealed per press of "load more". */
 const BATCH = 6;
+
+/** Content column: the site-wide 1532-unit width above `lg`, plain flow below. */
+export const contentClass =
+  "mx-auto w-full max-w-[1400px] lg:w-[calc(1532*var(--s))] lg:max-w-none";
 
 export function ProjectsGrid({
   projects,
@@ -42,9 +47,13 @@ export function ProjectsGrid({
   return (
     <section
       id="projects-grid"
-      className="w-full scroll-mt-[110px] bg-[hsl(var(--beige-1))] px-6 pb-20 pt-16 text-[hsl(var(--ink-1))] md:px-10 lg:pb-28"
+      style={stageStyle}
+      className="w-full scroll-mt-[110px] bg-[hsl(var(--beige-1))] px-6 pb-20 pt-16 text-[hsl(var(--ink-1))] md:px-10 lg:px-0 lg:pb-28"
     >
-      <div className="mx-auto w-full max-w-[1400px]">
+      {/* Same 1532-unit content width the canvas sections use, off the same
+          `--s`. A fixed `max-w` looked right at 1440 and drifted everywhere
+          else — at 1920 it held 1400px while the header ran to 1816. */}
+      <div style={scale} className={contentClass}>
         {/* Result count, announced so a filter press is not a silent change for
             anyone who cannot see the grid re-flow. */}
         <div
