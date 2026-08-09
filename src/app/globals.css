@@ -416,35 +416,83 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Floating glass cards — the projects hero.
+   Projects hero — glass surfaces.
 
-   Two nested elements, and the split is the whole point. The OUTER carries the
-   surface and any placement transform (the deck's `rotateY`/`scale`, the
-   pointer parallax); the INNER carries everything that moves on its own — the
-   entry, the idle float, the hover lift. Same rule the Trust cards follow: one
-   owner per transform, because two systems writing one `transform` is the bug
-   that broke the hero's idle drift.
+   Two materials, not one.
 
-   Alphas are tuned for this LIGHT canvas, so the usual glassmorphism figures do
-   not apply — see the note above `.trust-card`. The accent stays `--yellow`;
-   the one-accent rule holds.
+   `.glass-card` is a FLAT panel lying on the page: the 80+ stat card and the
+   impact strip. `.deck-slab` is a STANDING slab — the five category cards — and
+   that difference is the whole reason the deck never matched its reference
+   while it was built from flat glassmorphism. The reference is a 3D scene:
+   slabs stood upright on a glossy floor, each throwing a pool of light at its
+   foot. Zooming the reference to 7x shows a soft rim rather than a 1px border,
+   a lit floor plane with a horizon, and the accent wire reading THROUGH the
+   glass — none of which a blurred rectangle can produce.
+
+   The floor pool is a gradient hinged at the card's foot and laid flat with
+   `rotateX(-90deg)`. Under the scene's perspective that projects to exactly the
+   skewed parallelogram in the reference. `-webkit-box-reflect` was the obvious
+   alternative and is wrong twice over: it mirrors the CONTENT, so every label
+   appears upside down under its card, and Firefox does not implement it.
+
+   Motion lives on `.glass-card-inner` for both materials: the outer keeps 3D
+   placement and pointer parallax, the inner takes the arrival, the drift and
+   the hover. One owner per transform — two systems writing one `transform` is
+   the bug that broke the hero's idle drift.
+
+   Alphas are tuned for this LIGHT canvas; the usual glassmorphism figures
+   assume a dark backdrop and vanish on beige. The accent stays `--yellow`.
 
    In `@layer components` on purpose, and it has to stay there. Unlayered CSS
-   outranks every cascade layer, so declaring `.glass-card { position: relative }`
-   at the top level silently beat the deck's `lg:absolute` — the cards fell back
-   into inline flow, `left` shifted them a second time, and two of the five ran
-   off the canvas. Inside the layer, Tailwind's utilities win, which is the whole
-   contract this file is written against.
+   outranks every cascade layer, so declaring `position: relative` at the top
+   level silently beat the deck's `lg:absolute` — the cards fell back into
+   inline flow, `left` shifted them a second time, and two of the five ran off
+   the canvas. Inside the layer, Tailwind's utilities win.
    --------------------------------------------------------------------------- */
 
+/* Arrival: up 20px, in from 0.95. `backwards` holds the start state through
+   the stagger delay so a card cannot flash at full size before its turn. */
+@keyframes glass-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Idle drift, deliberately below the threshold of notice — 6px and a degree
+   over five-odd seconds. `--float-tilt`/`--float-dur`/`--float-delay` are set
+   per card so the deck never breathes in lockstep. */
+@keyframes glass-card-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-6px) rotate(var(--float-tilt, 1deg));
+  }
+}
+
 @layer components {
+  /* ── shared motion host ────────────────────────────────────────────────── */
+
+  .glass-card-inner {
+    position: relative;
+    z-index: 2;
+    transition: transform 320ms var(--ease);
+  }
+
+  /* ── flat panel: the 80+ card and the impact strip ─────────────────────── */
+
   .glass-card {
     position: relative;
     isolation: isolate;
     border: 1px solid rgba(255, 255, 255, 0.35);
-    /* A sheen falling top-left to bottom-right over a half-white body: bright
-     edge at ~0.64, settling to ~0.5, which is the 0.55 the spec asks for
-     expressed as a gradient rather than a flat fill. */
     background:
       linear-gradient(
         135deg,
@@ -458,26 +506,7 @@
       0 8px 25px rgba(0, 0, 0, 0.06);
     transition:
       box-shadow 320ms var(--ease),
-      border-color 320ms var(--ease),
-      background-color 320ms var(--ease);
-  }
-
-  /* The light that follows the cursor. Painted only while the card is hovered,
-   positioned from the same `--mx`/`--my` the parallax writes. */
-  .glass-card::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    border-radius: inherit;
-    pointer-events: none;
-    opacity: 0;
-    background: radial-gradient(
-      circle at var(--mx, 50%) var(--my, 50%),
-      rgba(255, 255, 255, 0.5),
-      transparent 55%
-    );
-    transition: opacity 320ms var(--ease);
+      border-color 320ms var(--ease);
   }
 
   .glass-card:hover {
@@ -487,93 +516,227 @@
       0 14px 38px rgba(0, 0, 0, 0.09);
   }
 
-  /* The lit category. Still glass — the accent rides on top of the surface
-   rather than replacing it, so the card reads as the same material selected,
-   not as a different component. */
-  .glass-card.is-active {
-    border-color: hsl(var(--yellow));
-    background:
-      linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.3),
-        rgba(255, 255, 255, 0) 60%
-      ), rgba(246, 242, 60, 0.22);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.6),
-      0 18px 50px rgba(246, 242, 60, 0.45);
+  /* ── standing slab: the category deck ──────────────────────────────────── */
+
+  .deck-slab {
+    position: relative;
+    transform-style: preserve-3d;
   }
 
-  .glass-card:hover::after {
+  /* The glass itself. A vertical gradient, not a flat fill: light falls from
+     above, so the top of a standing slab is always brighter than its foot.
+     Kept thin enough that the accent wire behind the deck reads through it. */
+  .deck-face {
+    position: relative;
+    isolation: isolate;
+    border-radius: inherit;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.72),
+      rgba(255, 255, 255, 0.42)
+    );
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      inset 0 -16px 28px -20px rgba(0, 0, 0, 0.4);
+    transition:
+      background 320ms var(--ease),
+      box-shadow 320ms var(--ease);
+  }
+
+  /* The rim. A 1px gradient ring masked to the border band — bright at the
+     top-left where the light is, nearly gone at the lower right. This is what
+     the reference has instead of a uniform border. */
+  .deck-face::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    padding: 1.2px;
+    background: linear-gradient(
+      155deg,
+      rgba(255, 255, 255, 1),
+      rgba(255, 255, 255, 0.2) 48%,
+      rgba(255, 255, 255, 0.9)
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    transition: opacity 320ms var(--ease);
+  }
+
+  /* The light that follows the cursor, from the same `--mx`/`--my` the
+     parallax hook writes onto the slab. */
+  .deck-face::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      circle at var(--mx, 50%) var(--my, 50%),
+      rgba(255, 255, 255, 0.55),
+      transparent 55%
+    );
+    transition: opacity 320ms var(--ease);
+  }
+
+  .deck-slab:hover .deck-face::after {
     opacity: 1;
   }
 
-  .glass-card-inner {
-    position: relative;
-    z-index: 2;
-    transition: transform 320ms var(--ease);
+  .deck-slab:hover .deck-face {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 1),
+      inset 0 -16px 28px -20px rgba(0, 0, 0, 0.32);
   }
 
-  /* Arrival: up 20px, in from 0.95, as specified. `backwards` holds the start
-   state through the stagger delay so a card cannot flash at full size before
-   its turn. */
-  @keyframes glass-card-in {
-    from {
-      opacity: 0;
-      transform: translateY(20px) scale(0.95);
+  /* The lit category. Soft cream with a yellow rim and a glow — the reference's
+     active card is not a lemon fill, it is the same glass warmed through. */
+  .deck-slab.is-active .deck-face {
+    background: linear-gradient(
+      to bottom,
+      rgba(253, 251, 226, 0.8),
+      rgba(252, 249, 208, 0.48)
+    );
+    box-shadow:
+      0 0 0 1.6px hsl(var(--yellow)),
+      0 12px 44px -8px rgba(246, 242, 60, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  .deck-slab.is-active .deck-face::before {
+    opacity: 0;
+  }
+
+  /* ── the floor ─────────────────────────────────────────────────────────── */
+
+  /* Below `lg` the canvas is abandoned and the deck becomes a plain scroll
+     row, so the whole 3D scene — floor, pools, contact shadows — is gated to
+     the canvas breakpoint. A phone gets five flat glass cards. */
+  @media (min-width: 1024px) {
+    /* The floor plane. Faded on all four sides — a lit surface has no edges,
+       and a hard-edged rectangle of white reads instantly as a div. The
+       vertical ramp brightens just under the slabs and falls away again; the
+       horizontal mask dissolves the left and right ends. */
+    .deck-floor {
+      position: absolute;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.5) 26%,
+        rgba(255, 255, 255, 0.26) 62%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 14%,
+        #000 86%,
+        transparent
+      );
+      mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 14%,
+        #000 86%,
+        transparent
+      );
+      pointer-events: none;
     }
 
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
+    /* Contact shadow: where the slab meets the floor. Without it the card
+       hovers rather than stands. */
+    .deck-slab::before {
+      content: "";
+      position: absolute;
+      left: 2%;
+      right: 2%;
+      top: 100%;
+      height: 16px;
+      border-radius: 50%;
+      background: radial-gradient(
+        ellipse at 50% 0,
+        rgba(90, 80, 60, 0.34),
+        transparent 72%
+      );
+      filter: blur(5px);
+      pointer-events: none;
+    }
+
+    /* The pool of light on the floor. Hinged at the foot and laid flat, so the
+       scene's own perspective foreshortens it into the reference's skewed
+       parallelogram. A gradient, never a copy of the card — which is exactly
+       why no label ever appears mirrored in it. */
+    .deck-slab::after {
+      content: "";
+      position: absolute;
+      left: -4px;
+      right: -4px;
+      top: 100%;
+      height: 260px;
+      transform-origin: top center;
+      transform: rotateX(-90deg);
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 1),
+        rgba(255, 255, 255, 0.5) 30%,
+        rgba(255, 255, 255, 0.12) 62%,
+        transparent
+      );
+      filter: blur(3px);
+      pointer-events: none;
+    }
+
+    .deck-slab.is-active::after {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 253, 214, 0.98),
+        rgba(250, 246, 170, 0.4) 42%,
+        transparent 80%
+      );
     }
   }
 
-  /* Idle drift. Deliberately below the threshold of notice — 6px and a degree,
-   over five-odd seconds. `--float-tilt`/`--float-dur`/`--float-delay` are set
-   per card so six cards never breathe in lockstep, which is what separates
-   organic from robotic. */
-  @keyframes glass-card-float {
-    0%,
-    100% {
-      transform: translateY(0) rotate(0deg);
-    }
+  /* ── motion ────────────────────────────────────────────────────────────── */
 
-    50% {
-      transform: translateY(-6px) rotate(var(--float-tilt, 1deg));
-    }
-  }
-
-  /* Reduced motion gets the finished state and nothing else: the base rule above
-   is already the destination, so there is no start state to undo. */
   @media (prefers-reduced-motion: no-preference) {
     .glass-card-inner {
       will-change: transform;
       /* The float picks up where the arrival lands, offset by `--float-delay` —
-       negative, per card, so the five start mid-stroke instead of taking a
-       whole period to drift apart. */
+         negative, per card, so the five start mid-stroke instead of taking a
+         whole period to drift apart. */
       animation:
         glass-card-in 0.6s var(--ease) var(--in-delay, 0s) backwards,
         glass-card-float var(--float-dur, 5s) ease-in-out
         calc(var(--in-delay, 0s) + 0.6s + var(--float-delay, 0s)) infinite;
     }
 
-    /* The base of the composition, not a floating card: it takes the surface and
-     the arrival, never the drift. A 1500-unit panel breathing under the deck
-     would take the floor out from under it. Inside the guard with everything
-     else, so reduced motion still gets the finished state and nothing more. */
+    /* The strip is the floor the deck stands on, not a floating card: surface
+       and arrival, never drift. */
     .glass-panel-static .glass-card-inner {
       will-change: auto;
       animation: glass-card-in 0.6s var(--ease) var(--in-delay, 0s) backwards;
     }
 
     /* Dropping the animation is what lets the hover transform land — a running
-     animation always wins over a plain transform. */
-    .glass-card:hover .glass-card-inner {
+       animation always beats a plain transform. */
+    .glass-card:hover .glass-card-inner,
+    .deck-slab:hover .glass-card-inner {
       animation: none;
       transform: scale(1.04);
     }
 
-    /* The strip is not a card and must not lift under the pointer. */
     .glass-panel-static:hover .glass-card-inner {
       transform: none;
     }
