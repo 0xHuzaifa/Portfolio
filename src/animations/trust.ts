@@ -11,14 +11,18 @@ gsap.registerPlugin(ScrollTrigger);
  * lets the content rise through the surface, and then unwinds completely before
  * the next section takes over.
  *
- * The timeline is 100 units long so the phase table below maps 1:1 onto the
- * design's percentages, and it is scrubbed — which means P5 needs no reversing
- * logic of its own. Scrolling back up unwinds the whole thing for free.
+ * Phase units read as percentages of the design's timing table; the tail runs
+ * past 100 because the handback beat needs room the original table did not
+ * leave it. `PHASE.end` is the timeline's real length and the two must stay in
+ * step — `onUpdate` maps scroll progress onto the phase table through it.
+ *
+ * The timeline is scrubbed, which means P5 needs no reversing logic of its own.
+ * Scrolling back up unwinds the whole thing for free.
  *
  * Call inside `useGSAP(..., { scope })` so GSAP reverts everything on unmount.
  */
 
-/** Phase boundaries on the 100-unit timeline. Retune the whole piece here. */
+/** Phase boundaries. Retune the whole piece here. */
 const PHASE = {
   /** P1 — hero clears, drop forms in air. */
   drop: 0,
@@ -30,7 +34,19 @@ const PHASE = {
   emerge: 65,
   /** P5 — everything dissolves back to nothing. */
   dissolve: 85,
-  end: 100,
+  /**
+   * P6 — the panel hands back to the blob.
+   *
+   * The close below is timed to land exactly here, so from this point the
+   * surface is a 132px circle sitting precisely on top of the blob and the two
+   * can trade places without anything appearing to move. Nothing may hand over
+   * earlier: until the close finishes, the panel is still larger than the blob,
+   * and fading a small circle in over it is what made the shape appear to flip.
+   */
+  handback: 98,
+  /** …and then the blob lets go. */
+  release: 103,
+  end: 107,
 } as const;
 
 /**
@@ -40,7 +56,7 @@ const PHASE = {
  * factor and leaves the ratios in `PHASE` untouched. Raise it to slow the whole
  * piece down, lower it to speed it up.
  */
-const SCROLL_LENGTH = "+=450%";
+const SCROLL_LENGTH = "+=480%";
 
 /** Rest diameter of the drop, in CSS px. Mirrors `--trust-drop-size`. */
 const DROP_SIZE = 132;
@@ -108,6 +124,43 @@ export function trustSequence(stage: HTMLElement) {
       const restRadius =
         Number.parseFloat(getComputedStyle(surface).borderTopLeftRadius) || 44;
 
+      /** The panel's laid-out box, in px. `onRefresh` keeps it current. */
+      const box = (() => {
+        const r = surface.getBoundingClientRect();
+        return { w: r.width, h: r.height };
+      })();
+
+      /**
+       * The close, driven by ONE progress value.
+       *
+       * Both axes used to retreat on their own schedules — the vertical
+       * finishing four units before the horizontal had really started. That
+       * forced the panel through a 1157x132 bar on its way out, and `round` is
+       * capped by whichever side is shorter, so a box that flat physically
+       * cannot be round however large the radius. The result read as the drop
+       * flipping between a circle and a rectangle.
+       *
+       * Driving both from a single `t` keeps the box proportional the whole way
+       * down, and the radius tracks the short side, so the panel stays a
+       * rounded blob shrinking toward the drop and lands on it exactly.
+       */
+      const closing = { t: 0 };
+
+      const applyClose = () => {
+        const t = closing.t;
+        const w = box.w + (DROP_SIZE - box.w) * t;
+        const h = box.h + (DROP_SIZE - box.h) * t;
+
+        shape.h = box.w ? ((box.w - w) / 2 / box.w) * 100 : 50;
+        shape.v = box.h ? ((box.h - h) / 2 / box.h) * 100 : 50;
+        // Never larger than the box can carry, or the corners square off.
+        shape.r = Math.min(
+          restRadius + (DROP_SIZE / 2 - restRadius) * t,
+          Math.min(w, h) / 2,
+        );
+        drawSurface();
+      };
+
       // Deterministic start states. A scrubbed timeline records `from()` values
       // lazily — the tween would not exist yet at progress 0, so the content
       // would be plainly visible until the playhead reached P4. Setting the
@@ -157,10 +210,21 @@ export function trustSequence(stage: HTMLElement) {
             const next = circleInset(surface);
             start.h = next.h;
             start.v = next.v;
+
+            const r = surface.getBoundingClientRect();
+            box.w = r.width;
+            box.h = r.height;
           },
           onUpdate: (self) => {
             const at = self.progress * PHASE.end;
-            setFlat(at < PHASE.hold || at > PHASE.dissolve);
+            // Flat only while the geometry is actually travelling. The closing
+            // window ends at `handback`, not at the end of the timeline: from
+            // there the panel is a resting circle cross-fading with the blob,
+            // and the blob is frosted — leaving the surface flat through that
+            // swap would show one as milkier than the other.
+            setFlat(
+              at < PHASE.hold || (at > PHASE.dissolve && at < PHASE.handback),
+            );
           },
         },
       });
@@ -275,43 +339,52 @@ export function trustSequence(stage: HTMLElement) {
       if (handle)
         tl.to(handle, { autoAlpha: 0, duration: 4 }, PHASE.dissolve + 1);
 
-      // Closing mirrors opening: the near edge retreats first, then the sides.
-      // Function-based endpoints so `invalidateOnRefresh` picks up a resize.
+      // One schedule, both axes. Deliberately NOT a mirror of the opening: on
+      // the way in the sideways-first spread reads as water finding its edges,
+      // but played backwards the same asymmetry collapses the panel into a flat
+      // bar before it shrinks, which is what made the drop look broken.
+      //
+      // Lands exactly on `handback`, where the blob takes over.
       tl.to(
-        shape,
+        closing,
         {
-          v: () => start.v,
-          duration: 6,
-          ease: "power3.inOut",
-          onUpdate: drawSurface,
+          t: 1,
+          duration: PHASE.handback - (PHASE.dissolve + 3),
+          ease: "power2.inOut",
+          onUpdate: applyClose,
         },
         PHASE.dissolve + 3,
       );
-      tl.to(
-        shape,
-        {
-          h: () => start.h,
-          r: DROP_SIZE / 2,
-          duration: 8,
-          ease: "power2.inOut",
-          onUpdate: drawSurface,
-        },
-        PHASE.dissolve + 5,
-      );
 
-      // Hand back to the blob, then let it go.
-      tl.to(drop, { autoAlpha: 1, scale: 1, duration: 2 }, PHASE.dissolve + 11);
-      tl.to(surface, { autoAlpha: 0, duration: 2 }, PHASE.dissolve + 12);
+      // ── P6 — hand back to the blob, then let it go ─────────────────────
+      //
+      // Both halves of the swap start at `handback`, which is the frame the
+      // clip above finishes on. The panel is a 132px circle by then, centred on
+      // exactly the same point as the blob (see `.trust-drop` in globals.css),
+      // so this is a cross-fade between two identical circles — the eye reads
+      // one object, not a substitution.
+      //
+      // Nothing here may overlap the release below. These two beats used to run
+      // 97→98 against 97→100, both writing `scale` and `autoAlpha` on the SAME
+      // element in opposite directions: GSAP keeps both tweens alive, so
+      // whichever rendered last won the frame, and a scrubbed playhead sitting
+      // on that boundary made the blob strobe in and out.
+      tl.to(drop, { autoAlpha: 1, scale: 1, duration: 4 }, PHASE.handback);
+      tl.to(surface, { autoAlpha: 0, duration: 4 }, PHASE.handback);
+
+      // The blob is whole and alone before it goes. `release` is deliberately a
+      // clear unit past the end of the cross-fade rather than butted against
+      // it, so a scrub that overshoots cannot land inside both.
       tl.to(
         drop,
         {
           scale: 0,
           autoAlpha: 0,
           filter: "blur(6px)",
-          duration: 3,
+          duration: 4,
           ease: "power2.in",
         },
-        PHASE.dissolve + 12,
+        PHASE.release,
       );
 
       return () => {

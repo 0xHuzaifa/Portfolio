@@ -1,19 +1,10 @@
-import type { Metadata } from "next";
-import { ExperiencePageContent } from "@/components/pages/ExperiencePageContent";
+import { permanentRedirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Experience — Full-Stack Developer",
-  description:
-    "Professional experience of Huzaifa Ahmed — full-stack developer at Solvevare, MERN stack developer at ICreativez Technologies, and blockchain research intern at HBL. Production SaaS and business systems.",
-  openGraph: {
-    title: "Experience — Huzaifa Ahmed",
-    description:
-      "Full-stack developer with hands-on experience shipping production CRMs, inventory systems, and SaaS platforms for real clients.",
-    type: "profile",
-    url: "https://0xhuzaifa.com/experience",
-  },
-};
-
+/**
+ * `/experience` was dropped from the redesigned navigation and its content now
+ * lives as section 03 of `/about`. A permanent redirect rather than a deletion
+ * so existing links and any indexed URL keep working and pass their weight on.
+ */
 export default function ExperiencePage() {
-  return <ExperiencePageContent />;
+  permanentRedirect("/about");
 }

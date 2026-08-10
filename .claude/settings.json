@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s http://localhost:3002/ -o /private/tmp/claude-501/-Users-techsolution-Desktop-my-personal-portfolio-huzaifa-Portfolio/6cb8f3b1-5fcb-487c-91d9-aae0cb3d9d78/scratchpad/final.html -w 'HTTP %{http_code}\\\\n')",
+      "Bash(grep -n \"tl.to\\(\\\\s*$\\\\|tl.to\\(drop\\\\|tl.to\\(surface\\\\|tl.to\\(\\\\s*shape\\\\|PHASE.handback\\\\|PHASE.release\\\\|PHASE.dissolve\\\\|PHASE.spread\" src/animations/trust.ts)",
+      "Bash(npm ls *)",
+      "Read(//Applications/Google Chrome.app/Contents/MacOS/**)",
+      "Bash(node -e \"require.resolve\\('ws'\\); console.log\\('ws available'\\)\")",
+      "Bash(npm init *)",
+      "Bash(npm i *)",
+      "Bash(node probe.mjs)",
+      "Bash(node probe2.mjs)",
+      "Bash(node probe3.mjs)",
+      "Bash(node probe4.mjs)",
+      "Bash(node probe5.mjs)",
+      "Bash(node probe6.mjs)",
+      "Bash(sed -i '' 's|    captureBeyondViewport: false,\\\\n||' probe6.mjs)",
+      "Bash(python3 -)",
+      "Bash(curl -s -o /dev/null -w \"home: HTTP %{http_code}\\\\n\" http://localhost:3002/)",
+      "Bash(curl -s http://localhost:3002/)"
+    ]
+  }
+}

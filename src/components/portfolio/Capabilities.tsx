@@ -1,11 +1,22 @@
+"use client";
+
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
 import Link from "next/link";
+import { useRef } from "react";
+import { capabilitiesSequence } from "@/animations/capabilities";
+import { scale, sectionClass, stageClass, stageStyle } from "./stage";
+
+gsap.registerPlugin(useGSAP);
 
 /**
  * Re-fitted from the design's 1620x1012 stage onto the shared 1620x875 canvas.
  * The two card rows carry the compression: 330 -> 285 tall with tighter
  * internals, rows moved to y100 / y415.
+ *
+ * The `cap-*` classes are handles for `capabilitiesSequence`, which drafts the
+ * grid as six empty mounting slots and then populates them on scroll.
  */
-import { scale, sectionClass, stageClass, stageStyle } from "./stage";
 
 type Card = {
   n: string;
@@ -201,6 +212,23 @@ const builtFor: { label: [string, string?]; icon: React.ReactNode }[] = [
 const panel =
   "rounded-[26px] border border-[var(--glass-border)] bg-[var(--glass-fill)] shadow-[var(--shadow)] backdrop-blur-[16px] [transform:translateZ(0)]";
 
+/**
+ * Grid geometry — design 572/910/1248 x 122/488, re-fitted to y100/y415.
+ *
+ * `zIndex` descends with the index so 01 paints over 02 over 03… That ordering
+ * is what makes the pile work: the card the sequence deals out first is the one
+ * sitting on top, so every departure genuinely uncovers the card beneath it
+ * rather than sliding out from under it. At rest the cards do not overlap, so
+ * the stacking has no effect on the finished board.
+ */
+function cardPosition(i: number) {
+  return {
+    ["--x" as string]: `calc(${572 + (i % 3) * 338}*var(--s))`,
+    ["--y" as string]: `calc(${i < 3 ? 100 : 415}*var(--s))`,
+    zIndex: 10 - i,
+  };
+}
+
 function Glyph({
   children,
   className,
@@ -227,34 +255,54 @@ function Glyph({
 }
 
 export function Capabilities() {
+  const root = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (!root.current) return;
+
+      // Returned so StrictMode's remount reverts the matchMedia; without it the
+      // first run's pinned ScrollTrigger survives and fights the second.
+      return capabilitiesSequence(root.current);
+    },
+    { scope: root },
+  );
+
   return (
-    <section style={stageStyle} className={sectionClass}>
+    <section ref={root} style={stageStyle} className={sectionClass}>
       <div style={scale} className={stageClass}>
         {/* background wordmark */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-[-24px] hidden select-none text-center font-extrabold leading-none tracking-[0.04em] text-[rgba(17,17,17,0.035)] lg:block lg:bottom-[calc(-24*var(--s))] lg:text-[calc(210*var(--s))]"
+          className="cap-wordmark pointer-events-none absolute inset-x-0 bottom-[-24px] hidden select-none text-center font-extrabold leading-none tracking-[0.04em] text-[rgba(17,17,17,0.035)] lg:block lg:bottom-[calc(-24*var(--s))] lg:text-[calc(210*var(--s))]"
         >
           CAPABILITIES
         </div>
 
         {/* ---------- left column ---------- */}
-        <div className="flex items-center gap-[16px] lg:absolute lg:left-[calc(62*var(--s))] lg:top-[calc(120*var(--s))] lg:z-[5] lg:gap-[calc(16*var(--s))]">
+        <div className="cap-head flex items-center gap-[16px] lg:absolute lg:left-[calc(62*var(--s))] lg:top-[calc(120*var(--s))] lg:z-[5] lg:gap-[calc(16*var(--s))]">
           <span className="h-[3px] w-[44px] rounded-[2px] bg-[hsl(var(--yellow))] lg:w-[calc(44*var(--s))]" />
           <span className="font-data text-[12px] font-semibold uppercase tracking-[0.18em] lg:text-[calc(14*var(--s))]">
             What I Do Best
           </span>
         </div>
 
-        <h2 className="mt-6 text-[clamp(2.5rem,11vw,80px)] font-extrabold leading-none tracking-[-0.03em] lg:absolute lg:left-[calc(56*var(--s))] lg:top-[calc(165*var(--s))] lg:z-[5] lg:mt-0 lg:text-[calc(70*var(--s))]">
+        <h2 className="cap-head mt-6 text-[clamp(2.5rem,11vw,80px)] font-extrabold leading-none tracking-[-0.03em] lg:absolute lg:left-[calc(56*var(--s))] lg:top-[calc(165*var(--s))] lg:z-[5] lg:mt-0 lg:text-[calc(70*var(--s))]">
           Capabilities<span className="text-[hsl(var(--yellow))]">.</span>
         </h2>
 
-        <p className="mt-6 max-w-[460px] text-[18px] leading-[1.5] text-[hsl(var(--ink-2))] lg:absolute lg:left-[calc(62*var(--s))] lg:top-[calc(268*var(--s))] lg:z-[5] lg:mt-0 lg:w-[calc(400*var(--s))] lg:max-w-none lg:text-[calc(18*var(--s))]">
+        <p className="cap-head mt-6 max-w-[460px] text-[18px] leading-[1.5] text-[hsl(var(--ink-2))] lg:absolute lg:left-[calc(62*var(--s))] lg:top-[calc(268*var(--s))] lg:z-[5] lg:mt-0 lg:w-[calc(400*var(--s))] lg:max-w-none lg:text-[calc(18*var(--s))]">
           End-to-end engineering across product, platform, and AI systems —
           built for{" "}
-          <strong className="font-bold text-[hsl(var(--ink-1))] [border-bottom:3px_solid_hsl(var(--yellow))]">
+          {/* The rule is its own element, not a border, so the sequence can
+              draw it left to right. It renders solid by default; only the lg
+              motion path ever collapses it. */}
+          <strong className="relative font-bold text-[hsl(var(--ink-1))]">
             performance
+            <span
+              aria-hidden="true"
+              className="cap-underline absolute inset-x-0 bottom-[-2px] h-[3px] bg-[hsl(var(--yellow))] lg:bottom-[calc(-2*var(--s))] lg:h-[calc(3*var(--s))]"
+            />
           </strong>
           ,{" "}
           <strong className="font-bold text-[hsl(var(--ink-1))]">scale</strong>,
@@ -265,12 +313,12 @@ export function Capabilities() {
 
         {/* stat card — design 58,458 · 398 wide */}
         <div
-          className={`mt-8 grid grid-cols-1 gap-[28px] p-[28px] sm:grid-cols-2 ${panel} lg:absolute lg:left-[calc(58*var(--s))] lg:top-[calc(400*var(--s))] lg:z-[5] lg:mt-0 lg:w-[calc(420*var(--s))] lg:gap-x-[calc(28*var(--s))] lg:gap-y-[calc(26*var(--s))] lg:rounded-[calc(28*var(--s))] lg:px-[calc(30*var(--s))] lg:py-[calc(26*var(--s))]`}
+          className={`cap-stats mt-8 grid grid-cols-1 gap-[28px] p-[28px] sm:grid-cols-2 ${panel} lg:absolute lg:left-[calc(58*var(--s))] lg:top-[calc(400*var(--s))] lg:z-[5] lg:mt-0 lg:w-[calc(420*var(--s))] lg:gap-x-[calc(28*var(--s))] lg:gap-y-[calc(26*var(--s))] lg:rounded-[calc(28*var(--s))] lg:px-[calc(30*var(--s))] lg:py-[calc(26*var(--s))]`}
         >
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="flex items-start gap-[14px] lg:gap-[calc(14*var(--s))]"
+              className="cap-stat flex items-start gap-[14px] lg:gap-[calc(14*var(--s))]"
             >
               <span className="flex h-[46px] w-[46px] flex-none items-center justify-center rounded-[13px] bg-[hsl(var(--yellow))] lg:h-[calc(46*var(--s))] lg:w-[calc(46*var(--s))] lg:rounded-[calc(13*var(--s))]">
                 <Glyph
@@ -281,7 +329,9 @@ export function Capabilities() {
                 </Glyph>
               </span>
               <div>
-                <div className="text-[26px] font-extrabold leading-none tracking-[-0.02em] lg:text-[calc(29*var(--s))]">
+                {/* Rendered at its real value so the figure is correct without
+                    JS; the sequence zeroes it only on the lg motion path. */}
+                <div className="cap-num text-[26px] font-extrabold leading-none tracking-[-0.02em] lg:text-[calc(29*var(--s))]">
                   {stat.value}
                 </div>
                 <div className="mt-[6px] text-[14px] leading-[1.28] text-[hsl(var(--ink-2))] lg:mt-[calc(6*var(--s))] lg:text-[calc(14*var(--s))]">
@@ -297,23 +347,20 @@ export function Capabilities() {
           {cards.map((card, i) => (
             <div
               key={card.n}
-              className={`relative p-[24px] ${panel} lg:absolute lg:left-[var(--x)] lg:top-[var(--y)] lg:z-[3] lg:h-[calc(285*var(--s))] lg:w-[calc(314*var(--s))] lg:p-[calc(24*var(--s))]`}
-              style={{
-                ["--x" as string]: `calc(${572 + (i % 3) * 338}*var(--s))`,
-                ["--y" as string]: `calc(${i < 3 ? 100 : 415}*var(--s))`,
-              }}
+              style={cardPosition(i)}
+              className={`cap-card relative p-[24px] ${panel} lg:absolute lg:left-[var(--x)] lg:top-[var(--y)] lg:h-[calc(285*var(--s))] lg:w-[calc(314*var(--s))] lg:p-[calc(24*var(--s))]`}
             >
-              <span className="flex h-[52px] w-[52px] items-center justify-center rounded-[16px] bg-[hsl(var(--yellow))] lg:h-[calc(48*var(--s))] lg:w-[calc(48*var(--s))] lg:rounded-[calc(14*var(--s))]">
+              <span className="cap-card-tile flex h-[52px] w-[52px] items-center justify-center rounded-[16px] bg-[hsl(var(--yellow))] lg:h-[calc(48*var(--s))] lg:w-[calc(48*var(--s))] lg:rounded-[calc(14*var(--s))]">
                 <Glyph className="h-[26px] w-[26px] lg:h-[calc(24*var(--s))] lg:w-[calc(24*var(--s))]">
                   {card.icon}
                 </Glyph>
               </span>
 
-              <span className="absolute right-[24px] top-[22px] font-data text-[18px] font-bold text-[rgba(17,17,17,0.28)] lg:right-[calc(24*var(--s))] lg:top-[calc(22*var(--s))] lg:text-[calc(18*var(--s))]">
+              <span className="cap-card-n absolute right-[24px] top-[22px] font-data text-[18px] font-bold text-[rgba(17,17,17,0.28)] lg:right-[calc(24*var(--s))] lg:top-[calc(22*var(--s))] lg:text-[calc(18*var(--s))]">
                 {card.n}
               </span>
 
-              <div className="mt-[18px] text-[22px] font-extrabold leading-[1.12] tracking-[-0.02em] lg:mt-[calc(16*var(--s))] lg:text-[calc(22*var(--s))]">
+              <div className="cap-card-title mt-[18px] text-[22px] font-extrabold leading-[1.12] tracking-[-0.02em] lg:mt-[calc(16*var(--s))] lg:text-[calc(22*var(--s))]">
                 {card.title[0]}
                 <br />
                 {card.title[1]}
@@ -325,8 +372,11 @@ export function Capabilities() {
                     key={point}
                     className="flex items-start gap-[10px] text-[14px] lg:gap-[calc(10*var(--s))] lg:text-[calc(13.5*var(--s))]"
                   >
-                    <span className="mt-[8px] h-[4px] w-[4px] flex-none rounded-full bg-[hsl(var(--ink-1))] lg:mt-[calc(8*var(--s))] lg:h-[calc(4*var(--s))] lg:w-[calc(4*var(--s))]" />
-                    {point}
+                    {/* Marker and line are siblings, never nested: the sequence
+                        lands the dot before the text slides off it, which it
+                        could not do if the text's wrapper gated the dot. */}
+                    <span className="cap-dot mt-[8px] h-[4px] w-[4px] flex-none rounded-full bg-[hsl(var(--ink-1))] lg:mt-[calc(8*var(--s))] lg:h-[calc(4*var(--s))] lg:w-[calc(4*var(--s))]" />
+                    <span className="cap-point">{point}</span>
                   </div>
                 ))}
               </div>
@@ -334,7 +384,7 @@ export function Capabilities() {
               <Link
                 href="/services"
                 aria-label={`${card.title.join(" ")} — learn more`}
-                className="mt-5 flex h-[42px] w-[42px] items-center justify-center rounded-full border border-[rgba(17,17,17,0.28)] transition-[transform,background-color] duration-200 hover:-translate-y-[2px] hover:bg-[var(--ink-a04)] lg:absolute lg:bottom-[calc(18*var(--s))] lg:right-[calc(18*var(--s))] lg:mt-0 lg:h-[calc(38*var(--s))] lg:w-[calc(38*var(--s))]"
+                className="cap-link mt-5 flex h-[42px] w-[42px] items-center justify-center rounded-full border border-[rgba(17,17,17,0.28)] transition-[transform,background-color] duration-200 hover:-translate-y-[2px] hover:bg-[var(--ink-a04)] lg:absolute lg:bottom-[calc(18*var(--s))] lg:right-[calc(18*var(--s))] lg:mt-0 lg:h-[calc(38*var(--s))] lg:w-[calc(38*var(--s))]"
               >
                 <Glyph
                   width={2}
@@ -349,9 +399,9 @@ export function Capabilities() {
 
         {/* ---------- built-for strip — design 48,826 · 1006x120 ---------- */}
         <div
-          className={`mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-5 px-[28px] py-[24px] ${panel} lg:absolute lg:left-[calc(48*var(--s))] lg:top-[calc(730*var(--s))] lg:z-[4] lg:mt-0 lg:h-[calc(110*var(--s))] lg:w-[calc(1006*var(--s))] lg:flex-nowrap lg:justify-between lg:gap-0 lg:rounded-[calc(26*var(--s))] lg:px-[calc(44*var(--s))] lg:py-0`}
+          className={`cap-strip mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-5 px-[28px] py-[24px] ${panel} lg:absolute lg:left-[calc(48*var(--s))] lg:top-[calc(730*var(--s))] lg:z-[4] lg:mt-0 lg:h-[calc(110*var(--s))] lg:w-[calc(1006*var(--s))] lg:flex-nowrap lg:justify-between lg:gap-0 lg:rounded-[calc(26*var(--s))] lg:px-[calc(44*var(--s))] lg:py-0`}
         >
-          <div>
+          <div className="cap-strip-item">
             <div className="text-[15px] font-extrabold tracking-[-0.01em] lg:text-[calc(16*var(--s))]">
               BUILT FOR
             </div>
@@ -360,7 +410,7 @@ export function Capabilities() {
           {builtFor.map((item) => (
             <span
               key={item.label.join(" ")}
-              className="inline-flex items-center gap-[12px] text-[14px] font-semibold lg:gap-[calc(12*var(--s))] lg:text-[calc(15*var(--s))]"
+              className="cap-strip-item inline-flex items-center gap-[12px] text-[14px] font-semibold lg:gap-[calc(12*var(--s))] lg:text-[calc(15*var(--s))]"
             >
               <Glyph className="h-[20px] w-[20px] flex-none lg:h-[calc(22*var(--s))] lg:w-[calc(22*var(--s))]">
                 {item.icon}
@@ -381,9 +431,9 @@ export function Capabilities() {
 
         {/* ---------- value statement — design 1076,826 · 486x120 ---------- */}
         <div
-          className={`relative mt-6 flex items-center gap-[20px] overflow-hidden px-[28px] py-[24px] ${panel} lg:absolute lg:left-[calc(1076*var(--s))] lg:top-[calc(730*var(--s))] lg:z-[4] lg:mt-0 lg:h-[calc(110*var(--s))] lg:w-[calc(486*var(--s))] lg:gap-[calc(22*var(--s))] lg:rounded-[calc(26*var(--s))] lg:px-[calc(34*var(--s))] lg:py-0`}
+          className={`cap-value relative mt-6 flex items-center gap-[20px] overflow-hidden px-[28px] py-[24px] ${panel} lg:absolute lg:left-[calc(1076*var(--s))] lg:top-[calc(730*var(--s))] lg:z-[4] lg:mt-0 lg:h-[calc(110*var(--s))] lg:w-[calc(486*var(--s))] lg:gap-[calc(22*var(--s))] lg:rounded-[calc(26*var(--s))] lg:px-[calc(34*var(--s))] lg:py-0`}
         >
-          <span className="flex h-[52px] w-[52px] flex-none items-center justify-center rounded-full bg-[hsl(var(--yellow))] shadow-[0_8px_20px_rgba(246,242,60,0.55)] lg:h-[calc(56*var(--s))] lg:w-[calc(56*var(--s))]">
+          <span className="cap-value-badge flex h-[52px] w-[52px] flex-none items-center justify-center rounded-full bg-[hsl(var(--yellow))] shadow-[0_8px_20px_rgba(246,242,60,0.55)] lg:h-[calc(56*var(--s))] lg:w-[calc(56*var(--s))]">
             <Glyph
               width={2.2}
               className="h-[22px] w-[22px] lg:h-[calc(24*var(--s))] lg:w-[calc(24*var(--s))]"
