@@ -88,9 +88,11 @@ export function Hero() {
       style={stageStyle}
       className="relative w-full overflow-hidden bg-[hsl(var(--beige-1))] text-[hsl(var(--ink-1))] lg:grid lg:h-svh lg:items-end lg:justify-items-center"
     >
+      {/* Single fade target for the Trust scroll sequence: one wrapper, so the
+          cleanup never collides with heroIdle's per-element tweens. */}
       <div
         style={scale}
-        className="relative flex flex-col px-6 pb-10 pt-[88px] md:px-8 lg:block lg:h-[calc(875*var(--s))] lg:w-[calc(1620*var(--s))] lg:px-0 lg:pb-0 lg:pt-0"
+        className="hero-stage relative flex flex-col px-6 pb-10 pt-[88px] md:px-8 lg:block lg:h-[calc(875*var(--s))] lg:w-[calc(1620*var(--s))] lg:px-0 lg:pb-0 lg:pt-0"
       >
         {/* ---------- backdrop: wordmark + portrait ---------- */}
         <div

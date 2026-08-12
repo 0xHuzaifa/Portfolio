@@ -16,11 +16,10 @@ import { FeaturedProjects } from "@/components/portfolio/FeaturedProjects";
 import FeaturedSystems from "@/components/portfolio/FeaturedSystems";
 import { FinalCta } from "@/components/portfolio/FinalCta";
 import { Footer } from "@/components/portfolio/Footer";
-import { Hero } from "@/components/portfolio/Hero";
+import { HeroTrustStage } from "@/components/portfolio/HeroTrustStage";
 import { HowIThink } from "@/components/portfolio/HowIThink";
 import { Quote } from "@/components/portfolio/Quote";
 import { SocialProof } from "@/components/portfolio/SocialProof";
-import { Trust } from "@/components/portfolio/Trust";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { systemBuildPrinciples } from "@/data/portfolio/process";
 import { categoryLabels, techStack } from "@/data/techStack";
@@ -71,8 +70,7 @@ export function HomePageContent() {
 
   return (
     <RevealContainer>
-      <Hero />
-      <Trust />
+      <HeroTrustStage />
       <FeaturedProjects />
       <HowIThink />
       <Capabilities />
