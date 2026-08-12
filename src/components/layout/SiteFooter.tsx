@@ -10,9 +10,11 @@ const footerLinks = [
   { href: "/contact", label: "Contact" },
 ] as const;
 
+/** Pages that close with the redesigned `portfolio/Footer` section themselves. */
+const selfClosing = ["/", "/systems"];
+
 export function SiteFooter() {
-  // The homepage ends with the FinalCta section, which carries its own footer.
-  if (usePathname() === "/") return null;
+  if (selfClosing.includes(usePathname())) return null;
 
   return (
     <footer className="border-t border-[hsl(var(--border))]/60">

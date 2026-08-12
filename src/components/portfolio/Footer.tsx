@@ -1,9 +1,21 @@
+"use client";
+
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
 import Link from "next/link";
+import { useRef } from "react";
+import { footerSequence } from "@/animations/footer";
 import { halfSectionClass, halfStageClass, scale, stageStyle } from "./stage";
+
+gsap.registerPlugin(useGSAP);
 
 /**
  * Lifted out of FinalCta so that section fits one screen. Runs at half height
  * (1620x437) on the same `--s`, so it lines up with every other section's width.
+ *
+ * The `ft-*` classes are handles for `footerSequence` — the only sequence on
+ * the page that does not pin, because this is the last element in the document
+ * and a pin would have no scroll room to play out in.
  */
 const social: { label: string; href: string; icon: React.ReactNode }[] = [
   {
@@ -51,15 +63,29 @@ const social: { label: string; href: string; icon: React.ReactNode }[] = [
 ];
 
 export function Footer() {
+  const root = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (!root.current) return;
+
+      // Returned so StrictMode's remount reverts the matchMedia; without it the
+      // first run's ScrollTrigger survives and fights the second.
+      return footerSequence(root.current);
+    },
+    { scope: root },
+  );
+
   return (
-    <section style={stageStyle} className={halfSectionClass}>
+    <section ref={root} style={stageStyle} className={halfSectionClass}>
       <div style={scale} className={halfStageClass}>
-        {/* divider with its glowing origin dot */}
-        <div className="relative h-px w-full bg-[rgba(17,17,17,0.12)] lg:absolute lg:left-[calc(70*var(--s))] lg:top-[calc(190*var(--s))] lg:z-[2] lg:w-[calc(1480*var(--s))]" />
-        <span className="absolute left-0 hidden rounded-full bg-[hsl(var(--yellow))] shadow-[0_0_14px_3px_rgba(246,242,60,0.7)] lg:block lg:left-[calc(66*var(--s))] lg:top-[calc(185*var(--s))] lg:z-[3] lg:h-[calc(11*var(--s))] lg:w-[calc(11*var(--s))]" />
+        {/* divider with its glowing origin dot — the dot lands first and the
+            rule is drawn out of it */}
+        <div className="ft-rule relative h-px w-full bg-[rgba(17,17,17,0.12)] lg:absolute lg:left-[calc(70*var(--s))] lg:top-[calc(190*var(--s))] lg:z-[2] lg:w-[calc(1480*var(--s))]" />
+        <span className="ft-dot absolute left-0 hidden rounded-full bg-[hsl(var(--yellow))] shadow-[0_0_14px_3px_rgba(246,242,60,0.7)] lg:block lg:left-[calc(66*var(--s))] lg:top-[calc(185*var(--s))] lg:z-[3] lg:h-[calc(11*var(--s))] lg:w-[calc(11*var(--s))]" />
 
         <div className="mt-8 flex flex-col gap-6 lg:mt-0 lg:block">
-          <div className="text-[14px] leading-[1.6] text-[hsl(var(--ink-2))] lg:absolute lg:left-[calc(70*var(--s))] lg:top-[calc(220*var(--s))] lg:z-[3] lg:text-[calc(15*var(--s))]">
+          <div className="ft-copy text-[14px] leading-[1.6] text-[hsl(var(--ink-2))] lg:absolute lg:left-[calc(70*var(--s))] lg:top-[calc(220*var(--s))] lg:z-[3] lg:text-[calc(15*var(--s))]">
             <div>
               &copy; {new Date().getFullYear()} 0xHuzaifa. All rights reserved.
             </div>
@@ -71,7 +97,7 @@ export function Footer() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="inline-flex items-center gap-[9px] text-[14px] transition-opacity hover:opacity-70 lg:gap-[calc(9*var(--s))] lg:text-[calc(15*var(--s))]"
+                className="ft-social inline-flex items-center gap-[9px] text-[14px] transition-opacity hover:opacity-70 lg:gap-[calc(9*var(--s))] lg:text-[calc(15*var(--s))]"
               >
                 <svg
                   aria-hidden="true"

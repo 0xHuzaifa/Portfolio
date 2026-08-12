@@ -237,7 +237,7 @@ function buildPortfolioKnowledgeBase(): PortfolioKnowledgeDocument[] {
       id: `experience-${item.id}`,
       title: `${item.role} at ${item.company}`,
       section: "experience",
-      route: "/experience",
+      route: "/about",
       keywords: [
         item.id,
         item.role,

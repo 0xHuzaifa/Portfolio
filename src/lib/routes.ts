@@ -21,12 +21,6 @@ export const rootExplorerItems: readonly ExplorerItem[] = [
     group: "root",
   },
   {
-    href: "/experience",
-    label: "Experience",
-    fileLabel: "Experience",
-    group: "root",
-  },
-  {
     href: "/contact",
     label: "Contact",
     fileLabel: "Contact",

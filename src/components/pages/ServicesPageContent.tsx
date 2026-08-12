@@ -293,7 +293,7 @@ export function ServicesPageContent() {
                 <ArrowRight className="h-4 w-4" />
               </AppLink>
               <AppLink
-                href="/experience"
+                href="/about"
                 className="rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-5 py-3 text-sm font-medium transition-colors hover:bg-[hsl(var(--secondary))]"
               >
                 View experience
