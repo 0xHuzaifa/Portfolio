@@ -33,6 +33,22 @@ export interface System {
   shortDescription: string;
   problem: string;
   solution: string;
+  /**
+   * The case-study page's four-part story runs Challenge → Solution → Approach
+   * → Outcome. `problem` and `solution` cover the first two; these cover the
+   * rest. Both optional: a system without them renders the story in two or
+   * three parts rather than inventing the missing halves. `outcome` falls back
+   * to the first `impact` entry.
+   */
+  approach?: string;
+  outcome?: string;
+  /** Project facts shown beside the role. Each renders only when present. */
+  duration?: string;
+  platform?: string;
+  teamSize?: string;
+  /** Stage buttons. Absent → the button is not rendered at all. */
+  liveUrl?: string;
+  repoUrl?: string;
   features: string[];
   architecture: {
     frontend: string;
