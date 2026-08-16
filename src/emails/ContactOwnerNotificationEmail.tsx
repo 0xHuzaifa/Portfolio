@@ -1,5 +1,5 @@
 import { Link, Section, Text } from "@react-email/components";
-import { ContactEmailLayout } from "@/emails/ContactEmailLayout";
+import { ContactEmailLayout, PALETTE } from "@/emails/ContactEmailLayout";
 import type { ContactFormData } from "@/lib/contact/contact.types";
 
 type ContactOwnerNotificationEmailProps = {
@@ -33,24 +33,29 @@ export function ContactOwnerNotificationEmail({
         <Text style={label}>Message</Text>
         <Text style={messageText}>{submission.message}</Text>
       </Section>
+
+      <Text style={replyHint}>
+        Replying to this email goes straight back to {submission.name}.
+      </Text>
     </ContactEmailLayout>
   );
 }
 
 const paragraph = {
   margin: "0 0 18px",
+  color: PALETTE.inkSoft,
 };
 
 const infoCard = {
-  border: "1px solid #263244",
+  border: `1px solid ${PALETTE.rule}`,
   borderRadius: "18px",
-  backgroundColor: "#121b27",
-  padding: "20px",
+  backgroundColor: PALETTE.well,
+  padding: "22px",
 };
 
 const label = {
   margin: "0 0 6px",
-  color: "#5fd4ff",
+  color: PALETTE.inkFaint,
   fontSize: "11px",
   fontWeight: 700,
   letterSpacing: "0.14em",
@@ -59,20 +64,32 @@ const label = {
 
 const value = {
   margin: "0 0 18px",
-  color: "#f7fafc",
+  color: PALETTE.ink,
   fontSize: "15px",
   lineHeight: "25px",
+  fontWeight: 600,
 };
 
 const messageText = {
   margin: 0,
-  color: "#f7fafc",
+  color: PALETTE.ink,
   fontSize: "15px",
   lineHeight: "25px",
   whiteSpace: "pre-wrap" as const,
 };
 
+/* Ink with a yellow underline. The accent is unreadable as link text on a
+   light panel — it carries the emphasis underneath the word instead. */
 const link = {
-  color: "#7ddfff",
-  textDecoration: "none",
+  color: PALETTE.ink,
+  fontWeight: 700,
+  textDecoration: "underline",
+  textDecorationColor: PALETTE.yellow,
+};
+
+const replyHint = {
+  margin: "18px 0 0",
+  color: PALETTE.inkFaint,
+  fontSize: "13px",
+  lineHeight: "21px",
 };
