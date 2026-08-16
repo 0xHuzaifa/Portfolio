@@ -31,11 +31,20 @@ const IDLE_START = 4.9;
 export function heroIntro() {
   const mm = gsap.matchMedia();
 
-  mm.add("(prefers-reduced-motion: no-preference)", () => {
-    // The nav lives in the root layout, outside the hero's scope, so it has to
-    // be looked up by hand rather than through a scoped selector string.
-    const nav = document.querySelector(".site-nav");
+  // The nav lives in the root layout, outside the hero's scope, so it has to be
+  // looked up by hand rather than through a scoped selector string.
+  const nav = document.querySelector(".site-nav");
 
+  // Both start hidden in CSS (see "Hero pre-intro hold" in globals.css) so the
+  // server-painted hero never shows before the intro can set its start frame.
+  // This runs in the same layout effect as the `from()` calls below — before
+  // the browser paints — so the visitor's first frame is frame 0 of the intro,
+  // not the finished hero. Outside the matchMedia block on purpose: with
+  // reduced motion nothing else runs, and the hero still has to appear.
+  gsap.set(".hero-stage", { visibility: "visible" });
+  if (nav) gsap.set(nav, { visibility: "visible" });
+
+  mm.add("(prefers-reduced-motion: no-preference)", () => {
     const tl = gsap.timeline({ defaults: { ease: EASE } });
 
     // Stage 1 — the name rises out of its own box. The wrapper is clipped to
