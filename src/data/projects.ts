@@ -27,6 +27,15 @@ export interface ProjectEntry {
   caseStudySlug?: string;
   /** Present → the corner badge links out. Absent → no badge. */
   liveUrl?: string;
+  /**
+   * Shown on the hero deck card, both optional and both omitted rather than
+   * guessed: `year` falls back to what the card links to, and the completion
+   * meter is not drawn at all without `progress`. A progress bar is a claim
+   * about the work, and one invented to fill a slot is the kind that gets
+   * asked about on a call.
+   */
+  year?: string;
+  progress?: number;
 }
 
 export const projects: ProjectEntry[] = [

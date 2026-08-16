@@ -19,7 +19,7 @@ import { type RefObject, useEffect } from "react";
  */
 
 /** Cards the highlight can land on. */
-const CARD = ".glass-card, .deck-slab";
+const CARD = ".glass-card";
 
 export function useGlassParallax(ref: RefObject<HTMLElement | null>) {
   useEffect(() => {

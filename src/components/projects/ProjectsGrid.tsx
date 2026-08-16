@@ -3,7 +3,12 @@
 import { ChevronDown, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { scale, stageStyle } from "@/components/portfolio/stage";
-import type { ProjectCategory, ProjectEntry } from "@/data/projects";
+import {
+  categories,
+  categoryCount,
+  type ProjectCategory,
+  type ProjectEntry,
+} from "@/data/projects";
 import { ProjectCard } from "./ProjectCard";
 
 /**
@@ -19,6 +24,15 @@ import { ProjectCard } from "./ProjectCard";
 /** Cards revealed per press of "load more". */
 const BATCH = 6;
 
+/** Filter chip. Selected is the accent filled solid — nothing else on the page
+ *  is, so the current filter is readable from across the section. */
+const chipClass = (on: boolean) =>
+  `inline-flex items-center gap-[8px] rounded-full px-[17px] py-[9px] text-[14px] font-bold tracking-[-0.01em] transition-[background-color,border-color,transform] duration-200 ease-[var(--ease)] hover:-translate-y-[2px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[hsl(var(--ink-1))] ${
+    on
+      ? "border border-transparent bg-[hsl(var(--yellow))] text-[hsl(var(--ink-1))] shadow-[var(--shadow-sm)]"
+      : "border border-[var(--ink-a12)] bg-transparent text-[hsl(var(--ink-2))] hover:border-[hsl(var(--ink-1))] hover:text-[hsl(var(--ink-1))]"
+  }`;
+
 /** Content column: the site-wide 1532-unit width above `lg`, plain flow below. */
 export const contentClass =
   "mx-auto w-full max-w-[1400px] lg:w-[calc(1532*var(--s))] lg:max-w-none";
@@ -26,10 +40,12 @@ export const contentClass =
 export function ProjectsGrid({
   projects,
   active,
+  onSelect,
   onClear,
 }: {
   projects: ProjectEntry[];
   active: ProjectCategory | null;
+  onSelect: (category: ProjectCategory) => void;
   onClear: () => void;
 }) {
   const [visible, setVisible] = useState(BATCH);
@@ -54,6 +70,45 @@ export function ProjectsGrid({
           `--s`. A fixed `max-w` looked right at 1440 and drifted everywhere
           else — at 1920 it held 1400px while the header ran to 1816. */}
       <div style={scale} className={contentClass}>
+        {/* The filter lives here, against the results it changes, rather than a
+            screen up in the hero — which is what the old "select a category to
+            filter the projects below" line was there to apologise for. */}
+        <div className="pg-filters mb-7 flex flex-wrap items-center gap-[10px] border-b border-[var(--ink-a08)] pb-7">
+          <button
+            type="button"
+            onClick={onClear}
+            aria-pressed={active === null}
+            className={chipClass(active === null)}
+          >
+            All work
+          </button>
+          {categories.map((category) => {
+            const count = categoryCount(category);
+            const on = active === category.id;
+
+            return (
+              <button
+                key={category.id}
+                type="button"
+                onClick={() => onSelect(category.id)}
+                aria-pressed={on}
+                className={chipClass(on)}
+              >
+                {category.label}
+                <span
+                  className={`text-[12px] font-semibold tabular-nums ${
+                    on
+                      ? "text-[hsl(var(--ink-1))]/55"
+                      : "text-[hsl(var(--ink-3))]"
+                  }`}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
         {/* Result count, announced so a filter press is not a silent change for
             anyone who cannot see the grid re-flow. */}
         <div
@@ -69,7 +124,7 @@ export function ProjectsGrid({
             <button
               type="button"
               onClick={onClear}
-              className="inline-flex items-center gap-[7px] rounded-full border border-[var(--glass-border-ink)] bg-[var(--glass-fill-strong)] px-[13px] py-[6px] text-[13px] font-semibold text-[hsl(var(--ink-1))] backdrop-blur-md transition-colors duration-200 hover:bg-[var(--ink-a04)]"
+              className="inline-flex items-center gap-[7px] text-[13px] font-semibold text-[hsl(var(--ink-1))] underline underline-offset-4 transition-opacity duration-200 hover:opacity-70"
             >
               <X className="h-[13px] w-[13px]" strokeWidth={2.4} />
               Clear filter
