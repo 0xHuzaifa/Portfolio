@@ -129,7 +129,7 @@ export function FinalCta() {
             <span key={line} className="fc-line block">
               {i === headline.length - 1 ? (
                 <>
-                  <span className="text-[hsl(var(--yellow))]">{line}</span>.
+                  <span className="text-[hsl(var(--yellow-deep))]">{line}</span>.
                 </>
               ) : (
                 line

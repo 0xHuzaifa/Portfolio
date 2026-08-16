@@ -288,7 +288,7 @@ export function Capabilities() {
         </div>
 
         <h2 className="cap-head mt-6 text-[clamp(2.5rem,11vw,80px)] font-extrabold leading-none tracking-[-0.03em] lg:absolute lg:left-[calc(56*var(--s))] lg:top-[calc(165*var(--s))] lg:z-[5] lg:mt-0 lg:text-[calc(70*var(--s))]">
-          Capabilities<span className="text-[hsl(var(--yellow))]">.</span>
+          Capabilities<span className="text-[hsl(var(--yellow-deep))]">.</span>
         </h2>
 
         <p className="cap-head mt-6 max-w-[460px] text-[18px] leading-[1.5] text-[hsl(var(--ink-2))] lg:absolute lg:left-[calc(62*var(--s))] lg:top-[calc(268*var(--s))] lg:z-[5] lg:mt-0 lg:w-[calc(400*var(--s))] lg:max-w-none lg:text-[calc(18*var(--s))]">

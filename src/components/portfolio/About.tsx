@@ -131,7 +131,7 @@ export function About() {
             >
               <span
                 className={`ab-line-text block pb-[0.22em] ${
-                  i === claims.length - 1 ? "text-[hsl(var(--yellow))]" : ""
+                  i === claims.length - 1 ? "text-[hsl(var(--yellow-deep))]" : ""
                 }`}
               >
                 {claim}

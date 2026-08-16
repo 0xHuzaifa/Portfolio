@@ -64,7 +64,7 @@ export function Trust() {
         </div>
 
         {/* ---------- glass panel ---------- */}
-        <div className="trust-surface relative mx-3 mt-6 overflow-hidden rounded-[28px] border border-white/60 [background:radial-gradient(120%_95%_at_72%_28%,rgba(246,242,60,0.13),rgba(246,242,60,0)_55%),linear-gradient(158deg,rgba(255,255,255,0.66)_0%,rgba(255,255,255,0.46)_55%,rgba(252,250,230,0.5)_100%)] px-5 py-10 shadow-[0_-26px_70px_rgba(0,0,0,0.10),0_40px_90px_rgba(0,0,0,0.07)] backdrop-blur-[30px] backdrop-saturate-150 [transform:translateZ(0)] lg:absolute lg:left-[calc(4*var(--s))] lg:top-[calc(8*var(--s))] lg:mx-0 lg:mt-0 lg:h-[calc(537*var(--s))] lg:w-[calc(1664*var(--s))] lg:rounded-[calc(44*var(--s))] lg:p-0">
+        <div className="trust-surface relative mx-3 mt-6 overflow-hidden rounded-[28px] border border-white/60 [background:radial-gradient(120%_95%_at_72%_28%,rgba(246,242,60,0.13),rgba(246,242,60,0)_55%),linear-gradient(158deg,rgba(255,255,255,0.66)_0%,rgba(255,255,255,0.46)_55%,rgba(252,250,230,0.5)_100%)] px-5 py-10 shadow-[0_-26px_70px_rgba(0,0,0,0.10),0_40px_90px_rgba(0,0,0,0.07)] backdrop-blur-[30px] backdrop-saturate-150 lg:absolute lg:left-[calc(4*var(--s))] lg:top-[calc(8*var(--s))] lg:mx-0 lg:mt-0 lg:h-[calc(537*var(--s))] lg:w-[calc(1664*var(--s))] lg:rounded-[calc(44*var(--s))] lg:p-0">
           {/* Ambient warmth behind the stat cards — one broad, shapeless wash.
               Deliberately NOT a `rounded-[50%]` pool: the cards are translucent
               glass, and any bloom with a discernible edge reads straight
@@ -91,10 +91,10 @@ export function Trust() {
             <h2 className="trust-text relative mt-7 text-[clamp(2rem,7.6vw,50px)] font-extrabold leading-[1.14] tracking-[-0.028em] lg:absolute lg:left-[calc(105*var(--s))] lg:top-[calc(152*var(--s))] lg:mt-0 lg:w-[calc(760*var(--s))] lg:text-[calc(50*var(--s))] lg:leading-[1.14]">
               Turning Ideas Into
               <br />
-              <span className="text-[hsl(var(--yellow))]">
+              <span className="text-[hsl(var(--yellow-deep))]">
                 Production-Ready
               </span>{" "}
-              Products<span className="text-[hsl(var(--yellow))]">.</span>
+              Products<span className="text-[hsl(var(--yellow-deep))]">.</span>
             </h2>
 
             {/* sub copy — ref cap-top 300 */}

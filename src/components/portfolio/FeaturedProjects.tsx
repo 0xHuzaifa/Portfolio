@@ -156,7 +156,7 @@ export function FeaturedProjects() {
           Systems I&rsquo;ve
           <br />
           Built &amp; Shipped
-          <span className="text-[hsl(var(--yellow))]">.</span>
+          <span className="text-[hsl(var(--yellow-deep))]">.</span>
         </h2>
 
         <p className="fp-head mt-5 text-[17px] leading-[1.5] text-[hsl(var(--ink-2))] lg:absolute lg:left-[calc(70*var(--s))] lg:top-[calc(272*var(--s))] lg:mt-0 lg:w-[calc(430*var(--s))] lg:text-[calc(16*var(--s))] lg:leading-[calc(24*var(--s))]">
@@ -172,7 +172,7 @@ export function FeaturedProjects() {
 
         {/* ---------- featured project detail ---------- */}
         <div className="mt-12 lg:mt-0">
-          <div className="fp-detail text-[64px] font-extrabold leading-none tracking-[-0.02em] text-[hsl(var(--yellow))] lg:absolute lg:left-[calc(830*var(--s))] lg:top-[calc(148*var(--s))] lg:text-[calc(92*var(--s))]">
+          <div className="fp-detail text-[64px] font-extrabold leading-none tracking-[-0.02em] text-[hsl(var(--yellow-deep))] lg:absolute lg:left-[calc(830*var(--s))] lg:top-[calc(148*var(--s))] lg:text-[calc(92*var(--s))]">
             {featured.index}
           </div>
 

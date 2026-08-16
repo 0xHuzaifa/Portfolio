@@ -208,7 +208,7 @@ export function HowIThink() {
 
         <h2 className="hit-head mt-6 text-[clamp(3rem,15vw,110px)] font-extrabold uppercase leading-[0.9] tracking-[-0.03em] lg:absolute lg:left-[calc(62*var(--s))] lg:top-[calc(190*var(--s))] lg:z-[5] lg:mt-0 lg:text-[calc(92*var(--s))]">
           How
-          <br />I Think<span className="text-[hsl(var(--yellow))]">.</span>
+          <br />I Think<span className="text-[hsl(var(--yellow-deep))]">.</span>
         </h2>
 
         <p className="hit-head mt-6 max-w-[420px] text-[19px] leading-[1.45] text-[hsl(var(--ink-2))] lg:absolute lg:left-[calc(66*var(--s))] lg:top-[calc(390*var(--s))] lg:z-[5] lg:mt-0 lg:w-[calc(300*var(--s))] lg:max-w-none lg:text-[calc(19*var(--s))]">

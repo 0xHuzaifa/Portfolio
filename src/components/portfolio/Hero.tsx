@@ -135,11 +135,11 @@ export function Hero() {
               FULL-STACK DEVELOPER (MERN/PERN)
             </p>
             <h1 className="hero-left mt-[22px] text-[clamp(2.75rem,11vw,62px)] font-extrabold leading-[1.03] tracking-[-0.03em] lg:mt-[calc(19*var(--s))] lg:text-[calc(62*var(--s))]">
-              I Build<span className="text-[hsl(var(--yellow))]">.</span>
+              I Build<span className="text-[hsl(var(--yellow-deep))]">.</span>
               <br />
-              Ship<span className="text-[hsl(var(--yellow))]">.</span>
+              Ship<span className="text-[hsl(var(--yellow-deep))]">.</span>
               <br />
-              Scale<span className="text-[hsl(var(--yellow))]">.</span>
+              Scale<span className="text-[hsl(var(--yellow-deep))]">.</span>
             </h1>
             <p className="hero-support mt-[26px] max-w-[300px] text-[16px] leading-[1.56] text-[hsl(var(--ink-2))] lg:mt-[calc(20*var(--s))] lg:max-w-[calc(285*var(--s))] lg:text-[calc(16*var(--s))]">
               I build production-grade web systems with clean architecture,
@@ -198,7 +198,7 @@ export function Hero() {
                   <div className="text-[26px] font-extrabold leading-none tracking-[-0.02em] lg:text-[calc(26*var(--s))]">
                     {value}
                   </div>
-                  <div className="mt-[5px] text-[14px] leading-[1.18] text-[hsl(var(--ink-2))] lg:mt-[calc(5*var(--s))] lg:text-[calc(13*var(--s))]">
+                  <div className="mt-[5px] font-bold text-[14px] leading-[1.18]  lg:mt-[calc(5*var(--s))] lg:text-[calc(13*var(--s))]">
                     {label[0]}
                     <br />
                     {label[1]}

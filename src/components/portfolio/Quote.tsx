@@ -46,7 +46,7 @@ export function Quote() {
     <section ref={root} style={stageStyle} className={sectionClass}>
       <div style={scale} className={stageClass}>
         <div className="qt-panel relative flex flex-col gap-8 rounded-[28px] border border-[var(--glass-border)] bg-[var(--glass-fill)] p-[28px] shadow-[var(--shadow)] backdrop-blur-[16px] [transform:translateZ(0)] lg:absolute lg:left-[calc(60*var(--s))] lg:top-[calc(224*var(--s))] lg:h-[calc(427*var(--s))] lg:w-[calc(1500*var(--s))] lg:gap-0 lg:rounded-[calc(44*var(--s))] lg:p-0">
-          <span className="qt-mark inline-block font-hand text-[64px] font-bold leading-[0.6] text-[hsl(var(--yellow))] lg:absolute lg:left-[calc(68*var(--s))] lg:top-[calc(52*var(--s))] lg:text-[calc(150*var(--s))]">
+          <span className="qt-mark inline-block font-hand text-[64px] font-bold leading-[0.6] text-[hsl(var(--yellow-deep))] lg:absolute lg:left-[calc(68*var(--s))] lg:top-[calc(52*var(--s))] lg:text-[calc(150*var(--s))]">
             &ldquo;
           </span>
 
@@ -69,7 +69,7 @@ export function Quote() {
                 </Fragment>
               ))}
               <span className="qt-punchline inline-block">invisible</span>
-              <span className="qt-stop inline-block text-[hsl(var(--yellow))]">
+              <span className="qt-stop inline-block text-[hsl(var(--yellow-deep))]">
                 .
               </span>
             </span>
