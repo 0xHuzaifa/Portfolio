@@ -121,6 +121,31 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Pre-intro hold — every section that opens with a self-playing sequence.
+
+   The server paints the finished section, but the intro's start states only
+   land once React has hydrated and `useGSAP` runs — so the visitor saw the
+   assembled section, then saw it stripped back to its first frame, then saw it
+   assemble. Holding the stage hidden from the first paint removes the first two
+   of those three. The sequence writes an inline `visibility: visible` in the
+   same layout effect that sets the start states, so the reveal and the start
+   frame hit the screen together.
+
+   `.hero-stage` is the homepage; `.ah-stage` is /about section 01. The site nav
+   goes with the homepage hero because it drops into that composition.
+
+   Unlayered on purpose: it has to outrank Tailwind's utilities.
+   --------------------------------------------------------------------------- */
+.hero-stage,
+.ah-stage,
+body:has(.hero-stage) .site-nav {
+  visibility: hidden;
+}
+
+/* No JS means no intro, and then nothing would ever reveal it — the layout's
+   <noscript> style hands the hold back. */
+
+/* ---------------------------------------------------------------------------
    Trust scroll sequence.
 
    Everything here is gated behind `[data-sequence="on"]`, which `trustSequence`
@@ -416,38 +441,28 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Projects hero — glass surfaces.
+   Projects hero — two materials.
 
-   Two materials, not one.
+   `.glass-card` is a FLAT frosted panel lying on the page. `.shot` is a PRINT:
+   a real screenshot behind a thin ink rim and a two-part shadow, no blur and no
+   frost. The distinction is the point. The hero used to hand its whole right
+   side to five glass slabs standing on a lit floor — an elaborate 3D scene
+   built to show categories, four of which held a single project each. Glass
+   over glass says nothing; a screenshot says what was built.
 
-   `.glass-card` is a FLAT panel lying on the page: the 80+ stat card and the
-   impact strip. `.deck-slab` is a STANDING slab — the five category cards — and
-   that difference is the whole reason the deck never matched its reference
-   while it was built from flat glassmorphism. The reference is a 3D scene:
-   slabs stood upright on a glossy floor, each throwing a pool of light at its
-   foot. Zooming the reference to 7x shows a soft rim rather than a 1px border,
-   a lit floor plane with a horizon, and the accent wire reading THROUGH the
-   glass — none of which a blurred rectangle can produce.
-
-   The floor pool is a gradient hinged at the card's foot and laid flat with
-   `rotateX(-90deg)`. Under the scene's perspective that projects to exactly the
-   skewed parallelogram in the reference. `-webkit-box-reflect` was the obvious
-   alternative and is wrong twice over: it mirrors the CONTENT, so every label
-   appears upside down under its card, and Firefox does not implement it.
-
-   Motion lives on `.glass-card-inner` for both materials: the outer keeps 3D
+   Motion lives on `.glass-card-inner` for the frosted panels: the outer keeps
    placement and pointer parallax, the inner takes the arrival, the drift and
    the hover. One owner per transform — two systems writing one `transform` is
-   the bug that broke the hero's idle drift.
+   the bug that broke the homepage hero's idle drift. The prints own their own
+   transform outright, which is why they take the parallax directly.
 
    Alphas are tuned for this LIGHT canvas; the usual glassmorphism figures
    assume a dark backdrop and vanish on beige. The accent stays `--yellow`.
 
    In `@layer components` on purpose, and it has to stay there. Unlayered CSS
    outranks every cascade layer, so declaring `position: relative` at the top
-   level silently beat the deck's `lg:absolute` — the cards fell back into
-   inline flow, `left` shifted them a second time, and two of the five ran off
-   the canvas. Inside the layer, Tailwind's utilities win.
+   level silently beats the cards' `lg:absolute` placement. Inside the layer,
+   Tailwind's utilities win.
    --------------------------------------------------------------------------- */
 
 /* Arrival: up 20px, in from 0.95. `backwards` holds the start state through
@@ -516,196 +531,208 @@
       0 14px 38px rgba(0, 0, 0, 0.09);
   }
 
-  /* ── standing slab: the category deck ──────────────────────────────────── */
+  /* ── projects hero: the card deck ──────────────────────────── */
 
-  .deck-slab {
-    position: relative;
-    transform-style: preserve-3d;
-  }
-
-  /* The glass itself. A vertical gradient, not a flat fill: light falls from
-     above, so the top of a standing slab is always brighter than its foot.
-     Kept thin enough that the accent wire behind the deck reads through it. */
-  .deck-face {
-    position: relative;
-    isolation: isolate;
-    border-radius: inherit;
-    background: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.72),
-      rgba(255, 255, 255, 0.42)
-    );
-    backdrop-filter: blur(10px) saturate(120%);
-    -webkit-backdrop-filter: blur(10px) saturate(120%);
+  /* A card in the fanned stack. Frosted, with the front one brought forward by
+     surface and shadow rather than by size — it is already the largest, and
+     doubling the cue makes the deck lurch when the selection changes. */
+  .pd-card {
+    background: rgba(255, 255, 255, 0.44);
+    backdrop-filter: blur(16px) saturate(130%);
+    -webkit-backdrop-filter: blur(16px) saturate(130%);
+    border: 1px solid rgba(255, 255, 255, 0.65);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.95),
-      inset 0 -16px 28px -20px rgba(0, 0, 0, 0.4);
+      0 10px 28px rgba(30, 25, 15, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
     transition:
-      background 320ms var(--ease),
-      box-shadow 320ms var(--ease);
+      transform 500ms var(--ease),
+      background 400ms ease,
+      box-shadow 400ms ease;
+    cursor: pointer;
   }
 
-  /* The rim. A 1px gradient ring masked to the border band — bright at the
-     top-left where the light is, nearly gone at the lower right. This is what
-     the reference has instead of a uniform border. */
-  .deck-face::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    border-radius: inherit;
-    padding: 1.2px;
-    background: linear-gradient(
-      155deg,
-      rgba(255, 255, 255, 1),
-      rgba(255, 255, 255, 0.2) 48%,
-      rgba(255, 255, 255, 0.9)
-    );
-    -webkit-mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask:
-      linear-gradient(#fff 0 0) content-box,
-      linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    pointer-events: none;
-    transition: opacity 320ms var(--ease);
-  }
-
-  /* The light that follows the cursor, from the same `--mx`/`--my` the
-     parallax hook writes onto the slab. */
-  .deck-face::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    border-radius: inherit;
-    pointer-events: none;
-    opacity: 0;
-    background: radial-gradient(
-      circle at var(--mx, 50%) var(--my, 50%),
-      rgba(255, 255, 255, 0.55),
-      transparent 55%
-    );
-    transition: opacity 320ms var(--ease);
-  }
-
-  .deck-slab:hover .deck-face::after {
-    opacity: 1;
-  }
-
-  .deck-slab:hover .deck-face {
+  .pd-card.is-active {
+    background: rgba(255, 255, 255, 0.72);
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 1),
-      inset 0 -16px 28px -20px rgba(0, 0, 0, 0.32);
+      0 24px 60px rgba(30, 25, 15, 0.13),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    cursor: default;
   }
 
-  /* The lit category. Soft cream with a yellow rim and a glow — the reference's
-     active card is not a lemon fill, it is the same glass warmed through. */
-  .deck-slab.is-active .deck-face {
+  .pd-card:focus-visible {
+    outline: 2px solid hsl(var(--ink-1));
+    outline-offset: 3px;
+  }
+
+  /* The outlined count behind the deck. `-webkit-text-stroke` has no standard
+     longhand with the same support, and the fallback — a filled number at 6%
+     ink — is close enough that no guard is needed. */
+  .pd-ghost-count {
+    -webkit-text-stroke: 1px rgba(17, 17, 17, 0.08);
+  }
+
+  /* ── case study: the product shot ──────────────────────────── */
+
+  /* At rest the screen is laid back on the page, an object among the copy. On
+     approach it squares up to the reader and becomes something to look INTO.
+     The turn is the page's one authored moment, so it is slow and eased rather
+     than snappy. */
+  @media (min-width: 1024px) {
+    .system-shot {
+      transform: perspective(1300px) rotateY(-14deg) rotateX(3deg)
+        rotateZ(-0.8deg);
+      transition:
+        transform 720ms var(--ease),
+        box-shadow 720ms var(--ease);
+    }
+
+    .system-shot:hover {
+      transform: perspective(1300px) rotateY(0deg) rotateX(0deg) rotateZ(0deg);
+      box-shadow: 0 40px 80px -34px rgba(60, 50, 35, 0.34);
+    }
+  }
+
+  @media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+    .system-shot {
+      transition: none;
+    }
+  }
+
+  /* ── architectural glass: the projects hero still life ───────────── */
+
+  /* The warm source the sheets stand in. One soft radial, well short of the
+     frame edges — a gradient that reaches the corners reads as a background
+     treatment rather than as light coming from somewhere in the scene. */
+  .hero-art-light {
+    background: radial-gradient(
+      circle at 63% 46%,
+      rgba(246, 226, 90, 0.16),
+      rgba(246, 226, 90, 0.05) 12%,
+      transparent 27%
+    );
+  }
+
+  /* A sheet of glass seen edge-on, not a card. The fill is weak on purpose:
+     the canvas has to stay visible through it, and the panel is read from its
+     two vertical edges rather than from a border drawn all the way round. */
+  .glass-sheet {
+    /* A sheet, not a card: the corner is barely eased. Anything approaching a
+       card radius and the whole still life turns back into UI. */
+    border-radius: calc(7 * var(--s));
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.34),
+      rgba(255, 255, 255, 0.08)
+    );
+    /* No saturate. Boosting chroma behind clear glass pulled the warm pool
+       through all three sheets and turned the scene lemon. */
+    backdrop-filter: blur(11px);
+    -webkit-backdrop-filter: blur(11px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      inset 1px 0 0 rgba(255, 255, 255, 0.7),
+      inset -1px 0 0 rgba(0, 0, 0, 0.045),
+      0 30px 60px rgba(75, 65, 45, 0.07);
+    transform: var(--sheet-tilt);
+  }
+
+  /* The lit edge. Brightest at the ends and thinning through the middle, the
+     way a polished edge catches a source above and below it. */
+  .glass-sheet::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    border-radius: inherit;
     background: linear-gradient(
       to bottom,
-      rgba(253, 251, 226, 0.8),
-      rgba(252, 249, 208, 0.48)
+      rgba(255, 255, 255, 0.95),
+      rgba(255, 255, 255, 0.15) 45%,
+      rgba(255, 255, 255, 0.8)
     );
+    opacity: 0.8;
+  }
+
+  /* The far edge picks up the room instead of the light. */
+  .glass-sheet::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    border-radius: inherit;
+    background: rgba(150, 130, 90, 0.14);
+  }
+
+  /* Amber glass, not a yellow rectangle: the tint has to fall off across the
+     sheet, so what you read is light passing through it. */
+  .glass-sheet.is-amber {
+    background: linear-gradient(
+      148deg,
+      rgba(250, 226, 96, 0.42),
+      rgba(255, 246, 190, 0.22) 55%,
+      rgba(255, 255, 255, 0.08)
+    );
+    border-color: rgba(255, 246, 200, 0.7);
     box-shadow:
-      0 0 0 1.6px hsl(var(--yellow)),
-      0 12px 44px -8px rgba(246, 242, 60, 0.55),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      inset 1px 0 0 rgba(255, 252, 225, 0.85),
+      inset -1px 0 0 rgba(120, 96, 20, 0.06),
+      0 30px 64px rgba(150, 120, 20, 0.1);
   }
 
-  .deck-slab.is-active .deck-face::before {
-    opacity: 0;
+  /* ── the plinth ───────────────────────────────────────── */
+
+  /* The weight in the composition. Everything else floats; this one thing is
+     evidently heavy, and the glass reads as standing rather than drifting only
+     because it is here. */
+  .plinth-face,
+  .plinth-top,
+  .plinth-side {
+    /* Aggregate speckle, kept far below the threshold of notice — enough to
+       stop the faces reading as flat fills, never enough to look like a
+       texture someone applied. */
+    background-image:
+      radial-gradient(
+        circle at 22% 28%,
+        rgba(255, 255, 255, 0.34) 0 0.6px,
+        transparent 1.2px
+      ),
+      radial-gradient(
+        circle at 68% 66%,
+        rgba(90, 78, 52, 0.07) 0 0.6px,
+        transparent 1.2px
+      ),
+      radial-gradient(
+        circle at 44% 82%,
+        rgba(90, 78, 52, 0.05) 0 0.6px,
+        transparent 1.2px
+      );
+    background-size:
+      6px 6px,
+      8px 8px,
+      11px 11px;
   }
 
-  /* ── the floor ─────────────────────────────────────────────────────────── */
+  .plinth-face {
+    background-color: #cec4ad;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      0 35px 70px rgba(60, 50, 35, 0.16);
+  }
 
-  /* Below `lg` the canvas is abandoned and the deck becomes a plain scroll
-     row, so the whole 3D scene — floor, pools, contact shadows — is gated to
-     the canvas breakpoint. A phone gets five flat glass cards. */
-  @media (min-width: 1024px) {
-    /* The floor plane. Faded on all four sides — a lit surface has no edges,
-       and a hard-edged rectangle of white reads instantly as a div. The
-       vertical ramp brightens just under the slabs and falls away again; the
-       horizontal mask dissolves the left and right ends. */
-    .deck-floor {
-      position: absolute;
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.5) 26%,
-        rgba(255, 255, 255, 0.26) 62%,
-        rgba(255, 255, 255, 0) 100%
-      );
-      -webkit-mask-image: linear-gradient(
-        to right,
-        transparent,
-        #000 14%,
-        #000 86%,
-        transparent
-      );
-      mask-image: linear-gradient(
-        to right,
-        transparent,
-        #000 14%,
-        #000 86%,
-        transparent
-      );
-      pointer-events: none;
-    }
+  /* Lit from above, so the top face is the brightest plane and the return is
+     the darkest. Skewing one axis on each is the whole projection. */
+  .plinth-top {
+    background-color: #e4dbc8;
+    transform: skewX(-45deg);
+  }
 
-    /* Contact shadow: where the slab meets the floor. Without it the card
-       hovers rather than stands. */
-    .deck-slab::before {
-      content: "";
-      position: absolute;
-      left: 2%;
-      right: 2%;
-      top: 100%;
-      height: 16px;
-      border-radius: 50%;
-      background: radial-gradient(
-        ellipse at 50% 0,
-        rgba(90, 80, 60, 0.34),
-        transparent 72%
-      );
-      filter: blur(5px);
-      pointer-events: none;
-    }
-
-    /* The pool of light on the floor. Hinged at the foot and laid flat, so the
-       scene's own perspective foreshortens it into the reference's skewed
-       parallelogram. A gradient, never a copy of the card — which is exactly
-       why no label ever appears mirrored in it. */
-    .deck-slab::after {
-      content: "";
-      position: absolute;
-      left: -4px;
-      right: -4px;
-      top: 100%;
-      height: 260px;
-      transform-origin: top center;
-      transform: rotateX(-90deg);
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 1),
-        rgba(255, 255, 255, 0.5) 30%,
-        rgba(255, 255, 255, 0.12) 62%,
-        transparent
-      );
-      filter: blur(3px);
-      pointer-events: none;
-    }
-
-    .deck-slab.is-active::after {
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 253, 214, 0.98),
-        rgba(250, 246, 170, 0.4) 42%,
-        transparent 80%
-      );
-    }
+  .plinth-side {
+    background-color: #b4a88e;
+    transform: skewY(-45deg);
   }
 
   /* ── motion ────────────────────────────────────────────────────────────── */
@@ -729,17 +756,59 @@
       animation: glass-card-in 0.6s var(--ease) var(--in-delay, 0s) backwards;
     }
 
-    /* Dropping the animation is what lets the hover transform land — a running
-       animation always beats a plain transform. */
-    .glass-card:hover .glass-card-inner,
-    .deck-slab:hover .glass-card-inner {
-      animation: none;
-      transform: scale(1.04);
+    /* No hover transform on these panels, deliberately.
+     *
+     * It used to kill the float animation on hover and swap in `scale(1.04)`,
+     * which made the card JUMP from wherever the drift had it to its scaled
+     * size. Worse, the outer card also carries pointer parallax, so the panel
+     * moved out from under the cursor, hover dropped, the animation came back,
+     * the panel moved again — on and off several times a second. That flicker
+     * is what read as blinking on the 80+ card and the metrics bar.
+     *
+     * The hover response lives on `.glass-card:hover` above instead: border and
+     * shadow only, no geometry, nothing that can move the target away from the
+     * pointer that is hovering it. */
+
+    /* ── the still life ──────────────────────────────────────────────────
+       Slow enough to be noticed only on the second look. The sheets breathe
+       a few pixels on their own clocks, the plinth barely moves because it is
+       the heavy thing, and the arc turns once every half minute. */
+
+    .glass-sheet {
+      animation: sheet-float var(--float-dur, 9s) ease-in-out
+        var(--float-delay, 0s) infinite alternate;
     }
 
-    .glass-panel-static:hover .glass-card-inner {
-      transform: none;
+    .plinth {
+      animation: sheet-float 12s ease-in-out -3s infinite alternate;
+      --float-rise: -2px;
     }
+
+    .hero-orbit {
+      animation: orbit-turn 26s linear infinite;
+    }
+  }
+}
+
+/* The lean has to survive the float, so the keyframe carries `--sheet-tilt`
+   through rather than replacing `transform` with a bare translate. */
+@keyframes sheet-float {
+  from {
+    transform: var(--sheet-tilt, none) translateY(0);
+  }
+
+  to {
+    transform: var(--sheet-tilt, none) translateY(var(--float-rise, -4px));
+  }
+}
+
+@keyframes orbit-turn {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }
 

@@ -125,6 +125,11 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} ${caveat.variable} antialiased`}
       >
+        {/* The hero is held hidden until its intro can set the start frame; with
+            scripting off that intro never runs, so release the hold. */}
+        <noscript>
+          <style>{`.hero-stage,.ah-stage,body:has(.hero-stage) .site-nav{visibility:visible}`}</style>
+        </noscript>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
