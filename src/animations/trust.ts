@@ -63,20 +63,6 @@ const DROP_SIZE = 132;
 
 const EASE = "power3.out";
 
-/**
- * The insets, as percentages of the surface box, that clip it down to a circle
- * of `DROP_SIZE` at its centre. The panel is far wider than it is tall, so the
- * two axes need very different percentages to describe the same circle.
- */
-function circleInset(surface: HTMLElement) {
-  const { width, height } = surface.getBoundingClientRect();
-
-  return {
-    h: width ? Math.max(0, ((width - DROP_SIZE) / 2 / width) * 100) : 50,
-    v: height ? Math.max(0, ((height - DROP_SIZE) / 2 / height) * 100) : 50,
-  };
-}
-
 export function trustSequence(stage: HTMLElement) {
   const mm = gsap.matchMedia();
 
@@ -109,11 +95,9 @@ export function trustSequence(stage: HTMLElement) {
       stage.dataset.sequence = "on";
 
       // The clip is written by hand from a proxy object rather than tweened as
-      // a string: the horizontal and vertical openings run on their own
-      // schedules (water spreads sideways before it spreads towards you), and
-      // two tweens cannot share one clip-path property.
-      const start = circleInset(surface);
-      const shape = { h: start.h, v: start.v, r: DROP_SIZE / 2 };
+      // a string: three numbers have to move together and a single `clip-path`
+      // property cannot carry three tweens.
+      const shape = { h: 50, v: 50, r: DROP_SIZE / 2 };
 
       const drawSurface = () => {
         surface.style.clipPath = `inset(${shape.v}% ${shape.h}% ${shape.v}% ${shape.h}% round ${shape.r}px)`;
@@ -131,23 +115,26 @@ export function trustSequence(stage: HTMLElement) {
       })();
 
       /**
-       * The close, driven by ONE progress value.
+       * The panel's geometry, driven by ONE progress value: `t` 0 is the full
+       * panel, `t` 1 is the resting drop. Both the opening and the close run on
+       * it, in opposite directions, so the shape travels the *same path* either
+       * way — which is the whole point. The opening used to run the two axes on
+       * separate schedules (sideways first, "water finding its edges"), and
+       * against a close that moved both together the two read as different
+       * animations: on the way in the panel snapped open, on the way out it
+       * shrank smoothly.
        *
-       * Both axes used to retreat on their own schedules — the vertical
-       * finishing four units before the horizontal had really started. That
-       * forced the panel through a 1157x132 bar on its way out, and `round` is
-       * capped by whichever side is shorter, so a box that flat physically
-       * cannot be round however large the radius. The result read as the drop
-       * flipping between a circle and a rectangle.
-       *
-       * Driving both from a single `t` keeps the box proportional the whole way
-       * down, and the radius tracks the short side, so the panel stays a
-       * rounded blob shrinking toward the drop and lands on it exactly.
+       * One `t` also keeps the box proportional the whole way, and the radius
+       * tracks the short side — `round` is capped by whichever side is shorter,
+       * so a panel that passes through a 1157x132 bar physically cannot be
+       * round however large the radius, which is what made the drop appear to
+       * flip between a circle and a rectangle.
        */
-      const closing = { t: 0 };
+      /** Last `t` written, so `onRefresh` can redraw the same frame. */
+      let morphT = 1;
 
-      const applyClose = () => {
-        const t = closing.t;
+      const applyMorph = (t: number) => {
+        morphT = t;
         const w = box.w + (DROP_SIZE - box.w) * t;
         const h = box.h + (DROP_SIZE - box.h) * t;
 
@@ -165,7 +152,13 @@ export function trustSequence(stage: HTMLElement) {
       // lazily — the tween would not exist yet at progress 0, so the content
       // would be plainly visible until the playhead reached P4. Setting the
       // states up front and using only `to()` removes that whole class of bug.
-      gsap.set(surface, { autoAlpha: 0, willChange: "clip-path" });
+      // No `will-change: clip-path` here. It pins the panel into its own
+      // composited layer for the whole sequence, and a promoted layer whose
+      // clip changes every frame is exactly where Chrome has been seen to
+      // rasterise the clip without its `round` — the panel flashing as a
+      // hard-cornered rectangle mid-morph. The clip is re-rasterised every
+      // frame regardless, so the hint buys nothing to trade for that.
+      gsap.set(surface, { autoAlpha: 0 });
       gsap.set(drop, { scale: 0, autoAlpha: 0, filter: "blur(10px)" });
       // `visibility` is the hard gate, the clip is only the look. GSAP's
       // autoAlpha resolves to `visibility: inherit` rather than `visible`, so a
@@ -180,7 +173,9 @@ export function trustSequence(stage: HTMLElement) {
       gsap.set(cards, { y: 80, autoAlpha: 0, scale: 0.92 });
       if (strip) gsap.set(strip, { y: 60, autoAlpha: 0 });
       if (handle) gsap.set(handle, { autoAlpha: 0 });
-      drawSurface();
+      // At rest the surface is already clipped to the drop, so the first frame
+      // of the opening is the last frame of the close.
+      applyMorph(1);
 
       // `backdrop-filter` over a ~1664px panel repaints every frame the clip
       // moves. It is swapped for a flat translucent fill while the geometry is
@@ -191,6 +186,35 @@ export function trustSequence(stage: HTMLElement) {
         if (flat === isFlat) return;
         isFlat = flat;
         surface.classList.toggle("is-flat", flat);
+      };
+
+      /**
+       * The morph's two windows, and the shape it travels through them.
+       *
+       * NOT tweens, on purpose, and this is the whole reason the drop used to
+       * strobe between a circle and a rectangle on the way back up. Two tweens
+       * writing one shared value cannot agree on a scrubbed seek: GSAP renders a
+       * timeline's children last-to-first when the playhead moves backwards, so
+       * every frame of the reverse close was drawn twice — once by the closing
+       * tween at its real value, then again by the *opening* tween asserting its
+       * finished state (the full panel). Which one landed last decided what the
+       * frame looked like, and it alternated.
+       *
+       * Computing `t` from the playhead instead leaves exactly one writer, and
+       * the result no longer depends on the order anything renders in.
+       */
+      const morphEase = gsap.parseEase("power2.inOut");
+      const OPEN = { from: PHASE.spread + 4, to: PHASE.hold };
+      const CLOSE = { from: PHASE.dissolve + 3, to: PHASE.handback };
+
+      const morphAt = (at: number) => {
+        if (at <= OPEN.from) return 1;
+        if (at < OPEN.to)
+          return 1 - morphEase((at - OPEN.from) / (OPEN.to - OPEN.from));
+        if (at <= CLOSE.from) return 0;
+        if (at < CLOSE.to)
+          return morphEase((at - CLOSE.from) / (CLOSE.to - CLOSE.from));
+        return 1;
       };
 
       const tl = gsap.timeline({
@@ -205,29 +229,41 @@ export function trustSequence(stage: HTMLElement) {
           invalidateOnRefresh: true,
           onRefresh: () => {
             // `--s` is container-query based, so the panel box changes with the
-            // viewport. Recompute the circle and let the invalidated tweens
-            // re-read their function-based endpoints.
-            const next = circleInset(surface);
-            start.h = next.h;
-            start.v = next.v;
-
+            // viewport. Re-measure and redraw at whatever `t` the playhead is
+            // sitting on, or the clip keeps describing the old box.
             const r = surface.getBoundingClientRect();
             box.w = r.width;
             box.h = r.height;
-          },
-          onUpdate: (self) => {
-            const at = self.progress * PHASE.end;
-            // Flat only while the geometry is actually travelling. The closing
-            // window ends at `handback`, not at the end of the timeline: from
-            // there the panel is a resting circle cross-fading with the blob,
-            // and the blob is frosted — leaving the surface flat through that
-            // swap would show one as milkier than the other.
-            setFlat(
-              at < PHASE.hold || (at > PHASE.dissolve && at < PHASE.handback),
-            );
+            applyMorph(morphT);
           },
         },
       });
+
+      // One writer for the geometry, driven by the playhead — the scrubbed
+      // time, not the raw scroll position, so the clip stays in step with every
+      // other tween on the timeline.
+      //
+      // It hangs off a do-nothing tween spanning the whole piece rather than
+      // the timeline's own `onUpdate`, because ScrollTrigger renders a scrubbed
+      // timeline with its events suppressed: that callback fired a handful of
+      // times across the entire sequence, which made the panel jump between a
+      // few frozen shapes instead of morphing. A child tween's `onUpdate` is
+      // part of the render itself and runs on every frame.
+      const paint = () => {
+        const at = tl.time();
+        applyMorph(morphAt(at));
+        // Flat only while the geometry is actually travelling. The closing
+        // window ends at `handback`, not at the end of the timeline: from there
+        // the panel is a resting circle cross-fading with the blob, and the blob
+        // is frosted — leaving the surface flat through that swap would show one
+        // as milkier than the other.
+        setFlat(
+          (at < OPEN.to && at >= OPEN.from) ||
+            (at >= CLOSE.from && at < CLOSE.to),
+        );
+      };
+
+      tl.to({}, { duration: PHASE.end, ease: "none", onUpdate: paint }, 0);
 
       // ── P1 — the hero clears, a drop forms in the air ──────────────────
       //
@@ -251,35 +287,16 @@ export function trustSequence(stage: HTMLElement) {
 
       // ── P2 — the drop becomes the surface ──────────────────────────────
       //
-      // The blob hands off to the real panel: it keeps growing as it fades so
-      // the two read as one body of water rather than a swap.
-      tl.to(surface, { autoAlpha: 1, duration: 2 }, PHASE.spread);
-      tl.to(
-        drop,
-        { autoAlpha: 0, scale: 1.15, duration: 5, ease: "power2.out" },
-        PHASE.spread,
-      );
+      // The exact mirror of the handback in P6: the surface is already a 132px
+      // circle sitting on the same centre as the blob, so this is a cross-fade
+      // between two identical circles — neither one grows during the swap, or
+      // the trade reads as a substitution rather than one body of water.
+      tl.to(surface, { autoAlpha: 1, duration: 4 }, PHASE.spread);
+      tl.to(drop, { autoAlpha: 0, duration: 4 }, PHASE.spread);
       if (handle)
         tl.to(handle, { autoAlpha: 1, duration: 6 }, PHASE.spread + 8);
 
-      // Sideways first, and only then towards the viewer. The vertical opening
-      // starts before the horizontal one has finished so the corners round out
-      // instead of stepping.
-      tl.to(
-        shape,
-        { h: 0, duration: 15, ease: "power2.inOut", onUpdate: drawSurface },
-        PHASE.spread,
-      );
-      tl.to(
-        shape,
-        { v: 0, duration: 12, ease: "power3.inOut", onUpdate: drawSurface },
-        PHASE.spread + 13,
-      );
-      tl.to(
-        shape,
-        { r: restRadius, duration: 25, onUpdate: drawSurface },
-        PHASE.spread,
-      );
+      // …and only then does it spread, over `OPEN` — see `morphAt`.
 
       // ── P3 — empty water ───────────────────────────────────────────────
       //
@@ -339,22 +356,8 @@ export function trustSequence(stage: HTMLElement) {
       if (handle)
         tl.to(handle, { autoAlpha: 0, duration: 4 }, PHASE.dissolve + 1);
 
-      // One schedule, both axes. Deliberately NOT a mirror of the opening: on
-      // the way in the sideways-first spread reads as water finding its edges,
-      // but played backwards the same asymmetry collapses the panel into a flat
-      // bar before it shrinks, which is what made the drop look broken.
-      //
-      // Lands exactly on `handback`, where the blob takes over.
-      tl.to(
-        closing,
-        {
-          t: 1,
-          duration: PHASE.handback - (PHASE.dissolve + 3),
-          ease: "power2.inOut",
-          onUpdate: applyClose,
-        },
-        PHASE.dissolve + 3,
-      );
+      // The same morph as P2, run forwards over `CLOSE` — see `morphAt`. Lands
+      // exactly on `handback`, where the blob takes over.
 
       // ── P6 — hand back to the blob, then let it go ─────────────────────
       //
