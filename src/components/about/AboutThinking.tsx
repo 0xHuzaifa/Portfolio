@@ -62,10 +62,10 @@ export function AboutThinking() {
                 {line}
               </span>
             ))}
-            <span className="at-line block text-[hsl(var(--yellow))]">
+            <span className="at-line block text-[hsl(var(--yellow-deep))]">
               I build for the system
             </span>
-            <span className="at-line block text-[hsl(var(--yellow))]">
+            <span className="at-line block text-[hsl(var(--yellow-deep))]">
               that ticket belongs to.
             </span>
           </p>

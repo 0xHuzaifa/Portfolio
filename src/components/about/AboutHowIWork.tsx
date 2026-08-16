@@ -47,7 +47,7 @@ export function AboutHowIWork() {
           <h2 className="aw-head mt-6 text-[clamp(2.25rem,9vw,60px)] font-extrabold leading-[1.02] tracking-[-0.033em] lg:mt-[calc(36*var(--s))] lg:text-[calc(97*var(--s))] lg:leading-[calc(97*var(--s))]">
             Decisions before
             <br />
-            keystrokes<span className="text-[hsl(var(--yellow))]">.</span>
+            keystrokes<span className="text-[hsl(var(--yellow-deep))]">.</span>
           </h2>
         </div>
 

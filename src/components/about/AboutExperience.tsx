@@ -27,7 +27,7 @@ export function AboutExperience() {
         <h2 className="mt-6 text-[clamp(2.25rem,9vw,56px)] font-extrabold leading-[1.02] tracking-[-0.033em] lg:mt-[calc(34*var(--s))] lg:text-[calc(87*var(--s))] lg:leading-[calc(88*var(--s))]">
           Three years, in
           <br />
-          production<span className="text-[hsl(var(--yellow))]">.</span>
+          production<span className="text-[hsl(var(--yellow-deep))]">.</span>
         </h2>
 
         <ol className="mt-12 border-l border-[var(--ink-a12)] pl-8 lg:mt-[calc(78*var(--s))] lg:pl-[calc(57*var(--s))]">

@@ -48,7 +48,9 @@ export function AboutHero() {
 
   return (
     <section ref={root} style={stageStyle} className={sectionClass}>
-      <div style={scale} className={stageClass}>
+      {/* `ah-stage` is the pre-intro hold, not a layout hook — see the rule in
+          globals.css. It has to sit on the element the sequence reveals. */}
+      <div style={scale} className={`ah-stage ${stageClass}`}>
         {/* background numeral, cropped by the bottom edge */}
         <div
           aria-hidden="true"
@@ -78,7 +80,8 @@ export function AboutHero() {
             <br />
             systems teams
             <br />
-            actually <span className="text-[hsl(var(--yellow))]">live in.</span>
+            actually{" "}
+            <span className="text-[hsl(var(--yellow-deep))]">live in.</span>
           </h1>
 
           <div className="ah-head-rule mt-8 h-px w-[240px] origin-left bg-[var(--ink-a12)] lg:mt-[calc(45*var(--s))] lg:w-[calc(390*var(--s))]" />

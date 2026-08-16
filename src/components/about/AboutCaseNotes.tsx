@@ -51,7 +51,7 @@ export function AboutCaseNotes() {
             <br />
             solve from first
             <br />
-            <span className="text-[hsl(var(--yellow))]">principles.</span>
+            <span className="text-[hsl(var(--yellow-deep))]">principles.</span>
           </h2>
         </div>
 

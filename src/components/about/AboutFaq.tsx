@@ -24,7 +24,7 @@ export function AboutFaq() {
             <h2 className="mt-6 text-[clamp(2.25rem,9vw,56px)] font-extrabold leading-[1.02] tracking-[-0.033em] lg:mt-[calc(34*var(--s))] lg:text-[calc(87*var(--s))] lg:leading-[calc(88*var(--s))]">
               Before you
               <br />
-              get in touch<span className="text-[hsl(var(--yellow))]">.</span>
+              get in touch<span className="text-[hsl(var(--yellow-deep))]">.</span>
             </h2>
           </div>
 

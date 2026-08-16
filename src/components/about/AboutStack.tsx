@@ -34,7 +34,7 @@ export function AboutStack() {
         <AboutEyebrow>Stack</AboutEyebrow>
 
         <h2 className="mt-6 text-[clamp(2.25rem,9vw,56px)] font-extrabold leading-[1.02] tracking-[-0.033em] lg:mt-[calc(34*var(--s))] lg:text-[calc(87*var(--s))] lg:leading-[calc(88*var(--s))]">
-          What I reach for<span className="text-[hsl(var(--yellow))]">.</span>
+          What I reach for<span className="text-[hsl(var(--yellow-deep))]">.</span>
         </h2>
 
         <dl className="mt-12 lg:mt-[calc(72*var(--s))]">

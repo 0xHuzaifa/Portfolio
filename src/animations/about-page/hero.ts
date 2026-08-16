@@ -1,10 +1,7 @@
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 /**
- * /about section 01 — Who I am. Pinned.
+ * /about section 01 — Who I am. Plays itself on arrival.
  *
  * The plate arrives first and alone, sliding in from off the canvas edge it is
  * cropped against, and the portrait rides up inside it. Nothing about the
@@ -14,6 +11,12 @@ gsap.registerPlugin(ScrollTrigger);
  *
  * Then the writing lands on top of an already-present plate — heading, ruled
  * line, paragraph — and the three credentials tick in last.
+ *
+ * This section used to be pinned and scrubbed like the three below it, which
+ * meant a visitor landing on /about met an empty screen and had to scroll to
+ * discover there was anything there at all — the page read as still loading.
+ * A first section has no earlier context to arrive out of, so it plays on its
+ * own clock. Everything below it still belongs to the scroll.
  *
  * Not to be confused with `src/animations/about.ts`, which belongs to the
  * homepage's About section.
@@ -38,7 +41,15 @@ const PHASE = {
   end: 90,
 } as const;
 
-const SCROLL_LENGTH = "+=420%";
+/**
+ * How long the whole sequence takes, in seconds.
+ *
+ * `PHASE` is a proportion table, not a clock — it was written for a scrub,
+ * where the numbers are shares of a scroll distance. Playing it in real time
+ * would take 90 seconds, so the timeline runs on a scale that lands the last
+ * beat here. Retune the pace with this; retune the ratios in `PHASE`.
+ */
+const RUNTIME = 5.2;
 
 const EASE = "power3.out";
 const RISE_EASE = "power4.out";
@@ -46,6 +57,15 @@ const DRAW_EASE = "power2.inOut";
 
 export function aboutHeroSequence(section: HTMLElement) {
   const mm = gsap.matchMedia();
+
+  // The stage starts hidden in CSS (see "Pre-intro hold" in globals.css) so the
+  // server-painted section never shows before the sequence can set its first
+  // frame. This runs in the same layout effect as the `fromTo()` calls below —
+  // before the browser paints — so the visitor's first frame is frame 0 of the
+  // intro, not the finished composition. Outside the matchMedia on purpose:
+  // below `lg`, and under reduced motion, nothing else here runs and the
+  // section still has to appear.
+  gsap.set(section.querySelector(".ah-stage"), { visibility: "visible" });
 
   mm.add(
     "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
@@ -75,16 +95,12 @@ export function aboutHeroSequence(section: HTMLElement) {
 
       const tl = gsap.timeline({
         defaults: { ease: EASE },
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: SCROLL_LENGTH,
-          scrub: 1,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-        },
+        // `PHASE` counts in shares, not seconds; this makes the last beat land
+        // at `RUNTIME`.
+        smoothChildTiming: true,
       });
+
+      tl.timeScale(PHASE.end / RUNTIME);
 
       // ── The plate ──────────────────────────────────────────────────────
       //
@@ -147,8 +163,29 @@ export function aboutHeroSequence(section: HTMLElement) {
       // ── Hold ───────────────────────────────────────────────────────────
       tl.to({}, { duration: PHASE.end - PHASE.hold }, PHASE.hold);
 
+      // Opened into a background tab, the ticker is throttled: the `from()`
+      // start states land but nothing advances, so the section would sit blank
+      // — the very failure this replaced. Hold at frame 0 and open the scene
+      // when the visitor actually arrives. Same trick as the homepage hero.
+      let onVisible: (() => void) | undefined;
+      if (document.visibilityState === "hidden") {
+        tl.pause(0);
+        onVisible = () => {
+          if (document.visibilityState === "visible") {
+            tl.play();
+            document.removeEventListener(
+              "visibilitychange",
+              onVisible as never,
+            );
+          }
+        };
+        document.addEventListener("visibilitychange", onVisible);
+      }
+
       return () => {
-        tl.scrollTrigger?.kill();
+        if (onVisible) {
+          document.removeEventListener("visibilitychange", onVisible);
+        }
         tl.kill();
       };
     },
