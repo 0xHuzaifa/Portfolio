@@ -9,7 +9,7 @@ import {
   Clock,
   FileCheck,
   Send,
-  Users,
+  Sparkles,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -35,12 +35,12 @@ const featured = {
   title: "Real Estate CRM",
   href: "/systems/crm-system",
   description:
-    "A multi-tenant CRM for real estate agencies to manage leads, deals, contracts, and teams in one secure workspace.",
+    "A multi-tenant CRM for real estate agencies — leads, deals, contracts, and campaigns in one workspace, with an AI assistant that runs tasks from plain English.",
   stats: [
-    { icon: Users, value: "10K+", label: "Users" },
-    { icon: Send, value: "36K+/hr", label: "Emails Sent" },
-    { icon: FileCheck, value: "2.5K+", label: "Documents Signed" },
-    { icon: Building2, value: "120+", label: "Agencies" },
+    { icon: Send, value: "36K+/hr", label: "Emails Automated" },
+    { icon: Building2, value: "Isolated", label: "Agency Data" },
+    { icon: FileCheck, value: "DocuSign", label: "Contract Signing" },
+    { icon: Sparkles, value: "AI Agent", label: "Natural Language" },
   ],
 } as const;
 
@@ -48,17 +48,17 @@ const selector = [
   { index: "01", title: "Real Estate CRM", href: "/systems/crm-system" },
   {
     index: "02",
-    title: "AI Command Center",
+    title: "Live Messaging",
     href: "/systems/realtime-communication",
   },
   {
     index: "03",
-    title: "Crowdfunding Platform",
+    title: "Article Platform",
     href: "/systems/article-platform",
   },
   {
     index: "04",
-    title: "Inventory & POS System",
+    title: "Inventory Control",
     href: "/systems/inventory-system",
   },
 ] as const;
@@ -67,29 +67,29 @@ const supporting = [
   {
     index: "02",
     kind: "SYSTEM",
-    title: "AI Command Center",
+    title: "Live Messaging System",
     href: "/systems/realtime-communication",
     image: chatSystemMain,
     description:
-      "AI-powered assistant that understands natural language and executes complex multi-step actions across your systems.",
+      "Real-time chat that stays accurate through dropped connections and multiple tabs — no lost messages, no stale online status.",
   },
   {
     index: "03",
     kind: "PLATFORM",
-    title: "Crowdfunding Platform",
+    title: "Article Publishing Platform",
     href: "/systems/article-platform",
     image: articlePlatformMain,
     description:
-      "A secure and scalable platform that helps creators launch campaigns and collect funding globally.",
+      "A CMS with a full editorial workflow — writers draft, admins review and approve, nothing goes live without the right steps.",
   },
   {
     index: "04",
     kind: "SYSTEM",
-    title: "Inventory & POS System",
+    title: "Inventory & Spending Control",
     href: "/systems/inventory-system",
     image: inventorySystemMain,
     description:
-      "Smart inventory and POS system with real-time analytics and multi-branch management.",
+      "8,000+ products under a three-level spending rules engine that enforces who can order what, automatically.",
   },
 ] as const;
 
@@ -227,7 +227,7 @@ export function FeaturedProjects() {
               href={featured.href}
               className={`inline-flex h-[44px] items-center gap-[10px] whitespace-nowrap rounded-full border border-[var(--glass-border-ink)] bg-[var(--glass-fill-strong)] px-[22px] text-[15px] font-semibold backdrop-blur-[22px] transition-transform duration-200 ease-[var(--ease)] [transform:translateZ(0)] hover:-translate-y-[3px] lg:h-[calc(40*var(--s))] lg:gap-[calc(10*var(--s))] lg:px-[calc(22*var(--s))] lg:text-[calc(15*var(--s))]`}
             >
-              Live System
+              Technical Breakdown
               <ArrowUpRight className="h-[17px] w-[17px] lg:h-[calc(16*var(--s))] lg:w-[calc(16*var(--s))]" />
             </Link>
           </div>

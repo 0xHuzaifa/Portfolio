@@ -122,15 +122,16 @@ export function categoryCount(category: CategoryMeta) {
 }
 
 /**
- * Career-wide claims, not derived. These cover delivery that has no entry in
- * `projects` — which is exactly why they are authored here rather than counted.
+ * Career-wide figures, not derived. Every one traces to a real system in
+ * `docs/About-me (updated).md` — which is why they are authored here rather
+ * than counted off `projects`.
  */
-export const projectsDelivered = { value: "80+", label: "Projects Delivered" };
+export const projectsDelivered = { value: "6", label: "Systems Shipped" };
 
 export const impactStats: { value: string; label: string }[] = [
-  { value: "50K+", label: "Users Impacted" },
   { value: "36K+", label: "Emails / hr" },
-  { value: "8", label: "Countries" },
-  { value: "99.9%", label: "Uptime" },
+  { value: "8K+", label: "Products Managed" },
+  { value: "7", label: "Agents in Pipeline" },
+  { value: "2+", label: "Years in Production" },
   { value: "100%", label: "Commitment to Quality" },
 ];

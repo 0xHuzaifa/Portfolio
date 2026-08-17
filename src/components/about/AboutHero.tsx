@@ -21,9 +21,9 @@ gsap.registerPlugin(useGSAP);
  *
  * Editorial: the portrait is a plate bleeding off the left edge of the canvas,
  * the headline is set large across the right, and the three credentials sit
- * bare in the margin with no cards and no icons. The "300,000+ applicants"
- * figure gets real size here for the first time — on the old page it was a line
- * of small grey text near the bottom.
+ * bare in the margin with no cards and no icons — they get real size here for
+ * the first time; on the old page they were a line of small grey text near the
+ * bottom.
  *
  * The plate is deliberately flush to the canvas edges (left 0, bottom 875) so
  * it reads as cropped by the page rather than placed on it — a different

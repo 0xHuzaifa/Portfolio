@@ -32,7 +32,7 @@ const cards: Card[] = [
     points: [
       "MERN / PERN Stack",
       "Scalable Web Applications",
-      "RESTful & GraphQL APIs",
+      "REST APIs & Integrations",
       "Clean, Maintainable Code",
     ],
     icon: <path d="M8 8l-4 4 4 4M16 8l4 4-4 4" />,
@@ -42,9 +42,9 @@ const cards: Card[] = [
     title: ["System", "Architecture"],
     points: [
       "Scalable System Design",
-      "Microservices Architecture",
+      "Multi-Tenant Architecture",
       "Database Design & Optimization",
-      "Security & Performance",
+      "Auth, Roles & Permissions",
     ],
     icon: (
       <>
@@ -58,10 +58,10 @@ const cards: Card[] = [
     n: "03",
     title: ["AI &", "Automation"],
     points: [
-      "LLM Integration",
-      "AI Agents & Workflows",
-      "Intelligent Automation",
-      "RAG & Vector Search",
+      "LLM Integration (Gemini, OpenAI)",
+      "LangGraph Multi-Agent Pipelines",
+      "Natural Language → Actions",
+      "Queue-Driven Automation",
     ],
     icon: (
       <>
@@ -74,10 +74,10 @@ const cards: Card[] = [
     n: "04",
     title: ["Cloud &", "DevOps"],
     points: [
-      "AWS / DigitalOcean",
-      "CI/CD Pipelines",
-      "Docker & Containerization",
-      "Monitoring & Logging",
+      "AWS Deployments & S3",
+      "Docker Containerisation",
+      "Redis & BullMQ Queues",
+      "Production Monitoring",
     ],
     icon: (
       <path d="M17.5 19a4.5 4.5 0 0 0 .5-8.98A6 6 0 0 0 6 9a4.5 4.5 0 0 0 .5 10H17.5z" />
@@ -88,9 +88,9 @@ const cards: Card[] = [
     title: ["Data &", "Integrations"],
     points: [
       "Database Modeling",
-      "Third-Party Integrations",
-      "Real-time Processing",
-      "Data Security",
+      "DocuSign, Stripe, Cloudinary",
+      "Real-Time with Socket.io",
+      "Playwright E2E Testing",
     ],
     icon: (
       <>
@@ -119,12 +119,12 @@ const cards: Card[] = [
 
 const stats: { value: string; label: string; icon: React.ReactNode }[] = [
   {
-    value: "10+",
-    label: "Tech Stack Expertise",
+    value: "8K+",
+    label: "Products Under Rules",
     icon: <path d="M8 8l-4 4 4 4M16 8l4 4-4 4" />,
   },
   {
-    value: "7+",
+    value: "2+",
     label: "Years of Experience",
     icon: (
       <>
@@ -134,8 +134,8 @@ const stats: { value: string; label: string; icon: React.ReactNode }[] = [
     ),
   },
   {
-    value: "80+",
-    label: "Projects Delivered",
+    value: "36K+",
+    label: "Emails Sent Per Hour",
     icon: (
       <>
         <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
@@ -181,7 +181,7 @@ const builtFor: { label: [string, string?]; icon: React.ReactNode }[] = [
     ),
   },
   {
-    label: ["Enterprises"],
+    label: ["Agencies"],
     icon: (
       <>
         <rect x="5" y="3" width="14" height="18" rx="1.2" />

@@ -3,13 +3,13 @@ import {
   Clock,
   Cloud,
   Code,
-  Globe,
   Monitor,
+  Package,
+  Send,
   Settings,
   ShieldCheck,
   ShoppingCart,
   Sparkles,
-  Users,
 } from "lucide-react";
 
 /**
@@ -21,10 +21,10 @@ const stageStyle = { containerType: "inline-size" } as const;
 const scale = { ["--s" as string]: "calc(100cqw/1672)" };
 
 const stats = [
-  { icon: Code, value: "80+", label: ["Projects", "Delivered"] },
-  { icon: Users, value: "30+", label: ["Happy", "Clients"] },
-  { icon: Globe, value: "8+", label: ["Industries", "Served"] },
-  { icon: Clock, value: "99%", label: ["On-Time", "Delivery"] },
+  { icon: Send, value: "36K+", label: ["Emails sent", "per hour"] },
+  { icon: Package, value: "8,000+", label: ["Products under", "rule control"] },
+  { icon: Code, value: "6", label: ["Production", "systems built"] },
+  { icon: Clock, value: "2+", label: ["Years shipping", "production work"] },
 ] as const;
 
 const trustedFor = [
@@ -87,7 +87,7 @@ export function Trust() {
                 inside a panel with 64px of its own horizontal padding. */}
             <div className="trust-text relative inline-flex min-h-[52px] items-center gap-[10px] rounded-full border border-white/85 bg-white/[0.72] px-[16px] py-[10px] text-[14px] font-semibold shadow-[0_12px_30px_rgba(0,0,0,0.06)] backdrop-blur-[10px] sm:h-[52px] sm:gap-[12px] sm:whitespace-nowrap sm:px-[24px] sm:py-0 sm:text-[16px] lg:absolute lg:left-[calc(99*var(--s))] lg:top-[calc(74*var(--s))] lg:h-[calc(58*var(--s))] lg:gap-[calc(12*var(--s))] lg:px-[calc(24*var(--s))] lg:text-[calc(16*var(--s))]">
               <ShieldCheck className="h-[20px] w-[20px] lg:h-[calc(20*var(--s))] lg:w-[calc(20*var(--s))]" />
-              Trusted by teams worldwide
+              Production systems, shipped and running
             </div>
 
             {/* headline — ref cap-top 170, 50px/57 */}
@@ -102,8 +102,8 @@ export function Trust() {
 
             {/* sub copy — ref cap-top 300 */}
             <p className="trust-text relative mt-5 max-w-[560px] text-[17px] leading-[1.5] text-[hsl(var(--ink-2))] lg:absolute lg:left-[calc(106*var(--s))] lg:top-[calc(285*var(--s))] lg:mt-0 lg:max-w-none lg:w-[calc(575*var(--s))] lg:text-[calc(19*var(--s))] lg:leading-[calc(28*var(--s))]">
-              Businesses trust me to design, build, and ship systems that work
-              reliably — at scale, in the real world.
+              Multi-tenant CRM, campaign automation, inventory rules engines —
+              built at an agency, running for real clients.
             </p>
 
             {/* handwritten aside — ref arrow 1349,86 · text ends 1567 */}

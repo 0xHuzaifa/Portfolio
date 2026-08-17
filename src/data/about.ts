@@ -15,8 +15,8 @@ export interface OriginFact {
 
 export const originFacts: OriginFact[] = [
   { label: "Based in", value: "Karachi" },
-  { label: "Studied", value: "IT · SBBU Nawabshah" },
-  { label: "Selected from", value: "300,000+ applicants" },
+  { label: "Studied", value: "BS IT · SBBU Nawabshah" },
+  { label: "Building since", value: "2024" },
 ];
 
 /** Section 02 — the three claims the rest of the page has to earn. */
@@ -100,7 +100,7 @@ export const faqs: Faq[] = [
     n: "02",
     question: "Are you available right now?",
     answer:
-      "Yes — taking on selected projects for Q1 2027. I keep the number deliberately small so the ones I do take get proper attention.",
+      "Yes — taking on selected projects for Q4 2026. I keep the number deliberately small so the ones I do take get proper attention.",
   },
   {
     n: "03",

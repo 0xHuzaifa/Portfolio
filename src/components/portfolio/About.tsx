@@ -22,8 +22,8 @@ gsap.registerPlugin(useGSAP);
 const claims = ["Engineer.", "Problem Solver.", "System Builder."] as const;
 const stats: { value: string; label: string; icon: React.ReactNode }[] = [
   {
-    value: "80+",
-    label: "Projects Delivered",
+    value: "6",
+    label: "Systems Shipped",
     icon: (
       <>
         <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
@@ -33,7 +33,7 @@ const stats: { value: string; label: string; icon: React.ReactNode }[] = [
     ),
   },
   {
-    value: "3+",
+    value: "2+",
     label: "Years Experience",
     icon: (
       <>
@@ -43,8 +43,8 @@ const stats: { value: string; label: string; icon: React.ReactNode }[] = [
     ),
   },
   {
-    value: "50K+",
-    label: "Users Impacted",
+    value: "8,000+",
+    label: "Products Managed",
     icon: (
       <>
         <circle cx="9" cy="8" r="3.2" />

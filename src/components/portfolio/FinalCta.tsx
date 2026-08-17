@@ -194,7 +194,7 @@ export function FinalCta() {
             Available for new projects
           </div>
           <p className="fc-avail-row mt-[18px] max-w-[340px] text-[16px] leading-[1.45] text-[hsl(var(--ink-2))] lg:mt-[calc(20*var(--s))] lg:max-w-[calc(340*var(--s))] lg:text-[calc(19*var(--s))]">
-            Accepting selected projects for Q1 2027
+            Accepting selected projects for Q4 2026
           </p>
           <svg
             aria-hidden="true"

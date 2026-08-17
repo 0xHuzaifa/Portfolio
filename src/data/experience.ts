@@ -28,7 +28,9 @@ export const experience: ExperienceItem[] = [
       "Architected a campaign automation engine capable of processing 10 emails/sec — roughly 30,000+ per hour — with queue-based scheduling, retry logic, and per-user SMTP configs built on BullMQ and Redis",
       "Built a multi-tenant CRM platform for real estate workflows: workspace-isolated tenancy, DocuSign contract signing, real-time chat, and automated follow-up pipelines — all in production",
       "Engineered a rule-based inventory system managing 8,000+ products across configurable multi-portal architecture with hierarchical allotment logic across user groups and individuals",
-      "Designed REST and GraphQL APIs consumed by web and mobile clients; managed AWS deployments with Docker containerisation across production environments",
+      "Built a full deal/transaction management module — multi-step deal creation, multi-party negotiation, and role-scoped visibility across agents, partners, and clients, with a secure branded portal for external counterparties",
+      "Wrote unit and integration tests for the natural-language action parser and backend execution layer, and set up Playwright end-to-end automation across core CRM workflows",
+      "Designed REST APIs consumed by web and mobile clients; managed AWS deployments with Docker containerisation across production environments",
     ],
     relatedSystems: [
       { slug: "crm-system", label: "CRM System" },
@@ -60,7 +62,7 @@ export const experience: ExperienceItem[] = [
     company: "HBL Center for Blockchain & Applied Research",
     companyContext:
       "Research division of HBL — Pakistan's largest commercial bank · Conducted at GIKI",
-    period: "Sep 2024",
+    period: "Aug 2024",
     duration: "1 month",
     description:
       "Short-term research internship at GIKI within the applied research arm of Pakistan's largest commercial bank. Focused on blockchain integration patterns in financial systems and contributed to prototype development alongside domain researchers and engineers.",

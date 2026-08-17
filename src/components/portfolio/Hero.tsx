@@ -40,8 +40,8 @@ const scale = {
 };
 
 const metrics = [
-  { icon: Code, value: "80+", label: ["Projects", "Delivered"] },
-  { icon: Rocket, value: "3+", label: ["Years of", "Experience"] },
+  { icon: Rocket, value: "2+", label: ["Years of", "Experience"] },
+  { icon: Layers, value: "6", label: ["Production", "Systems"] },
 ] as const;
 
 const traits = [
@@ -53,15 +53,19 @@ const traits = [
 ] as const;
 
 const capabilities = [
-  { icon: Code, title: "FULL-STACK EXPERTISE", detail: "MERN/PERN Stack" },
-  { icon: Brain, title: "AI INTEGRATION", detail: "LLMs, Agents, Automation" },
+  { icon: Code, title: "FULL-STACK DEVELOPMENT", detail: "MERN / PERN Stack" },
+  {
+    icon: Brain,
+    title: "AI INTEGRATION",
+    detail: "Gemini, OpenAI, LangGraph",
+  },
   {
     icon: Database,
-    title: "SCALABLE BACKENDS",
-    detail: "Optimized. Secure. Reliable.",
+    title: "MULTI-TENANT BACKENDS",
+    detail: "REST APIs, Redis, BullMQ",
   },
-  { icon: Cloud, title: "CLOUD & DEVOPS", detail: "AWS, Docker, CI/CD" },
-  { icon: Zap, title: "FAST & RELIABLE", detail: "On-time. Every time." },
+  { icon: Cloud, title: "CLOUD & DEVOPS", detail: "AWS, Docker, S3" },
+  { icon: Zap, title: "REAL-TIME SYSTEMS", detail: "Socket.io, Live Chat" },
 ] as const;
 
 const glass =
