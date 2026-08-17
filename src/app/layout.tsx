@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Caveat, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { EditorLayout } from "@/components/layout/EditorLayout";
+import { ChatLauncher } from "@/components/assistant/ChatLauncher";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { NavigationProvider } from "@/contexts/NavigationContext";
-import { TabProvider } from "@/contexts/TabContext";
-import { ThemeProvider } from "@/contexts/ThemeContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,6 +15,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Only used for the handwritten marginalia in the Trust section.
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["600"],
 });
 
 export const metadata: Metadata = {
@@ -117,22 +123,24 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${caveat.variable} antialiased`}
       >
+        {/* The hero is held hidden until its intro can set the start frame; with
+            scripting off that intro never runs, so release the hold. */}
+        <noscript>
+          <style>{`.hero-stage,.ah-stage,body:has(.hero-stage) .site-nav{visibility:visible}`}</style>
+        </noscript>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
-        <ThemeProvider>
-          <NavigationProvider>
-            <TabProvider>
-              <TooltipProvider delayDuration={150}>
-                <EditorLayout>{children}</EditorLayout>
-                <Toaster richColors position="top-right" />
-              </TooltipProvider>
-            </TabProvider>
-          </NavigationProvider>
-        </ThemeProvider>
+        <TooltipProvider delayDuration={150}>
+          <SiteHeader />
+          <main className="min-h-dvh">{children}</main>
+          <SiteFooter />
+          <ChatLauncher />
+          <Toaster richColors position="top-right" />
+        </TooltipProvider>
       </body>
     </html>
   );

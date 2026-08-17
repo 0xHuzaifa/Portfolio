@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Brainstorming visual companion
+.superpowers/
+
+# Design references — kept locally, not in the repo
+/New folder (2)/

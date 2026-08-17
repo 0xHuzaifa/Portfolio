@@ -1,593 +1,424 @@
 import {
   ArrowRight,
+  CalendarDays,
   CheckCircle2,
-  Database,
-  Globe,
-  HardDrive,
-  KeyRound,
-  Layers3,
-  Lock,
+  Compass,
+  Layers,
+  Lightbulb,
   Monitor,
-  Package,
-  Server,
-  ShieldCheck,
   Sparkles,
+  Target,
+  TrendingUp,
   Users,
-  Wrench,
-  Zap,
 } from "lucide-react";
-import { AppLink } from "@/components/navigation/AppLink";
-import { TechChip } from "@/lib/techIcons";
-import { SystemImageGallery } from "@/components/systems/SystemImageGallery";
+import Link from "next/link";
+import {
+  type SystemSection,
+  SystemSectionNav,
+} from "@/components/systems/SystemSectionNav";
+import { SystemShots } from "@/components/systems/SystemShots";
+import { SystemStage } from "@/components/systems/SystemStage";
+import { projects } from "@/data/projects";
 import type { System } from "@/data/systems";
+import { TechChip } from "@/lib/techIcons";
 
-// ── Feature grouping ──────────────────────────────────────────────────────────
-const featureGroups: {
-  key: string;
-  label: string;
-  icon: React.ReactNode;
-  keywords: string[];
-}[] = [
-  {
-    key: "security",
-    label: "Security & Auth",
-    icon: <Lock className="h-4 w-4" />,
-    keywords: [
-      "auth",
-      "jwt",
-      "session",
-      "permission",
-      "role",
-      "access",
-      "secure",
-    ],
-  },
-  {
-    key: "realtime",
-    label: "Real-time",
-    icon: <Zap className="h-4 w-4" />,
-    keywords: [
-      "real-time",
-      "realtime",
-      "websocket",
-      "socket",
-      "chat",
-      "notification",
-      "presence",
-      "typing",
-    ],
-  },
-  {
-    key: "data",
-    label: "Data & Storage",
-    icon: <Database className="h-4 w-4" />,
-    keywords: [
-      "database",
-      "storage",
-      "upload",
-      "import",
-      "csv",
-      "bulk",
-      "pagination",
-      "search",
-      "filter",
-      "image",
-    ],
-  },
-  {
-    key: "users",
-    label: "Users & Tenancy",
-    icon: <Users className="h-4 w-4" />,
-    keywords: [
-      "multi-tenant",
-      "workspace",
-      "subdomain",
-      "user",
-      "group",
-      "onboard",
-      "invite",
-      "team",
-    ],
-  },
-  {
-    key: "automation",
-    label: "Automation & Jobs",
-    icon: <Package className="h-4 w-4" />,
-    keywords: [
-      "campaign",
-      "schedul",
-      "queue",
-      "worker",
-      "automat",
-      "email",
-      "sms",
-      "follow-up",
-      "renewal",
-      "job",
-    ],
-  },
-  {
-    key: "api",
-    label: "API & Integration",
-    icon: <Globe className="h-4 w-4" />,
-    keywords: [
-      "api",
-      "integration",
-      "docusign",
-      "smtp",
-      "rest",
-      "webhook",
-      "external",
-    ],
-  },
-];
+/**
+ * A case study, on the site's own material.
+ *
+ * Built to the `project-detail` reference: stage, sticky numbered rail, an
+ * overview band, the four-part story, the feature list beside the screenshots,
+ * the stack, the impact, and the closing invitation.
+ *
+ * Copy comes from `systems.ts` and nowhere else, with two joins outward:
+ * `projects.ts` supplies the short display title and the category chips —
+ * `systems.ts` titles are long and SEO-weighted, and a headline is not a page
+ * title — matched on `caseStudySlug`, which is what that field is for.
+ *
+ * Sections whose data a system does not carry are dropped rather than filled:
+ * the rail is built from what actually rendered, so it can never point at an
+ * anchor that is not on the page.
+ */
 
-function groupFeatures(features: string[]) {
-  const assigned = new Set<string>();
-  const result: { group: (typeof featureGroups)[0]; items: string[] }[] = [];
+const CONTENT = "mx-auto w-full max-w-[1400px] px-6 md:px-10";
 
-  for (const g of featureGroups) {
-    const matched = features.filter((f) => {
-      if (assigned.has(f)) return false;
-      return g.keywords.some((kw) => f.toLowerCase().includes(kw));
-    });
-    if (matched.length > 0) {
-      matched.forEach((f) => assigned.add(f));
-      result.push({ group: g, items: matched });
-    }
-  }
+/** A band: the frosted panel every section on this page sits in. Deliberately
+ *  thinner than `--glass-fill-strong` — the page canvas has to stay readable
+ *  through it, or six stacked bands turn the beige into a white column. */
+const BAND =
+  "rounded-[26px] border border-white/45 bg-white/[0.30] shadow-[var(--shadow-sm)] backdrop-blur-[20px]";
 
-  const remaining = features.filter((f) => !assigned.has(f));
-  if (remaining.length > 0) {
-    result.push({
-      group: {
-        key: "core",
-        label: "Core",
-        icon: <Sparkles className="h-4 w-4" />,
-        keywords: [],
-      },
-      items: remaining,
-    });
-  }
-  return result;
-}
-
-// ── Architecture layer icons ───────────────────────────────────────────────────
-const archLayerMeta: Record<string, { icon: React.ReactNode; accent: string }> =
-  {
-    Frontend: {
-      icon: <Monitor className="h-4 w-4" />,
-      accent: "hsl(var(--vscode-accent))",
-    },
-    Backend: {
-      icon: <Server className="h-4 w-4" />,
-      accent: "hsl(var(--vscode-warm))",
-    },
-    Database: { icon: <Database className="h-4 w-4" />, accent: "#47A248" },
-    Auth: { icon: <KeyRound className="h-4 w-4" />, accent: "#BB6BD9" },
-    Realtime: { icon: <Zap className="h-4 w-4" />, accent: "#F9C74F" },
-    Jobs: { icon: <Package className="h-4 w-4" />, accent: "#EF4444" },
-    Infrastructure: {
-      icon: <HardDrive className="h-4 w-4" />,
-      accent: "#2496ED",
-    },
-    Storage: { icon: <HardDrive className="h-4 w-4" />, accent: "#FF9900" },
-    Tenancy: { icon: <Users className="h-4 w-4" />, accent: "#68D391" },
-    Media: { icon: <Globe className="h-4 w-4" />, accent: "#3448C5" },
-    AI: { icon: <Sparkles className="h-4 w-4" />, accent: "#8B5CF6" },
-  };
-
-// ── Component ─────────────────────────────────────────────────────────────────
 export function SystemPageContent({ system }: { system: System }) {
-  const archEntries: { label: string; value: string }[] = [
-    { label: "Frontend", value: system.architecture.frontend },
-    { label: "Backend", value: system.architecture.backend },
-    { label: "Database", value: system.architecture.database },
-    ...(system.architecture.auth
-      ? [{ label: "Auth", value: system.architecture.auth }]
-      : []),
-    ...(system.architecture.realtime
-      ? [{ label: "Realtime", value: system.architecture.realtime }]
-      : []),
-    ...(system.architecture.jobs
-      ? [{ label: "Jobs", value: system.architecture.jobs }]
-      : []),
-    ...(system.architecture.infrastructure
-      ? [{ label: "Infrastructure", value: system.architecture.infrastructure }]
-      : []),
-    ...(system.architecture.storage
-      ? [{ label: "Storage", value: system.architecture.storage }]
-      : []),
-    ...(system.architecture.tenancy
-      ? [{ label: "Tenancy", value: system.architecture.tenancy }]
-      : []),
-    ...(system.architecture.media
-      ? [{ label: "Media", value: system.architecture.media }]
-      : []),
-    ...(system.architecture.ai
-      ? [{ label: "AI", value: system.architecture.ai }]
-      : []),
+  // The card-level entry for the same work. Absent for a system with no grid
+  // card, in which case the long title and the authored category stand in.
+  const card = projects.find((entry) => entry.caseStudySlug === system.slug);
+  const title = card?.title ?? system.title;
+  const categories = card?.categories ?? [system.category];
+
+  const facts = [
+    system.duration && {
+      icon: CalendarDays,
+      label: "Duration",
+      value: system.duration,
+    },
+    system.platform && {
+      icon: Monitor,
+      label: "Platform",
+      value: system.platform,
+    },
+    system.teamSize && {
+      icon: Users,
+      label: "Team Size",
+      value: system.teamSize,
+    },
+  ].filter(Boolean) as { icon: typeof Users; label: string; value: string }[];
+
+  const story = [
+    { icon: Target, title: "The Challenge", body: lead(system.problem) },
+    { icon: Lightbulb, title: "The Solution", body: lead(system.solution) },
+    system.approach && {
+      icon: Compass,
+      title: "My Approach",
+      body: lead(system.approach),
+    },
+    (system.outcome ?? system.impact?.[0]) && {
+      icon: TrendingUp,
+      title: "The Outcome",
+      body: lead(system.outcome ?? system.impact?.[0] ?? ""),
+    },
+  ].filter(Boolean) as {
+    icon: typeof Target;
+    title: string;
+    body: string;
+  }[];
+
+  const features = system.features.slice(0, 6).map(splitFeature);
+  const hasGallery = (system.images?.length ?? 0) > 1;
+  const results = system.impact ?? system.highlights;
+
+  // No Gallery entry, deliberately. The screenshots share a row with the
+  // feature list, so both start at the same scroll position — the rail resolves
+  // ties to the topmost section, which means Gallery could never light up and
+  // the reader watched the rail jump Features → Tech Stack → Impact. A rail
+  // item that can never be current is worse than one that is not there.
+  const sections: SystemSection[] = [
+    { id: "overview", label: "Overview" },
+    { id: "features", label: "Features" },
+    { id: "stack", label: "Tech Stack" },
+    ...(results.length > 0 ? [{ id: "impact", label: "Impact" }] : []),
   ];
 
-  const groupedFeatures = groupFeatures(system.features);
-
   return (
-    <div className="space-y-8">
-      {/* ── HERO ──────────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,hsla(194,100%,56%,0.12),transparent_40%)]" />
-        <div className="relative">
-          {/* Badges */}
-          <div className="flex flex-wrap gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--vscode-accent))]/35 bg-[hsl(var(--vscode-accent))]/10 px-3 py-1 text-xs font-medium text-[hsl(var(--vscode-accent))]">
-              <Sparkles className="h-3 w-3" />
-              {system.type}
-            </span>
-            <span className="rounded-full border border-[hsl(var(--vscode-border))] px-3 py-1 text-xs text-[hsl(var(--vscode-text-muted))]">
-              {system.category}
-            </span>
+    <main className="bg-[hsl(var(--beige-1))] text-[hsl(var(--ink-1))]">
+      <SystemStage system={system} title={title} categories={categories} />
+
+      <SystemSectionNav sections={sections} />
+
+      {/* ── 01 · overview ─────────────────────────────────────────────────── */}
+      <section id="overview" className={`${CONTENT} scroll-mt-[150px] pt-16`}>
+        <div
+          className={`${BAND} grid gap-10 p-8 lg:grid-cols-4 lg:gap-8 lg:p-10`}
+        >
+          <div>
+            <h2 className="text-[30px] font-extrabold tracking-[-0.03em] lg:text-[34px]">
+              Overview
+            </h2>
+            <p className="mt-6 text-[15px] leading-[1.75] text-[hsl(var(--ink-2))]">
+              {system.shortDescription}
+            </p>
           </div>
 
-          {/* Title */}
-          <h1 className="mt-4 max-w-4xl text-4xl font-bold leading-tight text-[hsl(var(--vscode-text))] md:text-[2.5rem]">
-            {system.title}
-          </h1>
+          <div className="lg:border-l lg:border-[var(--ink-a08)] lg:pl-8">
+            <h3 className="text-[17px] font-bold tracking-[-0.02em]">
+              My Role
+            </h3>
+            {system.role && (
+              <p className="mt-5 text-[15px] font-medium text-[hsl(var(--ink-1))]">
+                {roleTitle(system.role)}
+              </p>
+            )}
+            {system.contributions && (
+              <ul className="mt-5 space-y-[14px]">
+                {system.contributions.slice(0, 3).map((item) => (
+                  <li
+                    key={item}
+                    className="relative pl-[18px] text-[14px] leading-[1.6] text-[hsl(var(--ink-2))] before:absolute before:left-0 before:top-[9px] before:h-[5px] before:w-[5px] before:rounded-full before:bg-[hsl(var(--ink-3))]"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
 
-          {/* Description */}
-          <p className="mt-4 max-w-3xl text-[0.9375rem] leading-[1.85] text-[hsl(var(--vscode-text-muted))]">
-            {system.shortDescription}
-          </p>
-
-          {/* systemType / role */}
-          {(system.systemType || system.role) && (
-            <div className="mt-5 flex flex-wrap gap-2 text-xs">
-              {system.systemType && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--vscode-accent))]/30 bg-[hsl(var(--vscode-accent))]/8 px-3 py-1 text-[hsl(var(--vscode-accent))]">
-                  <Layers3 className="h-3 w-3 shrink-0" />
-                  {system.systemType}
-                </span>
-              )}
-              {system.role && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-[hsl(var(--vscode-border))] px-3 py-1 text-[hsl(var(--vscode-text-muted))]">
-                  <ShieldCheck className="h-3 w-3 shrink-0" />
-                  {system.role}
-                </span>
-              )}
-            </div>
-          )}
-
-          {/* Divider */}
-          <div className="mt-6 border-t border-[hsl(var(--vscode-border))]/50" />
-
-          {/* ── METRICS STRIP (new) ─────────────────────────────────────────── */}
-          {system.metrics && system.metrics.length > 0 && (
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {system.metrics.map((metric) => (
+          {facts.length > 0 && (
+            <dl className="lg:border-l lg:border-[var(--ink-a08)] lg:pl-8">
+              {facts.map(({ icon: Icon, label, value }, i) => (
                 <div
-                  key={metric.label}
-                  className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4"
+                  key={label}
+                  className={`flex items-start gap-[14px] ${
+                    i > 0 ? "mt-6 border-t border-[var(--ink-a08)] pt-6" : ""
+                  }`}
                 >
-                  <p className="text-xl font-bold text-[hsl(var(--vscode-accent))]">
-                    {metric.value}
-                  </p>
-                  <p className="mt-1 text-[11px] leading-5 text-[hsl(var(--vscode-text-muted))]">
-                    {metric.label}
-                  </p>
+                  <Icon
+                    className="mt-[2px] h-[19px] w-[19px] flex-none text-[hsl(var(--ink-3))]"
+                    strokeWidth={1.7}
+                    aria-hidden="true"
+                  />
+                  <div>
+                    <dt className="text-[16px] font-bold tracking-[-0.01em]">
+                      {label}
+                    </dt>
+                    <dd className="mt-[5px] text-[14px] text-[hsl(var(--ink-2))]">
+                      {value}
+                    </dd>
+                  </div>
                 </div>
               ))}
-            </div>
+            </dl>
           )}
 
-          {/* Quick stack mini-cards — shown only when no metrics */}
-          {(!system.metrics || system.metrics.length === 0) && (
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {system.highlights && (
-                <div className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4">
-                  <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
-                    Key highlights
-                  </p>
-                  <ul className="mt-3 space-y-2">
-                    {system.highlights.map((h) => (
-                      <li
-                        key={h}
-                        className="flex items-start gap-2 text-xs text-[hsl(var(--vscode-text))]"
-                      >
-                        <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[hsl(var(--vscode-success))]" />
-                        {h}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              <div className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4">
-                <div className="flex items-center gap-1.5">
-                  <Monitor className="h-3.5 w-3.5 text-[hsl(var(--vscode-accent))]" />
-                  <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
-                    Primary stack
-                  </p>
-                </div>
-                <p className="mt-2 text-sm font-medium text-[hsl(var(--vscode-text))]">
-                  {system.architecture.frontend}
-                </p>
-                <p className="mt-1 text-xs text-[hsl(var(--vscode-text-muted))]">
-                  {system.architecture.backend}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4">
-                <div className="flex items-center gap-1.5">
-                  <Database className="h-3.5 w-3.5 text-[#47A248]" />
-                  <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
-                    Data layer
-                  </p>
-                </div>
-                <p className="mt-2 text-sm font-medium text-[hsl(var(--vscode-text))]">
-                  {system.architecture.database}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Highlights row — shown below metrics when metrics exist */}
-          {system.metrics && system.metrics.length > 0 && system.highlights && (
-            <div className="mt-4 grid gap-4 md:grid-cols-3">
-              <div className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4 md:col-span-2">
-                <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
-                  Key highlights
-                </p>
-                <ul className="mt-3 grid gap-2 sm:grid-cols-3">
-                  {system.highlights.map((h) => (
-                    <li
-                      key={h}
-                      className="flex items-start gap-2 text-xs text-[hsl(var(--vscode-text))]"
-                    >
-                      <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[hsl(var(--vscode-success))]" />
-                      {h}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4">
-                <div className="flex items-center gap-1.5">
-                  <Database className="h-3.5 w-3.5 text-[#47A248]" />
-                  <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
-                    Data layer
-                  </p>
-                </div>
-                <p className="mt-2 text-sm font-medium text-[hsl(var(--vscode-text))]">
-                  {system.architecture.database}
-                </p>
-                <p className="mt-2 text-xs text-[hsl(var(--vscode-text-muted))]">
-                  {system.architecture.backend}
-                </p>
-              </div>
+          {results.length > 0 && (
+            <div className="lg:border-l lg:border-[var(--ink-a08)] lg:pl-8">
+              <h3 className="text-[17px] font-bold tracking-[-0.02em]">
+                Key Results
+              </h3>
+              <ul className="mt-5 space-y-[14px]">
+                {results.slice(0, 4).map((item) => (
+                  <li key={item} className="flex items-start gap-[11px]">
+                    <CheckCircle2
+                      className="mt-[2px] h-[17px] w-[17px] flex-none text-[hsl(var(--yellow-deep))]"
+                      strokeWidth={2}
+                      aria-hidden="true"
+                    />
+                    <span className="text-[14px] leading-[1.6] text-[hsl(var(--ink-2))]">
+                      {item}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>
       </section>
 
-      {/* ── SYSTEM IMAGES ───────────────────────────────────────────────────── */}
-      {system.images && system.images.length > 0 && (
-        <SystemImageGallery images={system.images} />
-      )}
-
-      {/* ── PROBLEM / SOLUTION ───────────────────────────────────────────────── */}
-      <section className="grid gap-6 lg:grid-cols-2">
-        <article className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-red-500/10 text-red-400">
-            <ShieldCheck className="h-5 w-5" />
+      {/* ── the story ─────────────────────────────────────────────────────── */}
+      <section className={`${CONTENT} pt-14`}>
+        <div className={`${BAND} p-8 lg:p-10`}>
+          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            {story.map(({ icon: Icon, title: heading, body }, i) => (
+              <div
+                key={heading}
+                className={
+                  i > 0 ? "lg:border-l lg:border-[var(--ink-a08)] lg:pl-8" : ""
+                }
+              >
+                <div className="flex items-center gap-[13px]">
+                  <span className="flex h-[38px] w-[38px] flex-none items-center justify-center rounded-[11px] bg-[hsl(var(--yellow))]">
+                    <Icon
+                      className="h-[18px] w-[18px]"
+                      strokeWidth={1.9}
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <h3 className="text-[17px] font-bold tracking-[-0.02em]">
+                    {heading}
+                  </h3>
+                </div>
+                <p className="mt-4 text-[14px] leading-[1.7] text-[hsl(var(--ink-2))]">
+                  {body}
+                </p>
+              </div>
+            ))}
           </div>
-          <p className="mt-5 text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
-            Problem
-          </p>
-          <p className="mt-3 text-sm leading-[1.85] text-[hsl(var(--vscode-text-muted))] whitespace-pre-line max-w-3xl">
-            {system.problem}
-          </p>
-        </article>
-
-        <article className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[hsl(var(--vscode-success))]/10 text-[hsl(var(--vscode-success))]">
-            <Wrench className="h-5 w-5" />
-          </div>
-          <p className="mt-5 text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
-            Solution
-          </p>
-          <p className="mt-3 text-sm leading-[1.85] text-[hsl(var(--vscode-text-muted))] whitespace-pre-line max-w-3xl">
-            {system.solution}
-          </p>
-        </article>
+        </div>
       </section>
 
-      {/* ── FEATURES ─────────────────────────────────────────────────────────── */}
-      <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-        <p className="text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
-          Features
-        </p>
-        <h2 className="mt-2 text-3xl font-bold text-[hsl(var(--vscode-text))]">
-          Capabilities &amp; System Features
-        </h2>
+      {/* ── 02 features · 04 gallery ──────────────────────────────────────── */}
+      <section className={`${CONTENT} pt-14`}>
+        <div className={`${BAND} p-8 lg:p-10`}>
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] lg:gap-14">
+            <div id="features" className="scroll-mt-[150px]">
+              <h2 className="text-[26px] font-extrabold tracking-[-0.03em] lg:text-[30px]">
+                Core Features
+              </h2>
+              <ul className="mt-8 grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-2">
+                {features.map(({ title: heading, detail }) => (
+                  <li key={heading} className="flex items-start gap-[13px]">
+                    <span className="flex h-[34px] w-[34px] flex-none items-center justify-center rounded-[10px] bg-[hsl(var(--yellow))]">
+                      <Sparkles
+                        className="h-[16px] w-[16px]"
+                        strokeWidth={1.8}
+                        aria-hidden="true"
+                      />
+                    </span>
+                    <div>
+                      <h3 className="text-[15px] font-bold leading-[1.35] tracking-[-0.01em]">
+                        {heading}
+                      </h3>
+                      {detail && (
+                        <p className="mt-[6px] text-[13px] leading-[1.6] text-[hsl(var(--ink-2))]">
+                          {detail}
+                        </p>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-        <div className="mt-6 space-y-6">
-          {groupedFeatures.map(({ group, items }) => (
-            <div key={group.key}>
-              <div className="mb-3 flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-[hsl(var(--vscode-accent))]/12 text-[hsl(var(--vscode-accent))]">
-                  {group.icon}
-                </span>
-                <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
-                  {group.label}
-                </span>
-                <div className="flex-1 border-t border-[hsl(var(--vscode-border))]/40" />
+            {hasGallery && system.images && (
+              <div>
+                <SystemShots images={system.images} title={title} />
               </div>
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {items.map((feature) => (
-                  <div
-                    key={feature}
-                    className="flex items-start gap-2.5 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4 text-sm leading-[1.7] text-[hsl(var(--vscode-text-muted))] transition-all duration-150 hover:-translate-y-0.5 hover:border-[hsl(var(--vscode-accent))]/20"
-                  >
-                    <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[hsl(var(--vscode-success))]" />
-                    {feature}
-                  </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 03 · the stack ────────────────────────────────────────────────── */}
+      <section id="stack" className={`${CONTENT} scroll-mt-[150px] pt-14`}>
+        <div className={`${BAND} p-8 lg:p-10`}>
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,420px)_minmax(0,1fr)] lg:gap-14">
+            <div>
+              <h2 className="text-[26px] font-extrabold tracking-[-0.03em] lg:text-[30px]">
+                Tech Stack
+              </h2>
+              <p className="mt-5 max-w-[420px] text-[15px] leading-[1.7] text-[hsl(var(--ink-2))]">
+                What the system runs on, and the decisions behind each layer.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-[10px]">
+                {system.technologies.map((tech) => (
+                  <TechChip key={tech} name={tech} />
                 ))}
               </div>
             </div>
-          ))}
+
+            <dl className="grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              {architectureRows(system).map(({ label, value }) => (
+                <div
+                  key={label}
+                  className="border-t border-[var(--ink-a08)] pt-5"
+                >
+                  <dt className="flex items-center gap-[9px] font-data text-[12px] uppercase tracking-[0.14em] text-[hsl(var(--ink-3))]">
+                    <Layers
+                      className="h-[14px] w-[14px]"
+                      strokeWidth={1.8}
+                      aria-hidden="true"
+                    />
+                    {label}
+                  </dt>
+                  <dd className="mt-[9px] text-[15px] leading-[1.55]">
+                    {value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </div>
       </section>
 
-      {/* ── ENGINEERING CHALLENGES ───────────────────────────────────────────── */}
-      {system.engineeringChallenges && (
-        <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-          <p className="text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
-            Engineering challenges
-          </p>
-          <h2 className="mt-2 text-3xl font-bold text-[hsl(var(--vscode-text))]">
-            Complex problems solved
-          </h2>
-
-          <div className="mt-6 space-y-4">
-            {system.engineeringChallenges.map((c, i) => (
-              <div
-                key={c.title}
-                className="rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-5 transition-all duration-150 hover:-translate-y-0.5"
-              >
-                <div className="flex items-start gap-3">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[hsl(var(--vscode-accent))]/12 text-xs font-bold text-[hsl(var(--vscode-accent))]">
-                    {String(i + 1).padStart(2, "0")}
+      {/* ── 05 · impact ───────────────────────────────────────────────────── */}
+      {results.length > 0 && (
+        <section id="impact" className={`${CONTENT} scroll-mt-[150px] pt-14`}>
+          <div className={`${BAND} p-8 lg:p-10`}>
+            <h2 className="text-[26px] font-extrabold tracking-[-0.03em] lg:text-[30px]">
+              Impact
+            </h2>
+            <ul className="mt-8 grid gap-x-10 gap-y-6 md:grid-cols-2">
+              {results.map((item) => (
+                <li key={item} className="flex items-start gap-[13px]">
+                  <CheckCircle2
+                    className="mt-[3px] h-[18px] w-[18px] flex-none text-[hsl(var(--yellow-deep))]"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  />
+                  <span className="text-[15px] leading-[1.65] text-[hsl(var(--ink-2))]">
+                    {item}
                   </span>
-                  <h3 className="text-base font-bold text-[hsl(var(--vscode-text))]">
-                    {c.title}
-                  </h3>
-                </div>
-
-                <div className="mt-4 grid gap-3 lg:grid-cols-2">
-                  <div className="rounded-xl border border-red-500/15 bg-red-500/5 p-4">
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.28em] text-red-400">
-                      Problem
-                    </p>
-                    <p className="text-sm leading-[1.75] text-[hsl(var(--vscode-text-muted))]">
-                      {c.problem}
-                    </p>
-                  </div>
-                  <div className="rounded-xl border border-[hsl(var(--vscode-success))]/15 bg-[hsl(var(--vscode-success))]/5 p-4">
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.28em] text-[hsl(var(--vscode-success))]">
-                      Solution
-                    </p>
-                    <p className="text-sm leading-[1.75] text-[hsl(var(--vscode-text-muted))]">
-                      {c.solution}
-                    </p>
-                  </div>
-                </div>
-
-                {c.impact && (
-                  <div className="mt-3 flex items-start gap-2 rounded-xl border border-[hsl(var(--vscode-accent))]/15 bg-[hsl(var(--vscode-accent))]/5 px-4 py-3">
-                    <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[hsl(var(--vscode-accent))]" />
-                    <p className="text-sm leading-[1.75] text-[hsl(var(--vscode-text-muted))]">
-                      <span className="font-semibold text-[hsl(var(--vscode-accent))]">
-                        Impact:{" "}
-                      </span>
-                      {c.impact}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
       )}
 
-      {/* ── ARCHITECTURE + TECHNOLOGIES ──────────────────────────────────────── */}
-      <section className="grid gap-6 xl:grid-cols-[1fr_0.92fr]">
-        <article className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-          <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[hsl(var(--vscode-accent))]/14 text-[hsl(var(--vscode-accent))]">
-              <Layers3 className="h-5 w-5" />
-            </span>
-            <div>
-              <p className="text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
-                Architecture
-              </p>
-              <h2 className="mt-0.5 text-2xl font-bold text-[hsl(var(--vscode-text))]">
-                System structure
-              </h2>
-            </div>
-          </div>
-
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            {archEntries.map((item) => {
-              const meta = archLayerMeta[item.label] ?? {
-                icon: <Layers3 className="h-4 w-4" />,
-                accent: "hsl(var(--vscode-accent))",
-              };
-              return (
-                <div
-                  key={item.label}
-                  className="flex items-start gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] p-4 transition-all duration-150 hover:-translate-y-0.5"
-                  style={{ borderLeft: `2px solid ${meta.accent}` }}
-                >
-                  <span
-                    className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
-                    style={{
-                      background: `${meta.accent}18`,
-                      color: meta.accent,
-                    }}
-                  >
-                    {meta.icon}
-                  </span>
-                  <div>
-                    <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
-                      {item.label}
-                    </p>
-                    <p className="mt-0.5 text-sm font-medium text-[hsl(var(--vscode-text))]">
-                      {item.value}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </article>
-
-        <article className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-          <p className="text-[10px] font-medium uppercase tracking-[0.32em] text-[hsl(var(--vscode-text-muted))]">
-            Technologies
-          </p>
-          <h2 className="mt-2 text-2xl font-bold text-[hsl(var(--vscode-text))]">
-            Tooling used
+      {/* ── the invitation ────────────────────────────────────────────────── */}
+      <section className={`${CONTENT} py-14 lg:py-20`}>
+        <div
+          className={`${BAND} flex flex-col gap-8 p-8 lg:flex-row lg:items-center lg:gap-12 lg:p-10`}
+        >
+          <span className="flex h-[72px] w-[72px] flex-none items-center justify-center rounded-full bg-[hsl(var(--yellow))] shadow-[0_12px_30px_rgba(246,242,60,0.5)]">
+            <CalendarDays
+              className="h-[30px] w-[30px]"
+              strokeWidth={1.9}
+              aria-hidden="true"
+            />
+          </span>
+          <h2 className="max-w-[380px] text-[30px] font-extrabold leading-[1.15] tracking-[-0.03em] lg:text-[34px]">
+            Have a similar project in mind?
           </h2>
-
-          <div className="mt-5 flex flex-wrap gap-2">
-            {system.technologies.map((technology) => (
-              <TechChip key={technology} name={technology} size="md" />
-            ))}
-          </div>
-
-          <div className="mt-8 rounded-2xl border border-[hsl(var(--vscode-accent))]/20 bg-[linear-gradient(135deg,hsla(194,100%,56%,0.14),transparent_42%),hsl(var(--vscode-panel))] p-5">
-            <div className="flex items-start gap-3">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--vscode-accent))]/14 text-[hsl(var(--vscode-accent))]">
-                <Sparkles className="h-4 w-4" />
-              </span>
-              <div>
-                <h3 className="text-base font-bold text-[hsl(var(--vscode-text))]">
-                  Need something similar built?
-                </h3>
-                <p className="mt-2 text-sm leading-[1.75] text-[hsl(var(--vscode-text-muted))]">
-                  Describe your system — the workflow, the users, the
-                  constraints. I'll respond with what it would take to build it
-                  properly.
-                </p>
-                <AppLink
-                  href="/contact"
-                  tabTitle="Contact"
-                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[hsl(var(--vscode-accent))] px-4 py-2 text-sm font-bold text-[hsl(var(--vscode-bg))] shadow-md shadow-[hsl(var(--vscode-accent))]/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[hsl(var(--vscode-accent))]/35"
-                >
-                  Send your project brief
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </AppLink>
-              </div>
-            </div>
-          </div>
-        </article>
+          <p className="max-w-[300px] flex-1 text-[16px] leading-[1.6] text-[hsl(var(--ink-2))] lg:border-l lg:border-[var(--ink-a08)] lg:pl-12">
+            Let&rsquo;s build something exceptional together.
+          </p>
+          <Link
+            href="/contact"
+            className="inline-flex flex-none items-center gap-[10px] self-start rounded-full bg-[hsl(var(--yellow))] px-[28px] py-[15px] text-[15px] font-bold tracking-[0.02em] shadow-[var(--shadow-sm)] transition-[transform,background-color] duration-200 ease-[var(--ease)] hover:-translate-y-[3px] hover:bg-[hsl(var(--yellow-deep))] lg:self-auto"
+          >
+            LET&rsquo;S TALK
+            <ArrowRight
+              className="h-[17px] w-[17px]"
+              strokeWidth={2.2}
+              aria-hidden="true"
+            />
+          </Link>
+        </div>
       </section>
-    </div>
+    </main>
   );
+}
+
+/** Body copy in `systems.ts` runs to several paragraphs; a band holds one. */
+function lead(text: string) {
+  return text.split("\n\n")[0] ?? text;
+}
+
+/** `role` is authored as "Full-stack developer — built x, y and z". The band
+ *  shows the title; the contributions below it already carry the detail. */
+function roleTitle(role: string) {
+  return role.split("—")[0]?.trim() ?? role;
+}
+
+/** Features are authored as one line, often "Name — what it does". Split where
+ *  that dash exists so the list reads as titled entries, and fall back to the
+ *  whole line where it does not. */
+function splitFeature(feature: string) {
+  const [title, ...rest] = feature.split("—");
+  return {
+    title: rest.length > 0 ? title.trim() : feature,
+    detail: rest.length > 0 ? rest.join("—").trim() : undefined,
+  };
+}
+
+function architectureRows(system: System) {
+  const { architecture } = system;
+
+  return [
+    { label: "Frontend", value: architecture.frontend },
+    { label: "Backend", value: architecture.backend },
+    { label: "Database", value: architecture.database },
+    architecture.auth && { label: "Auth", value: architecture.auth },
+    architecture.realtime && {
+      label: "Realtime",
+      value: architecture.realtime,
+    },
+    architecture.jobs && { label: "Jobs", value: architecture.jobs },
+    architecture.tenancy && { label: "Tenancy", value: architecture.tenancy },
+    architecture.storage && { label: "Storage", value: architecture.storage },
+    architecture.infrastructure && {
+      label: "Infrastructure",
+      value: architecture.infrastructure,
+    },
+    architecture.media && { label: "Media", value: architecture.media },
+    architecture.ai && { label: "AI", value: architecture.ai },
+  ].filter(Boolean) as { label: string; value: string }[];
 }

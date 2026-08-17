@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
-import Image from "next/image";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { StaticImageData } from "next/image";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import { useEffect } from "react";
 
 interface ImageLightboxProps {
   images: (string | StaticImageData)[];
@@ -52,6 +52,7 @@ export function ImageLightbox({
           onError={() => {}}
         />
         <button
+          type="button"
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition z-10"
         >
@@ -60,6 +61,7 @@ export function ImageLightbox({
         {images.length > 1 && (
           <>
             <button
+              type="button"
               onClick={prev}
               disabled={currentIndex === 0}
               className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition disabled:opacity-50 z-10"
@@ -67,6 +69,7 @@ export function ImageLightbox({
               <ChevronLeft className="h-6 w-6" />
             </button>
             <button
+              type="button"
               onClick={next}
               disabled={currentIndex === images.length - 1}
               className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition disabled:opacity-50 z-10"

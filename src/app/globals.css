@@ -15,78 +15,62 @@
 
 @layer base {
   :root {
-    --vscode-bg: 222 22% 8%;
-    --vscode-panel: 221 20% 10%;
-    --vscode-sidebar: 221 19% 11%;
-    --vscode-sidebar-elevated: 221 17% 14%;
-    --vscode-border: 220 15% 21%;
-    --vscode-text: 212 24% 92%;
-    --vscode-text-muted: 216 13% 67%;
-    --vscode-accent: 194 100% 56%;
-    --vscode-hover: 220 16% 18%;
-    --vscode-active: 219 18% 23%;
-    --vscode-success: 157 66% 45%;
-    --vscode-warm: 32 94% 63%;
+    /* --- palette (design system §1) — HSL triplets so hsl(var(--x)) works --- */
+    --beige-1: 40 27% 85%; /* #E3DCCE page canvas */
+    --beige-2: 41 26% 81%; /* #DBD3C2 layered panel */
+    --beige-3: 41 24% 77%; /* #D2C9B5 deepest warm neutral */
+    --ink-1: 0 0% 7%; /* #111111 */
+    --ink-2: 0 0% 33%; /* #555555 */
+    --ink-3: 37 7% 51%; /* #8A8378 */
+    --paper: 0 0% 100%;
+    --yellow: 59 91% 60%; /* #F6F23C — the one accent */
+    --yellow-deep: 59 72% 50%; /* #DCD824 pressed */
 
-    --background: var(--vscode-bg);
-    --foreground: var(--vscode-text);
-    --card: var(--vscode-sidebar-elevated);
-    --card-foreground: var(--vscode-text);
-    --popover: var(--vscode-sidebar-elevated);
-    --popover-foreground: var(--vscode-text);
-    --primary: var(--vscode-accent);
-    --primary-foreground: 222 22% 8%;
-    --secondary: var(--vscode-hover);
-    --secondary-foreground: var(--vscode-text);
-    --muted: var(--vscode-hover);
-    --muted-foreground: var(--vscode-text-muted);
-    --accent: var(--vscode-accent);
-    --accent-foreground: 222 22% 8%;
-    --destructive: 0 72% 53%;
+    /* --- glass + alpha inks (literal rgba, not triplets) --- */
+    --glass-fill: rgba(255, 255, 255, 0.25);
+    --glass-fill-strong: rgba(255, 255, 255, 0.55);
+    --glass-border: rgba(255, 255, 255, 0.35);
+    --glass-border-ink: rgba(17, 17, 17, 0.08);
+    --glass-blur: blur(22px) saturate(140%);
+    --ink-a04: rgba(17, 17, 17, 0.04);
+    --ink-a06: rgba(17, 17, 17, 0.06);
+    --ink-a08: rgba(17, 17, 17, 0.08);
+    --ink-a12: rgba(17, 17, 17, 0.12);
+    --bg-type: rgba(17, 17, 17, 0.05);
+
+    /* --- the one shadow (design system §4) --- */
+    --shadow: 0 30px 80px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 38px 90px rgba(0, 0, 0, 0.1);
+    --shadow-sm: 0 12px 34px rgba(0, 0, 0, 0.06);
+
+    /* --- motion --- */
+    --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --dur-fast: 200ms;
+    --dur-normal: 400ms;
+    --dur-large: 800ms;
+    --dur-section: 1200ms;
+
+    /* --- semantic aliases consumed across the app --- */
+    --background: var(--beige-1);
+    --foreground: var(--ink-1);
+    --card: var(--paper);
+    --card-foreground: var(--ink-1);
+    --popover: var(--paper);
+    --popover-foreground: var(--ink-1);
+    --primary: var(--yellow);
+    --primary-foreground: var(--ink-1); /* ink on yellow, never white */
+    --secondary: var(--beige-2);
+    --secondary-foreground: var(--ink-1);
+    --muted: var(--beige-2);
+    --muted-foreground: var(--ink-2);
+    --accent: var(--yellow);
+    --accent-foreground: var(--ink-1);
+    --destructive: 357 68% 45%;
     --destructive-foreground: 0 0% 100%;
-    --border: var(--vscode-border);
-    --input: var(--vscode-border);
-    --ring: var(--vscode-accent);
-    --radius: 1.25rem;
-  }
-
-  [data-theme="ocean"] {
-    --vscode-bg: 210 55% 8%;
-    --vscode-panel: 210 48% 10%;
-    --vscode-sidebar: 210 45% 11%;
-    --vscode-sidebar-elevated: 210 40% 15%;
-    --vscode-border: 210 35% 24%;
-    --vscode-text: 200 26% 92%;
-    --vscode-text-muted: 201 16% 67%;
-    --vscode-accent: 193 92% 55%;
-    --vscode-hover: 210 30% 18%;
-    --vscode-active: 210 28% 23%;
-  }
-
-  [data-theme="sunset"] {
-    --vscode-bg: 18 28% 9%;
-    --vscode-panel: 18 25% 11%;
-    --vscode-sidebar: 18 24% 12%;
-    --vscode-sidebar-elevated: 18 22% 16%;
-    --vscode-border: 20 18% 24%;
-    --vscode-text: 28 25% 92%;
-    --vscode-text-muted: 26 15% 68%;
-    --vscode-accent: 22 92% 60%;
-    --vscode-hover: 18 18% 19%;
-    --vscode-active: 18 18% 24%;
-  }
-
-  [data-theme="forest"] {
-    --vscode-bg: 152 24% 8%;
-    --vscode-panel: 152 22% 10%;
-    --vscode-sidebar: 152 21% 11%;
-    --vscode-sidebar-elevated: 152 18% 15%;
-    --vscode-border: 150 16% 23%;
-    --vscode-text: 150 24% 92%;
-    --vscode-text-muted: 150 12% 67%;
-    --vscode-accent: 148 57% 50%;
-    --vscode-hover: 150 16% 18%;
-    --vscode-active: 150 16% 23%;
+    --border: var(--beige-3);
+    --input: var(--beige-3);
+    --ring: var(--yellow);
+    --radius: 0.875rem;
   }
 
   * {
@@ -95,30 +79,20 @@
   }
 
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   body {
     min-height: 100vh;
     background-color: hsl(var(--background));
-    background-image:
-      radial-gradient(
-        circle at top left,
-        hsla(194, 100%, 56%, 0.12),
-        transparent 28%
-      ),
-      radial-gradient(
-        circle at bottom right,
-        hsla(32, 94%, 63%, 0.08),
-        transparent 26%
-      );
     color: hsl(var(--foreground));
-    font-family: var(--font-geist-sans), "Segoe UI", sans-serif;
+    /* Inlined, not custom props: Tailwind v4 prunes `--font-*` names as theme vars. */
+    font-family: var(--font-geist-sans), "Inter", system-ui, sans-serif;
   }
 
   ::selection {
-    background: hsla(194, 100%, 56%, 0.28);
-    color: hsl(var(--vscode-text));
+    background: hsl(var(--yellow));
+    color: hsl(var(--ink-1));
   }
 
   a {
@@ -132,22 +106,736 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: hsl(var(--vscode-panel));
+    background: hsl(var(--beige-2));
   }
 
   ::-webkit-scrollbar-thumb {
-    border: 2px solid hsl(var(--vscode-panel));
+    border: 2px solid hsl(var(--beige-2));
     border-radius: 999px;
-    background: hsl(var(--vscode-border));
+    background: hsl(var(--beige-3));
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--vscode-hover));
+    background: hsl(var(--ink-3));
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Pre-intro hold — every section that opens with a self-playing sequence.
+
+   The server paints the finished section, but the intro's start states only
+   land once React has hydrated and `useGSAP` runs — so the visitor saw the
+   assembled section, then saw it stripped back to its first frame, then saw it
+   assemble. Holding the stage hidden from the first paint removes the first two
+   of those three. The sequence writes an inline `visibility: visible` in the
+   same layout effect that sets the start states, so the reveal and the start
+   frame hit the screen together.
+
+   `.hero-stage` is the homepage; `.ah-stage` is /about section 01. The site nav
+   goes with the homepage hero because it drops into that composition.
+
+   Unlayered on purpose: it has to outrank Tailwind's utilities.
+   --------------------------------------------------------------------------- */
+.hero-stage,
+.ah-stage,
+body:has(.hero-stage) .site-nav {
+  visibility: hidden;
+}
+
+/* No JS means no intro, and then nothing would ever reveal it — the layout's
+   <noscript> style hands the hold back. */
+
+/* ---------------------------------------------------------------------------
+   Trust scroll sequence.
+
+   Everything here is gated behind `[data-sequence="on"]`, which `trustSequence`
+   sets only after it has confirmed a `lg` viewport and no reduced-motion
+   preference. Without that attribute the hero and Trust stay two ordinary
+   stacked sections — which is also exactly what the server renders, so there is
+   no hydration mismatch and no flash of overlaid content.
+   --------------------------------------------------------------------------- */
+
+/** Must stay in step with `DROP_SIZE` in src/animations/trust.ts. */
+:root {
+  --trust-drop-size: 132px;
+}
+
+.trust-stage[data-sequence="on"] {
+  height: 100svh;
+  overflow: hidden;
+}
+
+.trust-stage[data-sequence="on"] .trust-section {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  /* The hero and the page already paint beige-1; an opaque overlay would hide
+     the hero before the drop has even formed. */
+  background: transparent;
+  /* Nothing in Trust is interactive, and at scroll 0 this layer sits directly
+     over the hero's CTAs. */
+  pointer-events: none;
+}
+
+/* The bead of water. Hidden entirely outside the sequence so it can never be
+   caught by a screenshot or a reduced-motion visitor. Centred with margins
+   rather than a translate so `transform` stays free for GSAP's scale. */
+.trust-drop {
+  display: none;
+}
+
+.trust-stage[data-sequence="on"] .trust-drop {
+  display: block;
+  position: absolute;
+  /* Centre of the panel box: left 4 + 1664/2, top 8 + 537/2, in reference px. */
+  left: calc(836 * var(--s));
+  top: calc(276.5 * var(--s));
+  width: var(--trust-drop-size);
+  height: var(--trust-drop-size);
+  margin-left: calc(var(--trust-drop-size) / -2);
+  margin-top: calc(var(--trust-drop-size) / -2);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  background: radial-gradient(
+    120% 120% at 32% 26%,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.42) 42%,
+    rgba(252, 250, 230, 0.55) 100%
+  );
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.1),
+    inset 0 -10px 22px rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+}
+
+/* Specular catchlight — what makes it read as water rather than a circle. */
+.trust-drop-gloss {
+  position: absolute;
+  left: 24%;
+  top: 17%;
+  width: 26%;
+  height: 19%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  filter: blur(4px);
+}
+
+/* Swapped in while the clip is travelling; see the note in trust.ts. */
+.trust-surface.is-flat {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Same trade, for the Capabilities deck: the frost is dropped while a card is
+   still stacked on the pile or crossing the board, and restored once it seats.
+   See the note in capabilities.ts. Applied by JS only, so a card that never
+   animates — mobile, reduced motion — keeps its glass. */
+.cap-card.is-flat {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* ---------------------------------------------------------------------------
+   About — the availability indicator.
+
+   A status light, not a decoration: it says the "Available for new
+   opportunities" line next to it is live. Left in CSS rather than given to
+   `aboutSequence` on purpose, so it keeps breathing after the scroll has moved
+   past the section instead of freezing at whatever the scrub last set.
+
+   Slow and shallow — the design system's rule is that ambient motion sits below
+   the threshold of notice.
+   --------------------------------------------------------------------------- */
+
+@keyframes about-live {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(0.82);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ab-live {
+    animation: about-live 2.8s ease-in-out infinite;
+  }
+}
+
+/* Content is hidden (visibility) until P4, so this cannot swallow hero clicks
+   at scroll 0 — hidden elements are not hit-tested. */
+.trust-stage[data-sequence="on"] .trust-content {
+  pointer-events: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Trust stat cards — etched glass tiles with gold-thread highlights.
+
+   Five layers, outermost first: ambient aura and edge glow (box-shadow), the
+   luminous rim (::before, a masked gradient ring), the glass body (background
+   + backdrop-filter), the embroidered inner light (inset shadows + radial), and
+   the grain (::after). Content sits above all of it.
+
+   Written as CSS rather than Tailwind utilities because two of the five layers
+   are pseudo-elements and one is a keyframe — none of which express cleanly as
+   arbitrary variants. Geometry stays in the component, where `--s` scales it.
+
+   Alphas are tuned for this LIGHT canvas. The usual glassmorphism figures
+   (white at 6%, border at 12%) assume a dark backdrop and vanish entirely on
+   beige-1. The accent is the design system's `--yellow`, not a separate gold,
+   so the section keeps to the one-accent rule.
+   --------------------------------------------------------------------------- */
+
+@keyframes trust-card-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.trust-card {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  /* Embroidered inner light sits above the glass body: a soft pool falling from
+     the top edge, which is what reads as "crafted" rather than flat. */
+  background:
+    radial-gradient(circle at 50% 18%, rgba(246, 242, 60, 0.2), transparent 62%),
+    linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.64),
+      rgba(255, 255, 255, 0.38) 55%,
+      rgba(255, 255, 255, 0.52)
+    );
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  /* stitched top edge + warm pool welling up from the base */
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.8),
+    inset 0 -8px 20px rgba(246, 242, 60, 0.18),
+    /* hairline edge glow, then the aura the card floats on */ 0 0 0 1px
+    rgba(246, 242, 60, 0.07),
+    0 8px 32px rgba(246, 242, 60, 0.16),
+    0 20px 60px rgba(0, 0, 0, 0.05);
+  transform: translateZ(0);
+  transition:
+    box-shadow 320ms var(--ease),
+    border-color 320ms var(--ease);
+}
+
+/* Luminous rim: a 1px gradient ring, white through to accent, masked so only
+   the border band paints. This is the light-catching corner detail. */
+.trust-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(255, 255, 255, 0.15) 45%,
+    rgba(246, 242, 60, 0.85)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0.75;
+  pointer-events: none;
+  transition: opacity 320ms var(--ease);
+}
+
+/* Grain. Without it the glass reads as cheap flat plastic. Inline SVG noise
+   rather than a binary asset, so nothing extra ships. */
+.trust-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* The float and the hover lift live on an inner wrapper, never on the card
+   itself: GSAP owns the card's transform through P4/P5, and two systems
+   writing one transform is the bug that broke the hero's idle drift. */
+.trust-card-inner {
+  position: relative;
+  z-index: 2;
+  transition: transform 320ms var(--ease);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .trust-card-inner {
+    animation: trust-card-float 6s ease-in-out infinite;
+  }
+
+  /* Dropping the animation is what lets the hover transform take effect — an
+     running animation always wins over a plain transform. */
+  .trust-card:hover .trust-card-inner {
+    animation: none;
+  }
+}
+
+/* Pressed-gold badge: lit from the top-left, seated by an inner highlight. */
+.trust-card-icon {
+  background: linear-gradient(
+    145deg,
+    hsl(var(--yellow)),
+    hsl(var(--yellow-deep))
+  );
+  box-shadow:
+    0 6px 14px rgba(246, 242, 60, 0.45),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  transition: transform 320ms var(--ease);
+}
+
+/* Every base rule is declared above this line; hover states follow. Keeping
+   that order is what stops a lower-specificity rule landing after the higher
+   one that depends on it. */
+.trust-card:hover {
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.8),
+    inset 0 -8px 20px rgba(246, 242, 60, 0.22),
+    0 0 0 1px rgba(246, 242, 60, 0.12),
+    0 12px 40px rgba(246, 242, 60, 0.28),
+    0 24px 66px rgba(0, 0, 0, 0.06);
+}
+
+.trust-card:hover::before {
+  opacity: 1;
+}
+
+.trust-card:hover .trust-card-inner {
+  transform: translateY(-6px);
+}
+
+.trust-card:hover .trust-card-icon {
+  transform: scale(1.05);
+}
+
+/* The number is the anchor; the glow under it is a reflection off the glass. */
+.trust-card-value {
+  text-shadow: 0 2px 10px rgba(246, 242, 60, 0.35);
+}
+
+/* ---------------------------------------------------------------------------
+   Projects hero — two materials.
+
+   `.glass-card` is a FLAT frosted panel lying on the page. `.shot` is a PRINT:
+   a real screenshot behind a thin ink rim and a two-part shadow, no blur and no
+   frost. The distinction is the point. The hero used to hand its whole right
+   side to five glass slabs standing on a lit floor — an elaborate 3D scene
+   built to show categories, four of which held a single project each. Glass
+   over glass says nothing; a screenshot says what was built.
+
+   Motion lives on `.glass-card-inner` for the frosted panels: the outer keeps
+   placement and pointer parallax, the inner takes the arrival, the drift and
+   the hover. One owner per transform — two systems writing one `transform` is
+   the bug that broke the homepage hero's idle drift. The prints own their own
+   transform outright, which is why they take the parallax directly.
+
+   Alphas are tuned for this LIGHT canvas; the usual glassmorphism figures
+   assume a dark backdrop and vanish on beige. The accent stays `--yellow`.
+
+   In `@layer components` on purpose, and it has to stay there. Unlayered CSS
+   outranks every cascade layer, so declaring `position: relative` at the top
+   level silently beats the cards' `lg:absolute` placement. Inside the layer,
+   Tailwind's utilities win.
+   --------------------------------------------------------------------------- */
+
+/* Arrival: up 20px, in from 0.95. `backwards` holds the start state through
+   the stagger delay so a card cannot flash at full size before its turn. */
+@keyframes glass-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Idle drift, deliberately below the threshold of notice — 6px and a degree
+   over five-odd seconds. `--float-tilt`/`--float-dur`/`--float-delay` are set
+   per card so the deck never breathes in lockstep. */
+@keyframes glass-card-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-6px) rotate(var(--float-tilt, 1deg));
+  }
+}
+
+@layer components {
+  /* ── shared motion host ────────────────────────────────────────────────── */
+
+  .glass-card-inner {
+    position: relative;
+    z-index: 2;
+    transition: transform 320ms var(--ease);
+  }
+
+  /* ── flat panel: the 80+ card and the impact strip ─────────────────────── */
+
+  .glass-card {
+    position: relative;
+    isolation: isolate;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.28),
+        rgba(255, 255, 255, 0) 60%
+      ), rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 8px 25px rgba(0, 0, 0, 0.06);
+    transition:
+      box-shadow 320ms var(--ease),
+      border-color 320ms var(--ease);
+  }
+
+  .glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.55);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.65),
+      0 14px 38px rgba(0, 0, 0, 0.09);
+  }
+
+  /* ── projects hero: the card deck ──────────────────────────── */
+
+  /* A card in the fanned stack. Frosted, with the front one brought forward by
+     surface and shadow rather than by size — it is already the largest, and
+     doubling the cue makes the deck lurch when the selection changes. */
+  .pd-card {
+    background: rgba(255, 255, 255, 0.44);
+    backdrop-filter: blur(16px) saturate(130%);
+    -webkit-backdrop-filter: blur(16px) saturate(130%);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    box-shadow:
+      0 10px 28px rgba(30, 25, 15, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    transition:
+      transform 500ms var(--ease),
+      background 400ms ease,
+      box-shadow 400ms ease;
+    cursor: pointer;
+  }
+
+  .pd-card.is-active {
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow:
+      0 24px 60px rgba(30, 25, 15, 0.13),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    cursor: default;
+  }
+
+  .pd-card:focus-visible {
+    outline: 2px solid hsl(var(--ink-1));
+    outline-offset: 3px;
+  }
+
+  /* The outlined count behind the deck. `-webkit-text-stroke` has no standard
+     longhand with the same support, and the fallback — a filled number at 6%
+     ink — is close enough that no guard is needed. */
+  .pd-ghost-count {
+    -webkit-text-stroke: 1px rgba(17, 17, 17, 0.08);
+  }
+
+  /* ── case study: the product shot ──────────────────────────── */
+
+  /* At rest the screen is laid back on the page, an object among the copy. On
+     approach it squares up to the reader and becomes something to look INTO.
+     The turn is the page's one authored moment, so it is slow and eased rather
+     than snappy. */
+  @media (min-width: 1024px) {
+    .system-shot {
+      transform: perspective(1300px) rotateY(-14deg) rotateX(3deg)
+        rotateZ(-0.8deg);
+      transition:
+        transform 720ms var(--ease),
+        box-shadow 720ms var(--ease);
+    }
+
+    .system-shot:hover {
+      transform: perspective(1300px) rotateY(0deg) rotateX(0deg) rotateZ(0deg);
+      box-shadow: 0 40px 80px -34px rgba(60, 50, 35, 0.34);
+    }
+  }
+
+  @media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+    .system-shot {
+      transition: none;
+    }
+  }
+
+  /* ── architectural glass: the projects hero still life ───────────── */
+
+  /* The warm source the sheets stand in. One soft radial, well short of the
+     frame edges — a gradient that reaches the corners reads as a background
+     treatment rather than as light coming from somewhere in the scene. */
+  .hero-art-light {
+    background: radial-gradient(
+      circle at 63% 46%,
+      rgba(246, 226, 90, 0.16),
+      rgba(246, 226, 90, 0.05) 12%,
+      transparent 27%
+    );
+  }
+
+  /* A sheet of glass seen edge-on, not a card. The fill is weak on purpose:
+     the canvas has to stay visible through it, and the panel is read from its
+     two vertical edges rather than from a border drawn all the way round. */
+  .glass-sheet {
+    /* A sheet, not a card: the corner is barely eased. Anything approaching a
+       card radius and the whole still life turns back into UI. */
+    border-radius: calc(7 * var(--s));
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.34),
+      rgba(255, 255, 255, 0.08)
+    );
+    /* No saturate. Boosting chroma behind clear glass pulled the warm pool
+       through all three sheets and turned the scene lemon. */
+    backdrop-filter: blur(11px);
+    -webkit-backdrop-filter: blur(11px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      inset 1px 0 0 rgba(255, 255, 255, 0.7),
+      inset -1px 0 0 rgba(0, 0, 0, 0.045),
+      0 30px 60px rgba(75, 65, 45, 0.07);
+    transform: var(--sheet-tilt);
+  }
+
+  /* The lit edge. Brightest at the ends and thinning through the middle, the
+     way a polished edge catches a source above and below it. */
+  .glass-sheet::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    border-radius: inherit;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.95),
+      rgba(255, 255, 255, 0.15) 45%,
+      rgba(255, 255, 255, 0.8)
+    );
+    opacity: 0.8;
+  }
+
+  /* The far edge picks up the room instead of the light. */
+  .glass-sheet::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    border-radius: inherit;
+    background: rgba(150, 130, 90, 0.14);
+  }
+
+  /* Amber glass, not a yellow rectangle: the tint has to fall off across the
+     sheet, so what you read is light passing through it. */
+  .glass-sheet.is-amber {
+    background: linear-gradient(
+      148deg,
+      rgba(250, 226, 96, 0.42),
+      rgba(255, 246, 190, 0.22) 55%,
+      rgba(255, 255, 255, 0.08)
+    );
+    border-color: rgba(255, 246, 200, 0.7);
+    box-shadow:
+      inset 1px 0 0 rgba(255, 252, 225, 0.85),
+      inset -1px 0 0 rgba(120, 96, 20, 0.06),
+      0 30px 64px rgba(150, 120, 20, 0.1);
+  }
+
+  /* ── the plinth ───────────────────────────────────────── */
+
+  /* The weight in the composition. Everything else floats; this one thing is
+     evidently heavy, and the glass reads as standing rather than drifting only
+     because it is here. */
+  .plinth-face,
+  .plinth-top,
+  .plinth-side {
+    /* Aggregate speckle, kept far below the threshold of notice — enough to
+       stop the faces reading as flat fills, never enough to look like a
+       texture someone applied. */
+    background-image:
+      radial-gradient(
+        circle at 22% 28%,
+        rgba(255, 255, 255, 0.34) 0 0.6px,
+        transparent 1.2px
+      ),
+      radial-gradient(
+        circle at 68% 66%,
+        rgba(90, 78, 52, 0.07) 0 0.6px,
+        transparent 1.2px
+      ),
+      radial-gradient(
+        circle at 44% 82%,
+        rgba(90, 78, 52, 0.05) 0 0.6px,
+        transparent 1.2px
+      );
+    background-size:
+      6px 6px,
+      8px 8px,
+      11px 11px;
+  }
+
+  .plinth-face {
+    background-color: #cec4ad;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.4),
+      0 35px 70px rgba(60, 50, 35, 0.16);
+  }
+
+  /* Lit from above, so the top face is the brightest plane and the return is
+     the darkest. Skewing one axis on each is the whole projection. */
+  .plinth-top {
+    background-color: #e4dbc8;
+    transform: skewX(-45deg);
+  }
+
+  .plinth-side {
+    background-color: #b4a88e;
+    transform: skewY(-45deg);
+  }
+
+  /* ── motion ────────────────────────────────────────────────────────────── */
+
+  @media (prefers-reduced-motion: no-preference) {
+    .glass-card-inner {
+      will-change: transform;
+      /* The float picks up where the arrival lands, offset by `--float-delay` —
+         negative, per card, so the five start mid-stroke instead of taking a
+         whole period to drift apart. */
+      animation:
+        glass-card-in 0.6s var(--ease) var(--in-delay, 0s) backwards,
+        glass-card-float var(--float-dur, 5s) ease-in-out
+        calc(var(--in-delay, 0s) + 0.6s + var(--float-delay, 0s)) infinite;
+    }
+
+    /* The strip is the floor the deck stands on, not a floating card: surface
+       and arrival, never drift. */
+    .glass-panel-static .glass-card-inner {
+      will-change: auto;
+      animation: glass-card-in 0.6s var(--ease) var(--in-delay, 0s) backwards;
+    }
+
+    /* No hover transform on these panels, deliberately.
+     *
+     * It used to kill the float animation on hover and swap in `scale(1.04)`,
+     * which made the card JUMP from wherever the drift had it to its scaled
+     * size. Worse, the outer card also carries pointer parallax, so the panel
+     * moved out from under the cursor, hover dropped, the animation came back,
+     * the panel moved again — on and off several times a second. That flicker
+     * is what read as blinking on the 80+ card and the metrics bar.
+     *
+     * The hover response lives on `.glass-card:hover` above instead: border and
+     * shadow only, no geometry, nothing that can move the target away from the
+     * pointer that is hovering it. */
+
+    /* ── the still life ──────────────────────────────────────────────────
+       Slow enough to be noticed only on the second look. The sheets breathe
+       a few pixels on their own clocks, the plinth barely moves because it is
+       the heavy thing, and the arc turns once every half minute. */
+
+    .glass-sheet {
+      animation: sheet-float var(--float-dur, 9s) ease-in-out
+        var(--float-delay, 0s) infinite alternate;
+    }
+
+    .plinth {
+      animation: sheet-float 12s ease-in-out -3s infinite alternate;
+      --float-rise: -2px;
+    }
+
+    .hero-orbit {
+      animation: orbit-turn 26s linear infinite;
+    }
+  }
+}
+
+/* The lean has to survive the float, so the keyframe carries `--sheet-tilt`
+   through rather than replacing `transform` with a bare translate. */
+@keyframes sheet-float {
+  from {
+    transform: var(--sheet-tilt, none) translateY(0);
+  }
+
+  to {
+    transform: var(--sheet-tilt, none) translateY(var(--float-rise, -4px));
+  }
+}
+
+@keyframes orbit-turn {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }
 
 @layer utilities {
   .animate-fade-up {
     animation: fade-up 0.45s ease both;
+  }
+
+  .font-data {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+  }
+
+  .font-hand {
+    font-family: var(--font-caveat), cursive;
+  }
+
+  /* One geometric sans does everything (design system §2). */
+  .font-display {
+    font-family: var(--font-geist-sans), "Inter", sans-serif;
+  }
+
+  .glass {
+    background: var(--glass-fill);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow);
+    transform: translateZ(0);
   }
 }

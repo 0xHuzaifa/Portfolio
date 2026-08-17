@@ -1,8 +1,17 @@
 "use client";
 
-import { Github, Linkedin, LoaderCircle, Mail, Send } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  Github,
+  Linkedin,
+  LoaderCircle,
+  Mail,
+  Send,
+} from "lucide-react";
 import { type ChangeEvent, useState } from "react";
 import { toast } from "sonner";
+import { RevealContainer } from "@/components/motion/RevealContainer";
 import type {
   ContactApiResponse,
   ContactFieldErrors,
@@ -10,11 +19,56 @@ import type {
 } from "@/lib/contact/contact.types";
 import { cn } from "@/lib/utils";
 
+/**
+ * /contact — the brief form.
+ *
+ * Brought onto the site's own material: beige canvas, frosted bands, the one
+ * yellow accent. It was still wearing the pre-redesign card styling, which on
+ * this background meant near-invisible eyebrows, inputs the same colour as the
+ * page behind them, and a success panel painted with `--state-success` — a
+ * token that does not exist, so every rule using it was thrown away and the
+ * confirmation rendered unstyled.
+ *
+ * The submit logic is untouched; this is presentation, the header offset, and
+ * contrast.
+ */
+
 const initialFormState: ContactFormData = {
   name: "",
   email: "",
   message: "",
 };
+
+const CONTENT = "mx-auto w-full max-w-[1400px] px-6 md:px-10";
+
+/** The frosted band every panel on this page sits in — the same surface the
+ *  case study uses, so the two pages read as one site. */
+const BAND =
+  "rounded-[26px] border border-white/45 bg-white/[0.30] shadow-[var(--shadow-sm)] backdrop-blur-[20px]";
+
+/** Fields sit ON the band, so they need a lighter fill than it and a real ink
+ *  border. At `--background`/60 they were the same value as the panel and read
+ *  as flat areas rather than as things to type into. */
+const inputClasses =
+  "w-full rounded-xl border bg-white/70 px-4 py-3 text-[15px] text-[hsl(var(--ink-1))] outline-none transition-[border-color,box-shadow] duration-200 placeholder:text-[hsl(var(--ink-3))] focus:border-[hsl(var(--yellow-deep))] focus:shadow-[0_0_0_3px_rgba(246,242,60,0.35)] disabled:cursor-not-allowed disabled:opacity-70";
+
+const LABEL =
+  "mb-2 block font-data text-[11px] uppercase tracking-[0.18em] text-[hsl(var(--ink-3))]";
+
+const LINK_ROW =
+  "flex items-center gap-3 rounded-xl border border-[var(--ink-a12)] bg-white/60 px-4 py-3 text-[15px] transition-[border-color,transform] duration-200 ease-[var(--ease)] hover:-translate-y-[2px] hover:border-[hsl(var(--yellow-deep))]";
+
+const steps = [
+  { step: "01", text: "You send a brief — workflow, problem, or rough idea." },
+  {
+    step: "02",
+    text: "I review and respond within 24 hours with questions or a clear next step.",
+  },
+  {
+    step: "03",
+    text: "If there's a fit, we scope the project together before any commitment.",
+  },
+];
 
 export function ContactPageContent() {
   const [formState, setFormState] = useState(initialFormState);
@@ -96,242 +150,263 @@ export function ContactPageContent() {
   };
 
   return (
-    <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsla(194,100%,56%,0.18),transparent_40%),radial-gradient(circle_at_bottom_right,hsla(32,94%,63%,0.12),transparent_34%)]" />
-        <div className="relative">
-          <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
-            Contact
-          </p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-semibold leading-tight text-[hsl(var(--vscode-text))]">
-            Tell me what you're building.
+    <RevealContainer>
+      <main className="bg-[hsl(var(--beige-1))] pb-20 pt-[124px] text-[hsl(var(--ink-1))] lg:pb-28 lg:pt-[140px]">
+        {/* ---------- hero ---------- */}
+        <section className={CONTENT}>
+          <div className="flex items-center gap-[14px]">
+            <span className="h-[3px] w-[38px] rounded-[2px] bg-[hsl(var(--yellow))]" />
+            <span className="font-data text-[12px] font-semibold uppercase tracking-[0.18em]">
+              Contact
+            </span>
+          </div>
+
+          <h1 className="mt-6 max-w-4xl text-[clamp(2.25rem,6vw,60px)] font-extrabold leading-[1.06] tracking-[-0.035em]">
+            Tell me what you&rsquo;re building
+            <span className="text-[hsl(var(--yellow-deep))]">.</span>
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-8 text-[hsl(var(--vscode-text-muted))]">
-            Share the context — the workflow, the users, the problem you're
-            solving. I'll come back with a clear picture of scope, approach, and
-            next steps. No commitment required.
+
+          <p className="mt-6 max-w-2xl text-[17px] leading-[1.65] text-[hsl(var(--ink-2))] md:text-[18px]">
+            Share the context — the workflow, the users, the problem
+            you&rsquo;re solving. I&rsquo;ll come back with a clear picture of
+            scope, approach, and next steps. No commitment required.
           </p>
-          <p className="mt-2 text-sm text-[hsl(var(--vscode-text-muted))]/70">
+
+          <p className="mt-3 max-w-2xl text-[14px] leading-[1.6] text-[hsl(var(--ink-3))]">
             Typical response within 24 hours. Available for SaaS platforms,
             internal tools, CRMs, and custom business systems.
           </p>
-        </div>
-      </section>
-
-      <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-        <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6 md:p-8">
-          <div className="mb-6">
-            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
-              Project brief
-            </p>
-            <h2 className="mt-2 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
-              Describe your system
-            </h2>
-            <p className="mt-1.5 text-sm leading-[1.7] text-[hsl(var(--vscode-text-muted))]">
-              No need for a formal spec — a clear description of the problem and
-              who it affects is enough to start.
-            </p>
-          </div>
-
-          {submitted ? (
-            <div className="rounded-[26px] border border-[hsl(var(--vscode-success))]/30 bg-[hsl(var(--vscode-success))]/10 p-6">
-              <p className="text-xs uppercase tracking-[0.24em] text-[hsl(var(--vscode-success))]">
-                Message received
-              </p>
-              <h3 className="mt-3 text-2xl font-semibold text-[hsl(var(--vscode-text))]">
-                Thanks, your message is on its way.
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-[hsl(var(--vscode-text-muted))]">
-                I&apos;ve sent a confirmation email to your inbox, and I&apos;ll
-                review your message and respond as soon as possible.
-              </p>
-              <button
-                type="button"
-                onClick={() => setSubmitted(false)}
-                className="mt-5 inline-flex items-center gap-2 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-5 py-3 text-sm font-semibold text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
-              >
-                Send another message
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <label className="block">
-                  <span className="mb-2 block text-xs uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
-                    Name
-                  </span>
-                  <input
-                    type="text"
-                    required
-                    disabled={isSubmitting}
-                    value={formState.name}
-                    onChange={handleFieldChange("name")}
-                    placeholder="Your name"
-                    className={cn(
-                      "w-full rounded-2xl border bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] outline-none transition-colors placeholder:text-[hsl(var(--vscode-text-muted))]/60 focus:border-[hsl(var(--vscode-accent))] disabled:cursor-not-allowed disabled:opacity-70",
-                      fieldErrors.name
-                        ? "border-[hsl(var(--destructive))]"
-                        : "border-[hsl(var(--vscode-border))]",
-                    )}
-                  />
-                  {fieldErrors.name ? (
-                    <span className="mt-2 block text-sm text-[hsl(var(--destructive))]">
-                      {fieldErrors.name}
-                    </span>
-                  ) : null}
-                </label>
-
-                <label className="block">
-                  <span className="mb-2 block text-xs uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
-                    Email
-                  </span>
-                  <input
-                    type="email"
-                    required
-                    disabled={isSubmitting}
-                    value={formState.email}
-                    onChange={handleFieldChange("email")}
-                    placeholder="you@example.com"
-                    className={cn(
-                      "w-full rounded-2xl border bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] outline-none transition-colors placeholder:text-[hsl(var(--vscode-text-muted))]/60 focus:border-[hsl(var(--vscode-accent))] disabled:cursor-not-allowed disabled:opacity-70",
-                      fieldErrors.email
-                        ? "border-[hsl(var(--destructive))]"
-                        : "border-[hsl(var(--vscode-border))]",
-                    )}
-                  />
-                  {fieldErrors.email ? (
-                    <span className="mt-2 block text-sm text-[hsl(var(--destructive))]">
-                      {fieldErrors.email}
-                    </span>
-                  ) : null}
-                </label>
-              </div>
-
-              <label className="block">
-                <span className="mb-2 block text-xs uppercase tracking-[0.24em] text-[hsl(var(--vscode-text-muted))]">
-                  What are you building?
-                </span>
-                <textarea
-                  required
-                  rows={7}
-                  disabled={isSubmitting}
-                  value={formState.message}
-                  onChange={handleFieldChange("message")}
-                  placeholder="Tell me about the product, workflows, users, or technical constraints."
-                  className={cn(
-                    "w-full resize-none rounded-2xl border bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm leading-7 text-[hsl(var(--vscode-text))] outline-none transition-colors placeholder:text-[hsl(var(--vscode-text-muted))]/60 focus:border-[hsl(var(--vscode-accent))] disabled:cursor-not-allowed disabled:opacity-70",
-                    fieldErrors.message
-                      ? "border-[hsl(var(--destructive))]"
-                      : "border-[hsl(var(--vscode-border))]",
-                  )}
-                />
-                {fieldErrors.message ? (
-                  <span className="mt-2 block text-sm text-[hsl(var(--destructive))]">
-                    {fieldErrors.message}
-                  </span>
-                ) : null}
-              </label>
-
-              <div className="space-y-3">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="inline-flex items-center gap-2 rounded-2xl bg-[hsl(var(--vscode-accent))] px-5 py-3 text-sm font-semibold text-[hsl(var(--vscode-bg))] transition-transform duration-200 hover:-translate-y-0.5 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  {isSubmitting ? (
-                    <LoaderCircle className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Send className="h-4 w-4" />
-                  )}
-                  {isSubmitting ? "Sending..." : "Send message"}
-                </button>
-
-                {errorMessage ? (
-                  <p
-                    role="alert"
-                    className="text-sm leading-7 text-[hsl(var(--destructive))]"
-                  >
-                    {errorMessage}
-                  </p>
-                ) : null}
-              </div>
-            </form>
-          )}
         </section>
 
-        <div className="space-y-4">
-          <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-sidebar-elevated))]/92 p-6">
-            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-text-muted))]">
-              Direct contact
-            </p>
-            <div className="mt-5 space-y-3">
-              <a
-                href="mailto:huzaifa.rb00@gmail.com"
-                className="flex items-center gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
-              >
-                <Mail className="h-4 w-4 text-[hsl(var(--vscode-accent))]" />
-                huzaifa.rb00@gmail.com
-              </a>
-              <a
-                href="https://linkedin.com/in/0xhuzaifa"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
-              >
-                <Linkedin className="h-4 w-4 text-[hsl(var(--vscode-accent))]" />
-                LinkedIn profile
-              </a>
-              <a
-                href="https://github.com/0xhuzaifa"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))] px-4 py-3 text-sm text-[hsl(var(--vscode-text))] transition-colors hover:border-[hsl(var(--vscode-accent))]/35"
-              >
-                <Github className="h-4 w-4 text-[hsl(var(--vscode-accent))]" />
-                GitHub profile
-              </a>
+        {/* ---------- form + aside ---------- */}
+        <div
+          className={`${CONTENT} mt-12 grid gap-6 lg:mt-14 xl:grid-cols-[1.15fr_0.85fr]`}
+        >
+          <section data-reveal className={`${BAND} p-6 md:p-9`}>
+            <div className="mb-8">
+              <p className="font-data text-[11px] uppercase tracking-[0.18em] text-[hsl(var(--ink-3))]">
+                Project brief
+              </p>
+              <h2 className="mt-3 text-[26px] font-extrabold tracking-[-0.03em] md:text-[30px]">
+                Describe your system
+              </h2>
+              <p className="mt-3 max-w-xl text-[15px] leading-[1.7] text-[hsl(var(--ink-2))]">
+                No need for a formal spec — a clear description of the problem
+                and who it affects is enough to start.
+              </p>
             </div>
+
+            {submitted ? (
+              <div className="rounded-[20px] border border-[hsl(var(--yellow-deep))]/40 bg-[rgba(250,240,150,0.4)] p-7">
+                <span className="flex h-[44px] w-[44px] items-center justify-center rounded-full bg-[hsl(var(--yellow))]">
+                  <Check className="h-[22px] w-[22px]" strokeWidth={2.6} />
+                </span>
+                <h3 className="mt-5 text-[24px] font-extrabold tracking-[-0.02em]">
+                  Thanks — your message is on its way.
+                </h3>
+                <p className="mt-3 text-[15px] leading-[1.7] text-[hsl(var(--ink-2))]">
+                  I&apos;ve sent a confirmation email to your inbox, and
+                  I&apos;ll review your message and respond as soon as possible.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setSubmitted(false)}
+                  className="mt-6 inline-flex items-center gap-2 rounded-full border border-[var(--ink-a12)] bg-white/70 px-6 py-3 text-[14px] font-bold transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-[2px]"
+                >
+                  Send another message
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid gap-5 md:grid-cols-2">
+                  <label className="block">
+                    <span className={LABEL}>Name</span>
+                    <input
+                      type="text"
+                      required
+                      disabled={isSubmitting}
+                      value={formState.name}
+                      onChange={handleFieldChange("name")}
+                      placeholder="Your name"
+                      className={cn(
+                        inputClasses,
+                        fieldErrors.name
+                          ? "border-[hsl(var(--destructive))]"
+                          : "border-[var(--ink-a12)]",
+                      )}
+                    />
+                    {fieldErrors.name ? (
+                      <span className="mt-2 block text-[13px] text-[hsl(var(--destructive))]">
+                        {fieldErrors.name}
+                      </span>
+                    ) : null}
+                  </label>
+
+                  <label className="block">
+                    <span className={LABEL}>Email</span>
+                    <input
+                      type="email"
+                      required
+                      disabled={isSubmitting}
+                      value={formState.email}
+                      onChange={handleFieldChange("email")}
+                      placeholder="you@example.com"
+                      className={cn(
+                        inputClasses,
+                        fieldErrors.email
+                          ? "border-[hsl(var(--destructive))]"
+                          : "border-[var(--ink-a12)]",
+                      )}
+                    />
+                    {fieldErrors.email ? (
+                      <span className="mt-2 block text-[13px] text-[hsl(var(--destructive))]">
+                        {fieldErrors.email}
+                      </span>
+                    ) : null}
+                  </label>
+                </div>
+
+                <label className="block">
+                  <span className={LABEL}>What are you building?</span>
+                  <textarea
+                    required
+                    rows={7}
+                    disabled={isSubmitting}
+                    value={formState.message}
+                    onChange={handleFieldChange("message")}
+                    placeholder="Tell me about the product, workflows, users, or technical constraints."
+                    className={cn(
+                      inputClasses,
+                      "resize-none leading-[1.7]",
+                      fieldErrors.message
+                        ? "border-[hsl(var(--destructive))]"
+                        : "border-[var(--ink-a12)]",
+                    )}
+                  />
+                  {fieldErrors.message ? (
+                    <span className="mt-2 block text-[13px] text-[hsl(var(--destructive))]">
+                      {fieldErrors.message}
+                    </span>
+                  ) : null}
+                </label>
+
+                <div className="space-y-3 pt-1">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="inline-flex items-center gap-[10px] rounded-full bg-[hsl(var(--yellow))] px-[26px] py-[14px] text-[15px] font-bold shadow-[var(--shadow-sm)] transition-[transform,background-color] duration-200 ease-[var(--ease)] hover:-translate-y-[3px] hover:bg-[hsl(var(--yellow-deep))] disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-70"
+                  >
+                    {isSubmitting ? (
+                      <LoaderCircle className="h-[17px] w-[17px] animate-spin" />
+                    ) : (
+                      <Send className="h-[17px] w-[17px]" strokeWidth={2.2} />
+                    )}
+                    {isSubmitting ? "Sending…" : "Send message"}
+                  </button>
+
+                  {errorMessage ? (
+                    <p
+                      role="alert"
+                      className="text-[14px] leading-[1.7] text-[hsl(var(--destructive))]"
+                    >
+                      {errorMessage}
+                    </p>
+                  ) : null}
+                </div>
+              </form>
+            )}
           </section>
 
-          <section className="rounded-[30px] border border-[hsl(var(--vscode-border))] bg-[linear-gradient(135deg,hsla(194,100%,56%,0.14),transparent_42%),hsl(var(--vscode-sidebar-elevated))] p-6">
-            <p className="text-xs uppercase tracking-[0.28em] text-[hsl(var(--vscode-accent))]">
-              What to expect
-            </p>
-            <div className="mt-4 space-y-3">
-              {[
-                {
-                  step: "01",
-                  text: "You send a brief — workflow, problem, or rough idea.",
-                },
-                {
-                  step: "02",
-                  text: "I review and respond within 24 hours with questions or a clear next step.",
-                },
-                {
-                  step: "03",
-                  text: "If there's a fit, we scope the project together before any commitment.",
-                },
-              ].map(({ step, text }) => (
-                <div
-                  key={step}
-                  className="flex gap-3 rounded-2xl border border-[hsl(var(--vscode-border))] bg-[hsl(var(--vscode-panel))]/80 p-3"
+          <div className="space-y-6">
+            <section data-reveal className={`${BAND} p-6 md:p-7`}>
+              <p className="font-data text-[11px] uppercase tracking-[0.18em] text-[hsl(var(--ink-3))]">
+                Direct contact
+              </p>
+              <div className="mt-5 space-y-3">
+                <a href="mailto:huzaifa.rb00@gmail.com" className={LINK_ROW}>
+                  <Mail
+                    className="h-[17px] w-[17px] flex-none"
+                    strokeWidth={1.9}
+                    aria-hidden="true"
+                  />
+                  huzaifa.rb00@gmail.com
+                </a>
+                <a
+                  href="https://linkedin.com/in/0xhuzaifa"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={LINK_ROW}
                 >
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[hsl(var(--vscode-accent))]/14 text-[10px] font-bold text-[hsl(var(--vscode-accent))]">
-                    {step}
-                  </span>
-                  <p className="text-sm leading-[1.7] text-[hsl(var(--vscode-text-muted))]">
-                    {text}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <p className="mt-4 text-xs leading-[1.7] text-[hsl(var(--vscode-text-muted))]/60">
-              Best fit: SaaS platforms, CRMs, internal tools, and custom
-              business systems.
-            </p>
-          </section>
+                  <Linkedin
+                    className="h-[17px] w-[17px] flex-none"
+                    strokeWidth={1.9}
+                    aria-hidden="true"
+                  />
+                  LinkedIn profile
+                </a>
+                <a
+                  href="https://github.com/0xhuzaifa"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={LINK_ROW}
+                >
+                  <Github
+                    className="h-[17px] w-[17px] flex-none"
+                    strokeWidth={1.9}
+                    aria-hidden="true"
+                  />
+                  GitHub profile
+                </a>
+              </div>
+            </section>
+
+            <section data-reveal className={`${BAND} p-6 md:p-7`}>
+              <p className="font-data text-[11px] uppercase tracking-[0.18em] text-[hsl(var(--yellow-deep))]">
+                What to expect
+              </p>
+              <ol className="mt-5 space-y-4">
+                {steps.map(({ step, text }) => (
+                  <li key={step} className="flex gap-[14px]">
+                    <span className="flex h-[30px] w-[30px] flex-none items-center justify-center rounded-[9px] bg-[hsl(var(--yellow))] font-data text-[11px] font-bold">
+                      {step}
+                    </span>
+                    <p className="pt-[5px] text-[14px] leading-[1.65] text-[hsl(var(--ink-2))]">
+                      {text}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-6 border-t border-[var(--ink-a08)] pt-5 text-[13px] leading-[1.65] text-[hsl(var(--ink-3))]">
+                Best fit: SaaS platforms, CRMs, internal tools, and custom
+                business systems.
+              </p>
+            </section>
+
+            <section
+              data-reveal
+              className={`${BAND} flex items-center gap-4 p-6`}
+            >
+              <span className="flex h-[46px] w-[46px] flex-none items-center justify-center rounded-full bg-[hsl(var(--yellow))]">
+                <ArrowRight
+                  className="h-[20px] w-[20px]"
+                  strokeWidth={2.2}
+                  aria-hidden="true"
+                />
+              </span>
+              <p className="text-[14px] leading-[1.6] text-[hsl(var(--ink-2))]">
+                Prefer to see the work first?{" "}
+                <a
+                  href="/systems"
+                  className="font-bold text-[hsl(var(--ink-1))] underline decoration-[hsl(var(--yellow-deep))] decoration-2 underline-offset-4"
+                >
+                  Browse the projects
+                </a>
+                .
+              </p>
+            </section>
+          </div>
         </div>
-      </div>
-    </div>
+      </main>
+    </RevealContainer>
   );
 }

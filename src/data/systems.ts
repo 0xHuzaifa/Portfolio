@@ -1,21 +1,20 @@
 // ─── NOTE: image imports are preserved as-is from your original file ──────────
 // import crmMain from "..."; etc. — keep your existing image imports above this.
 
-import crmMain from "@/assets/crm-system/main.png";
-import crm1 from "@/assets/crm-system/1.png";
-import crm2 from "@/assets/crm-system/2.png";
-import crm3 from "@/assets/crm-system/3.png";
-import inventoryMain from "@/assets/inventory-system/main.png";
-import realtimeMain from "@/assets/chat-system/main.png";
-import realtime1 from "@/assets/chat-system/1.png";
-import realtime2 from "@/assets/chat-system/2.png";
-import realtime3 from "@/assets/chat-system/3.png";
-import articleMain from "@/assets/article-platform/main.png";
+import type { StaticImageData } from "next/image";
 import article1 from "@/assets/article-platform/1.png";
 import article2 from "@/assets/article-platform/2.png";
 import article3 from "@/assets/article-platform/3.png";
-
-import type { StaticImageData } from "next/image";
+import articleMain from "@/assets/article-platform/main.png";
+import realtime1 from "@/assets/chat-system/1.png";
+import realtime2 from "@/assets/chat-system/2.png";
+import realtime3 from "@/assets/chat-system/3.png";
+import realtimeMain from "@/assets/chat-system/main.png";
+import crm1 from "@/assets/crm-system/1.png";
+import crm2 from "@/assets/crm-system/2.png";
+import crm3 from "@/assets/crm-system/3.png";
+import crmMain from "@/assets/crm-system/main.png";
+import inventoryMain from "@/assets/inventory-system/main.png";
 
 export interface SystemMetric {
   value: string;
@@ -34,6 +33,22 @@ export interface System {
   shortDescription: string;
   problem: string;
   solution: string;
+  /**
+   * The case-study page's four-part story runs Challenge → Solution → Approach
+   * → Outcome. `problem` and `solution` cover the first two; these cover the
+   * rest. Both optional: a system without them renders the story in two or
+   * three parts rather than inventing the missing halves. `outcome` falls back
+   * to the first `impact` entry.
+   */
+  approach?: string;
+  outcome?: string;
+  /** Project facts shown beside the role. Each renders only when present. */
+  duration?: string;
+  platform?: string;
+  teamSize?: string;
+  /** Stage buttons. Absent → the button is not rendered at all. */
+  liveUrl?: string;
+  repoUrl?: string;
   features: string[];
   architecture: {
     frontend: string;

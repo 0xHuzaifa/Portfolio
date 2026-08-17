@@ -12,9 +12,9 @@ export const techStack: TechItem[] = [
   // Backend
   { name: "Node.js", category: "backend" },
   { name: "Express", category: "backend" },
-  { name: "GraphQL", category: "backend" },
   { name: "REST APIs", category: "backend" },
   { name: "Socket.io", category: "backend" },
+  { name: "BullMQ", category: "backend" },
 
   // Databases
   { name: "MongoDB", category: "database" },
@@ -24,7 +24,10 @@ export const techStack: TechItem[] = [
   // DevOps / Cloud
   { name: "Docker", category: "devops" },
   { name: "AWS", category: "devops" },
-  { name: "CI/CD", category: "devops" },
+
+  // Other
+  { name: "Playwright", category: "other" },
+  { name: "LangGraph", category: "other" },
 ];
 
 export const categoryLabels: Record<TechItem["category"], string> = {
