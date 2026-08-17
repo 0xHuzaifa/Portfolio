@@ -82,7 +82,10 @@ export function Trust() {
               still resolve against the panel, exactly as before the split. */}
           <div className="trust-content lg:absolute lg:inset-0">
             {/* badge — ref 103,82 · 58 tall */}
-            <div className="trust-text relative inline-flex h-[52px] items-center gap-[12px] whitespace-nowrap rounded-full border border-white/85 bg-white/[0.72] px-[24px] text-[16px] font-semibold shadow-[0_12px_30px_rgba(0,0,0,0.06)] backdrop-blur-[10px] lg:absolute lg:left-[calc(99*var(--s))] lg:top-[calc(74*var(--s))] lg:h-[calc(58*var(--s))] lg:gap-[calc(12*var(--s))] lg:px-[calc(24*var(--s))] lg:text-[calc(16*var(--s))]">
+            {/* Nowrap only once there is room for the line. At 320px the pill
+                ran past the screen edge: 26 characters that cannot break,
+                inside a panel with 64px of its own horizontal padding. */}
+            <div className="trust-text relative inline-flex min-h-[52px] items-center gap-[10px] rounded-full border border-white/85 bg-white/[0.72] px-[16px] py-[10px] text-[14px] font-semibold shadow-[0_12px_30px_rgba(0,0,0,0.06)] backdrop-blur-[10px] sm:h-[52px] sm:gap-[12px] sm:whitespace-nowrap sm:px-[24px] sm:py-0 sm:text-[16px] lg:absolute lg:left-[calc(99*var(--s))] lg:top-[calc(74*var(--s))] lg:h-[calc(58*var(--s))] lg:gap-[calc(12*var(--s))] lg:px-[calc(24*var(--s))] lg:text-[calc(16*var(--s))]">
               <ShieldCheck className="h-[20px] w-[20px] lg:h-[calc(20*var(--s))] lg:w-[calc(20*var(--s))]" />
               Trusted by teams worldwide
             </div>

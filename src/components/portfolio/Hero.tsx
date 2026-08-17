@@ -145,7 +145,11 @@ export function Hero() {
               I build production-grade web systems with clean architecture,
               powerful APIs, and exceptional user experiences.
             </p>
-            <div className="mt-[30px] flex gap-[21px] lg:mt-[calc(24*var(--s))] lg:gap-[calc(21*var(--s))]">
+            {/* Wraps below `sm`. Both buttons are `shrink-0` with nowrap
+                labels — correct, a CTA that hyphenates is worse than one on
+                its own line — so on a 320px phone the pair ran 65px past the
+                screen edge until they were allowed to stack. */}
+            <div className="mt-[30px] flex flex-wrap gap-[14px] sm:gap-[21px] lg:mt-[calc(24*var(--s))] lg:flex-nowrap lg:gap-[calc(21*var(--s))]">
               <Link
                 href="/contact"
                 className="hero-cta group relative isolate inline-flex h-[48px] shrink-0 items-center gap-[10px] overflow-hidden whitespace-nowrap rounded-2xl border border-[hsl(var(--yellow))] px-[20px] text-[16px] font-bold shadow-[var(--shadow-sm)] transition-[transform,box-shadow] duration-200 ease-[var(--ease)] hover:-translate-y-[2px] hover:shadow-[var(--shadow)] lg:h-[calc(48*var(--s))] lg:gap-[calc(10*var(--s))] lg:px-[calc(20*var(--s))] lg:text-[calc(16*var(--s))]"
