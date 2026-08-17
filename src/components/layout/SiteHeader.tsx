@@ -27,10 +27,7 @@ export function SiteHeader() {
     // of its own every page's copy scrolled visibly behind the wordmark. Same
     // colour as the body, not a tint: it should read as the page ending at the
     // top edge, not as a bar laid over it.
-    <header
-      style={stageStyle}
-      className="fixed inset-x-0 top-0 z-50 bg-[hsl(var(--beige-1))]"
-    >
+    <header style={stageStyle} className="fixed inset-x-0 top-0 z-50">
       <div
         style={scale}
         className="site-nav mx-auto flex h-[88px] items-center justify-between px-6 md:px-11 lg:h-[calc(88*var(--s))] lg:w-[calc(1620*var(--s))] lg:px-[calc(44*var(--s))]"
